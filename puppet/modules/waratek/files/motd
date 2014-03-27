@@ -1,0 +1,32 @@
+#!/bin/bash
+motd="/etc/motd"
+HOSTNAME=`uname -n`
+KERNEL=`uname -r`
+#CPU=`uname -p`
+CPU=`cat /proc/cpuinfo | grep "model name" -m1 | gawk -F: '{print $2}' | sed -e 's/^[ \t]*//'`
+ARCH=`uname -m`
+OS=`cat /etc/redhat-release`
+MEMORY=`cat /proc/meminfo | grep MemTotal | gawk -F: '{print $2}'  | sed -e 's/^[ \t]*//'`
+UPTIME=`uptime | sed -e 's/ [0-9:]* up />/' -e 's/,.*//'`
+# The different colours as variables
+#W="\033[01;37m"
+W="\e[0m"
+B="\033[01;34m"
+R="\033[01;31m"
+X="\033[00;37m"
+echo "      __        ___    ____      _  _____ _____ _  __ " > $motd
+echo "      \ \      / / \  |  _ \    / \|_   _| ____| |/ / " >> $motd
+echo "       \ \ /\ / / _ \ | |_) |  / _ \ | | |  _| | ' /  " >> $motd
+echo "        \ V  V / ___ \|  _ <  / ___ \| | | |___| . \  " >> $motd
+echo "         \_/\_/_/   \_\_| \_\/_/   \_\_| |_____|_|\_\ " >> $motd
+echo "" >> $motd
+echo -e "$R#===================================================================#" >> $motd
+echo -e "$W Welcome to $B$HOSTNAME                        " >> $motd
+echo -e "$R CPU    $W= $CPU                               " >> $motd
+echo -e "$R MEMORY $W= $MEMORY                            " >> $motd
+echo -e "$R KERNEL $W= $KERNEL                            " >> $motd
+echo -e "$R UPTIME $W= $UPTIME                            " >> $motd
+echo -e ""
+echo -e " Start the Waratek CloudVM for Java by running $B\"javad\"" >> $motd
+echo -e "$R#===================================================================#" >> $motd
+echo -e "\e[0m" >> $motd
