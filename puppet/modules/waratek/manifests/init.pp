@@ -52,6 +52,7 @@ class waratek {
                         ]
     }
 
+    class { "waratek::license": }
     class { "waratek::motd": }
 
 }
