@@ -1,0 +1,22 @@
+= Waratek Demos
+
+== Requirements
+
+* link:http://www.vagrantup.com/[Vagrant]
+* link:http://www.virtualbox.org/[VirtualBox]
+
+== Running
+
+After downloading and installing Vagrant and Virtualbox:
+
+----
+$ vagrant up
+$ vagrant ssh
+----
+
+and when you're done...
+
+----
+$ vagrant destroy
+----
+
