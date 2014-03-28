@@ -5,7 +5,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "waratek/tester"
+  config.vm.box = "waratek/demo"
   config.vm.hostname = "demo1.localdomain"
 
   # VirtualBox
