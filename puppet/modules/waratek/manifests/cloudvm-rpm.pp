@@ -35,6 +35,8 @@ class waratek::cloudvm-rpm( $version ) {
             require     =>  Package[ 'java-1.6.0-waratek' ]
         }
 
+    } else {
+        err ("Waratek rpm installation is not available for this operating system release")
     }
 
 }

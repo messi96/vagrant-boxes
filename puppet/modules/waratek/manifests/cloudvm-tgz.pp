@@ -36,7 +36,7 @@ class waratek::cloudvm-tgz( $version ) {
         #     #require     =>  Exec[ 'extract-tgz' ]
         # }
     } else {
-        warning("Waratek tgz installation is not available for this operating system release")
+        err ("Waratek tgz installation is not available for this operating system release")
     }
 
 }
