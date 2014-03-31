@@ -32,6 +32,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     override.ssh.username = "vagrant"
 
     aws.user_data = File.read("scripts/cloud-init.sh")
+    aws.tags = {
+        'Name' => 'Waratek Vagrant Demo',
+        'User' => ENV['USER']
+    }
   end
 
   config.vm.provision "shell", path: "scripts/puppet-bootstrap.sh"
