@@ -5,8 +5,9 @@ node default {
     }
 
     file { '/etc/localtime':
-        ensure => 'link',
-        target => '/usr/share/zoneinfo/UTC'
+        ensure  => 'link',
+        target  => '/usr/share/zoneinfo/UTC',
+        seltype => 'etc_t'
     }
 
     package { 'git':
