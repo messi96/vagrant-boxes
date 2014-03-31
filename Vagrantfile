@@ -28,7 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     aws.secret_access_key = ENV['AWS_SECRET_KEY']
     aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
     aws.region = ENV['AWS_REGION']
-    override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY']
+    override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
     override.ssh.username = "vagrant"
 
     aws.user_data = File.read("scripts/cloud-init.sh")
