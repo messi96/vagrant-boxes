@@ -20,3 +20,8 @@ and when you're done...
 $ vagrant destroy
 ----
 
+== License
+
+The Vagrant provisioning process will download and install a copy of Waratek's CloudVM for Java.
+
+Please refer to the link:LICENSE.txt[Waratek Software License Agreement] for further information on licensing terms.
