@@ -27,6 +27,10 @@ node default {
         class { 'waratek::cloudvm-rpm':
             version     =>  '2.5.5.GA.2-95'
         }
+
+        class { 'waratek::elasticat':
+            version     =>  '1.3.2-86'
+        }
     }
 
     if ( $operatingsystem == "SLES" ) {
