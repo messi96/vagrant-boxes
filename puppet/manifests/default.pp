@@ -18,6 +18,8 @@ node default {
         }
     }
 
+    class { "waratek": }
+
     if ( $osfamily == "RedHat" ) {
 
         package { 'htop':
