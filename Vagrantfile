@@ -33,7 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     aws.user_data = File.read("scripts/cloud-init.sh")
     aws.tags = {
-        'Name' => 'Waratek Vagrant Demo',
+        'Name' => 'Waratek Demo',
         'User' => ENV['USER']
     }
   end
