@@ -14,7 +14,7 @@ class waratek::cloudvm-rpm( $version ) {
         # Import GPG public key
         exec { 'waratek-gpg-key':
             command     =>  '/bin/rpm --import http://download.waratek.com/keys/107183FC.txt?src=vagrant',
-            unless      =>  '/bin/rpm -qi gpg-pubkey-107183fc'
+            unless      =>  '/bin/rpm -q gpg-pubkey-107183fc'
         }
 
         package { 'java-1.6.0-waratek':
