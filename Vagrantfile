@@ -8,6 +8,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "waratek/demo"
   config.vm.hostname = "demo1.localdomain"
 
+  config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+
   # VirtualBox
   config.vm.provider :virtualbox do |vb|
     vb.name = "Waratek Demo"
