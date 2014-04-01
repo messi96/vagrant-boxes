@@ -19,6 +19,7 @@ node default {
     }
 
     class { "waratek": }
+    class { "iptables": }
 
     if ( $osfamily == "RedHat" ) {
 
