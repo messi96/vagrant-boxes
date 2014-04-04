@@ -22,13 +22,13 @@ $ vagrant destroy
 
 === AWS
 
-The Vagrantfile also supports deployment to AWS.  You'll need to install the AWS provider plugin before use:
+The Vagrant configuration also supports deployment to Amazon EC2.  You'll need to install the AWS provider plugin before use:
 
 ----
 $ vagrant plugin install vagrant-aws
 ----
 
-AWS configuration is exposed via environment variables.  They can be set as follows prior to running vagrant:
+AWS configuration is exposed via environment variables.  They can be set as follows prior to running vagrant e.g.:
 
 ----
 $ export AWS_ACCESS_KEY="YOUR ACCESS KEY"
