@@ -27,6 +27,14 @@ node default {
             ensure      =>  'installed'
         }
 
+        package { 'java-1.6.0-openjdk':
+            ensure      =>  'installed'
+        }
+
+        package { 'java-1.6.0-openjdk-devel':
+            ensure      =>  'installed'
+        }
+
         class { 'waratek::cloudvm-rpm':
             version     =>  '2.5.5.GA.2-95'
         }
