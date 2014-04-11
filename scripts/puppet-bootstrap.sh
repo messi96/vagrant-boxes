@@ -14,7 +14,6 @@ if [ "$EUID" -ne "0" ]; then
 fi
 
 if which puppet > /dev/null 2>&1; then
-  echo "Puppet is already installed."
   exit 0
 fi
 
