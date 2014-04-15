@@ -12,7 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   # VirtualBox
-  config.vm.provider :virtualbox do |vb|
+  config.vm.provider "virtualbox" do |vb|
     vb.name = "Waratek Demo"
     vb.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
     vb.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # AWS
-  config.vm.provider :aws do |aws,override|
+  config.vm.provider "aws" do |aws,override|
     aws.access_key_id = ENV['AWS_ACCESS_KEY']
     aws.secret_access_key = ENV['AWS_SECRET_KEY']
     aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
@@ -43,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "shell", path: "scripts/puppet-bootstrap.sh"
 
-  config.vm.provision :puppet do |puppet|
+  config.vm.provision "puppet" do |puppet|
     puppet.manifests_path = "puppet/manifests"
     puppet.module_path = "puppet/modules"
     #puppet.options = "--verbose --debug"
