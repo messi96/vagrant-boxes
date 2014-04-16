@@ -41,6 +41,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
   end
 
+  # VMware Fusion
+  config.vm.provider "vmware_fusion" do |vmf|
+    vmf.vmx["memsize"] = "1536"
+    vmf.vmx["numvcpus"] = "4"
+  end
+
   config.vm.provision "shell", path: "scripts/puppet-bootstrap.sh"
 
   config.vm.provision "puppet" do |puppet|
