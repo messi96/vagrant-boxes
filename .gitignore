@@ -3,3 +3,4 @@
 *.swp
 .vagrant
 LICENSE_KEY
+synced_folder
