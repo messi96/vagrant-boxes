@@ -36,7 +36,7 @@ class tomcat ( $tomcat_version, $struts_version ) {
         command     =>  "/usr/bin/curl $struts_examples_url -o /home/${vagrantuser}/${struts_examples_archive}",
         cwd         =>  "/home/${vagrantuser}/",
         creates     =>  "/home/${vagrantuser}/${struts_examples_archive}",
-        onlyif      =>  "/usr/bin/test ! -r /home/${vagrantuser}/$struts_examples_dir/NOTICE.txt",
+        onlyif      =>  "/usr/bin/test ! -r /home/${vagrantuser}/${tomcat_dir}/webapps/struts2-blank.war",
         user        =>  "${vagrantuser}",
         group       =>  "${vagrantuser}"
     }
@@ -45,6 +45,7 @@ class tomcat ( $tomcat_version, $struts_version ) {
         command     =>  "/usr/bin/unzip /home/${vagrantuser}/${struts_examples_archive}",
         cwd         =>  "/home/${vagrantuser}/",
         creates     =>  "/home/${vagrantuser}/$struts_examples_dir/NOTICE.txt",
+        onlyif      =>  "/usr/bin/test ! -r /home/${vagrantuser}/${tomcat_dir}/webapps/struts2-blank.war",
         user        =>  "${vagrantuser}",
         group       =>  "${vagrantuser}",
         require     =>  Exec[ 'download-struts-examples' ]
