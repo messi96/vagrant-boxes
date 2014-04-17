@@ -47,6 +47,9 @@ node default {
     if ( $operatingsystem == "SLES" ) {
         class { 'waratek::cloudvm-tgz':
             version     =>  '2.5.5.GA.2-87'
+        class { 'tomcat':
+            tomcat_version => '7.0.53',
+            struts_version => '2.2.1.1'
         }
     }
 
