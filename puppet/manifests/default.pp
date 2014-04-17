@@ -39,14 +39,6 @@ node default {
             version     =>  '2.5.5.GA.2-95'
         }
 
-        class { 'waratek::elasticat':
-            version     =>  '1.3.2-86'
-        }
-    }
-
-    if ( $operatingsystem == "SLES" ) {
-        class { 'waratek::cloudvm-tgz':
-            version     =>  '2.5.5.GA.2-87'
         class { 'tomcat':
             tomcat_version => '7.0.53',
             struts_version => '2.2.1.1'
