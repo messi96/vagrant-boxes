@@ -35,8 +35,8 @@ node default {
             ensure      =>  'installed'
         }
 
-        class { 'waratek::cloudvm-rpm':
-            version     =>  '2.5.5.GA.2-95'
+        class { 'waratek::cloudvm-tgz':
+            version     =>  '2.6.1.alpha.4-001'
         }
 
         class { 'tomcat':
