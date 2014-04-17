@@ -11,11 +11,11 @@ class waratek::cloudvm-tgz( $version ) {
         exec { 'download-tgz':
             command     =>  "/usr/bin/curl http://download.waratek.com/tgz/waratek_release_${version}_package.tar.gz?src=vagrant -o /opt/waratek_release_${version}_package.tar.gz",
             cwd         =>  "/opt/",
-            creates     =>  "/opt/waratek_release_${version}_package.tar.gz"
+            creates     =>  "/vagrant/synced_folder/waratek_release_${version}_package.tar.gz"
         }
 
         exec { 'extract-tgz':
-            command     =>  "/bin/tar zxf /opt/waratek_release_${version}_package.tar.gz",
+            command     =>  "/bin/tar zxf /vagrant/synced_folder/waratek_release_${version}_package.tar.gz",
             cwd         =>  '/opt/',
             creates     =>  "/opt/waratek_release_${version}_package/CHANGELOG",
             require     =>  Exec[ 'download-tgz' ]
