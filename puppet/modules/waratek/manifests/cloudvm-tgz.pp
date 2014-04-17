@@ -26,7 +26,14 @@ class waratek::cloudvm-tgz( $version ) {
             command     =>  "/opt/waratek_release_${version}_package/tools/autoinstall.sh -s -u vagrant -a -g add",
             cwd         =>  "/opt/waratek_release_${version}_package/tools",
             creates     =>  "/usr/lib/jvm/java-1.6.0-waratek-${version}.x86_64/jre/LICENSE",
-            require     =>  Exec[ 'extract-tgz' ]
+            require     =>  Exec[ 'extract-tgz' ],
+            notify      =>  Exec[ 'alternatives-java' ]
+        }
+
+        exec { 'alternatives-java':
+            command     =>  '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.6.0-waratek.x86_64/bin/java',
+            refreshonly =>  true,
+            require     =>  Exec[ 'install-tgz' ]
         }
 
         # exec { 'cleanup-tgz':
