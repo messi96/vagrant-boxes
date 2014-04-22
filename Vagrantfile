@@ -28,6 +28,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.manifest_file = "site.pp"
       puppet.module_path = "puppet/modules"
       #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "waratek_demo" => "jaf_demo_attacker"
+      }
     end
   end
 
