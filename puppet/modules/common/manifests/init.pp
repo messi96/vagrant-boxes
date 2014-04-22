@@ -1,9 +1,4 @@
-node default {
-
-    package { 'acl':
-        ensure      =>  'installed'
-    }
-
+class common {
     file { '/etc/localtime':
         ensure  => 'link',
         target  => '/usr/share/zoneinfo/UTC',
@@ -18,10 +13,13 @@ node default {
         }
     }
 
-    class { "waratek": }
-    class { "iptables": }
-
     if ( $osfamily == "RedHat" ) {
+
+        class { "iptables": }
+
+        package { 'acl':
+            ensure      =>  'installed'
+        }
 
         package { 'htop':
             ensure      =>  'installed'
@@ -35,14 +33,6 @@ node default {
             ensure      =>  'installed'
         }
 
-        class { 'waratek::cloudvm-tgz':
-            version     =>  '2.6.1.alpha.4-001'
-        }
-
-        class { 'tomcat':
-            tomcat_version => '7.0.53',
-            struts_version => '2.2.1.1'
-        }
     }
-
 }
+
