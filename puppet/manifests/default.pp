@@ -22,6 +22,10 @@ node 'target' {
 
     class { 'tomcat':
         tomcat_version => '7.0.53',
+    }
+
+    class { 'struts_demo':
+        tomcat_version => '7.0.53',
         struts_version => '2.2.1.1'
     }
 }
