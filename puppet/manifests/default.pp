@@ -28,4 +28,6 @@ node 'target' {
         tomcat_version => '7.0.53',
         struts_version => '2.2.1.1'
     }
+
+    class { "waratek::jaf_demo": }
 }
