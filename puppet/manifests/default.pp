@@ -16,7 +16,7 @@ node 'kali' {
 node 'target' {
     class { "waratek": }
 
-    class { 'waratek::cloudvm-tgz':
+    class { 'waratek::cloudvm-rpm':
         version     =>  '2.6.1.alpha.4-001'
     }
 
