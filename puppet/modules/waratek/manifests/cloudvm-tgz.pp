@@ -4,7 +4,7 @@
  */
 class waratek::cloudvm-tgz( $version ) {
 
-    include cloudvm-common
+    include waratek::cloudvm-common
 
     # Install latest version of JVM
 

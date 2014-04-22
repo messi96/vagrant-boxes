@@ -1,4 +1,4 @@
-class cloudvm-common {
+class waratek::cloudvm-common {
 
     include waratek::cgroups
 
