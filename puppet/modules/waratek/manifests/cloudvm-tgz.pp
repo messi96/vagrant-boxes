@@ -9,7 +9,7 @@ class waratek::cloudvm-tgz( $version ) {
     if ( $operatingsystem == "CentOS" and $operatingsystemrelease >= 6 ) or
        ( $operatingsystem == "SLES" and $operatingsystemrelease >= 11.1 ) {
         exec { 'download-tgz':
-            command     =>  "/usr/bin/curl http://download.waratek.com/tgz/waratek_release_${version}_package.tar.gz?src=vagrant -o /opt/waratek_release_${version}_package.tar.gz",
+            command     =>  "/usr/bin/wget http://download.waratek.com/tgz/waratek_release_${version}_package.tar.gz?src=vagrant -O /opt/waratek_release_${version}_package.tar.gz",
             cwd         =>  "/opt/",
             creates     =>  "/vagrant/synced_folder/waratek_release_${version}_package.tar.gz"
         }
