@@ -23,6 +23,20 @@ class waratek {
         mode   => 2775
     }
 
+    package { 'acl':
+        ensure      =>  'installed'
+    }
+
+    class { "iptables": }
+
+    package { 'java-1.6.0-openjdk':
+        ensure      =>  'installed'
+    }
+
+    package { 'java-1.6.0-openjdk-devel':
+        ensure      =>  'installed'
+    }
+
     package { 'libcgroup':
         ensure      =>  'installed',
         name        =>  $::operatingsystem ? {
