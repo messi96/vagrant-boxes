@@ -1,4 +1,4 @@
-class struts_demo ( $tomcat_version, $struts_version ) {
+class tomcat::struts_demo ( $tomcat_version, $struts_version ) {
 
     $tomcat_dir = "apache-tomcat-${tomcat_version}"
 
@@ -62,7 +62,7 @@ class struts_demo ( $tomcat_version, $struts_version ) {
         owner       =>  "${vagrantuser}",
         group       =>  "${vagrantuser}",
         mode        =>  0644,
-        source      =>  "puppet:///modules/struts_demo/HelloWorld.jsp",
+        source      =>  "puppet:///modules/tomcat/HelloWorld.jsp",
         require     =>  Exec[ 'extract-struts-warfile' ]
     }
 
