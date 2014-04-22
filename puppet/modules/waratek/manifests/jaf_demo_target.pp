@@ -1,5 +1,7 @@
 class waratek::jaf_demo_target() {
 
+    class { 'waratek': }
+
     class { 'waratek::cloudvm-rpm':
         version     =>  '2.6.1.alpha.4-001'
     }
