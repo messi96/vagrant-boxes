@@ -22,6 +22,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--ioapic", "off"]
       vb.customize ["modifyvm", :id, "--memory", "1024"]
     end
+
+    kali.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "puppet/manifests"
+      puppet.module_path = "puppet/modules"
+      #puppet.options = "--verbose --debug"
+    end
   end
 
   # CentOS
