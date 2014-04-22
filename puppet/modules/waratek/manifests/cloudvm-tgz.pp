@@ -4,6 +4,8 @@
  */
 class waratek::cloudvm-tgz( $version ) {
 
+    include cloudvm-common
+
     # Install latest version of JVM
 
     if ( $operatingsystem == "CentOS" and $operatingsystemrelease >= 6 ) or

@@ -1,4 +1,10 @@
-class waratek {
+class cloudvm-common {
+
+    include waratek::cgroups
+
+    package { 'acl':
+        ensure      =>  'installed'
+    }
 
     user { 'waratek':
         ensure => 'present',
@@ -22,13 +28,5 @@ class waratek {
         group  => "waratek",
         mode   => 2775
     }
-
-    class { "iptables": }
-
-    class { "waratek::license": }
-    class { "waratek::motd": }
-
-    include cgroups
-    include packages
 
 }

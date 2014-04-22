@@ -1,4 +1,4 @@
-class cgroups {
+class waratek::cgroups {
 
     package { 'libcgroup':
         ensure      =>  'installed',

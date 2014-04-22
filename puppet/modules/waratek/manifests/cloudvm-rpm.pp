@@ -4,6 +4,8 @@
  */
 class waratek::cloudvm-rpm( $version ) {
 
+    include cloudvm-common
+
     # Install latest version of JVM
 
     if ( $operatingsystem == "RedHat" or $operatingsystem == "CentOS" ) and
