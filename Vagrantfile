@@ -8,6 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Kali
   config.vm.define "kali" do |kali|
     kali.vm.box = "kali-linux-i386-mini"
+    kali.vm.hostname = "kali.localdomain"
     kali.ssh.username = "root"
     kali.vm.guest = "debian"
     kali.vm.network "private_network", ip: "192.168.100.100"
