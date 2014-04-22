@@ -1,4 +1,4 @@
-class tomcat::struts_demo ( $tomcat_version, $struts_version ) {
+class tomcat::struts_examples ( $tomcat_version, $struts_version ) {
 
     $tomcat_dir = "apache-tomcat-${tomcat_version}"
 
