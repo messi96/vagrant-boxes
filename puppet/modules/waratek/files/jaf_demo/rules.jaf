@@ -1,0 +1,19 @@
+VERSION 1.0
+
+# Demonstration rules.jaf file
+
+# MAC rule for general remote-shell vulnerabilities (both known and unknown)
+#procfork:level:none:deny:warn
+
+# Virtual patch rule for Apache Struts2 vulnerability
+#reflect:class:com.opensymphony.xwork2.ognl.SecurityMemberAccess:method:setAllowStaticMethodAccess(Z)V:deny:warn
+
+# Example file rules
+#file:read:/etc/:deny:warn
+#file:read:/etc/passwd:allow:warn
+
+# Example networks rules
+#network:connect:www.google.com::deny:warn
+#network:accept:localhost::deny:warn
+
+# END
