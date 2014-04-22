@@ -69,7 +69,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #puppet.options = "--verbose --debug"
       puppet.facter = {
         "vagrantuser"  => "vagrant",
-        "waratek_demo" => "jaf_demo_server"
+        "waratek_demo" => "jaf_demo_target"
       }
     end
 
