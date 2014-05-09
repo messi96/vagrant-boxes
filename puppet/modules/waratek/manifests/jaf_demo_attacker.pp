@@ -21,4 +21,13 @@ class waratek::jaf_demo_attacker() {
         source => 'puppet:///modules/waratek/jaf_demo/cve-2013-2251.rc',
     }
 
+
+    file { "/root/jafdemo/exploit.sh":
+        ensure => 'file',
+        owner  => "root",
+        group  => "root",
+        mode   => 0755,
+        source => 'puppet:///modules/waratek/jaf_demo/exploit.sh',
+    }
+
 }
