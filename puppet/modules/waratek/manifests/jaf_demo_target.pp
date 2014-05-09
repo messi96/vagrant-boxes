@@ -15,14 +15,14 @@ class waratek::jaf_demo_target() {
         struts_version => '2.2.1.1'
     }
 
-    file { "/home/${vagrantuser}/jafdemo":
+    file { "/home/${vagrantuser}/jaf_demo":
         ensure => 'directory',
         owner  => "${vagrantuser}",
         group  => "${vagrantuser}",
         mode   => 0755
     }
 
-    file { "/home/${vagrantuser}/jafdemo/restart.sh":
+    file { "/home/${vagrantuser}/jaf_demo/restart.sh":
         ensure => 'file',
         owner  => "${vagrantuser}",
         group  => "${vagrantuser}",
@@ -30,7 +30,7 @@ class waratek::jaf_demo_target() {
         source => 'puppet:///modules/waratek/jaf_demo/restart.sh',
     }
 
-    file { "/home/${vagrantuser}/jafdemo/rules.jaf":
+    file { "/home/${vagrantuser}/jaf_demo/rules.jaf":
         ensure => 'file',
         owner  => "${vagrantuser}",
         group  => "${vagrantuser}",

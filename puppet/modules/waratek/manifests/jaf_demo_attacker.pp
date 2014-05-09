@@ -6,14 +6,14 @@ class waratek::jaf_demo_attacker() {
 
     }
     
-    file { "/root/jafdemo":
+    file { "/root/jaf_demo":
         ensure => 'directory',
         owner  => "root",
         group  => "root",
         mode   => 0755
     }
 
-    file { "/root/jafdemo/cve-2013-2251.rc":
+    file { "/root/jaf_demo/cve-2013-2251.rc":
         ensure => 'file',
         owner  => "root",
         group  => "root",
@@ -22,7 +22,7 @@ class waratek::jaf_demo_attacker() {
     }
 
 
-    file { "/root/jafdemo/exploit.sh":
+    file { "/root/jaf_demo/exploit.sh":
         ensure => 'file',
         owner  => "root",
         group  => "root",
