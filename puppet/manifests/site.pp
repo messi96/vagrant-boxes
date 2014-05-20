@@ -9,3 +9,6 @@ if ($waratek_demo == "jaf_demo_target") {
     class { "waratek::jaf_demo_target": }
 }
 
+if ($waratek_demo == "jaf_demo_sqlmap") {
+    class { "waratek::jaf_demo_sqlmap": }
+}
