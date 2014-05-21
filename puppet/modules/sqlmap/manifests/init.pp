@@ -41,16 +41,5 @@ class sqlmap {
         notify      => Service["oracle-xe"]
     }
 
-    service { "httpd":
-        ensure => "running",
-        enable => "true"
-    }
-
-    service { "oracle-xe":
-        ensure    => "running",
-        enable    => "true",
-        hasstatus => "false",
-        pattern   => "tnslsnr"
-    }
 
 }
