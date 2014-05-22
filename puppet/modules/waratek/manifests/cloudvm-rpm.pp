@@ -6,6 +6,12 @@ class waratek::cloudvm-rpm( $version ) {
 
     include waratek::cloudvm-common
 
+    if ( $version =~ /GA/ ) {
+        $rpm_url = "http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant"
+    } else {
+        $rpm_url = "/vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm"
+    }
+
     # Install latest version of JVM
 
     if ( $operatingsystem == "RedHat" or $operatingsystem == "CentOS" ) and
@@ -19,7 +25,7 @@ class waratek::cloudvm-rpm( $version ) {
 
         package { 'java-1.6.0-waratek':
             ensure      =>  $version,
-            source      =>  "/vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm",
+            source      =>  $rpm_url,
             provider    =>  'rpm',
             require     =>  [   Exec[ 'waratek-gpg-key' ],
                                 Package[ 'acl', 'libcgroup' ],
