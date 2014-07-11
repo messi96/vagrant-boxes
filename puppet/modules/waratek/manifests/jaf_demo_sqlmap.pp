@@ -16,6 +16,16 @@ class waratek::jaf_demo_sqlmap() {
         pattern   => "tnslsnr"
     }
 
+    class { 'tomcat':
+        tomcat_version => "7.0.54"
+    }
+
+    tomcat::tomcat_instance { "/home/vagrant/tomcat":
+        port  => "8080",
+        owner => "vagrant",
+        group => "vagrant"
+    }
+
     # service { "httpd":
     #     ensure  => "running",
     #     enable  => "true",
