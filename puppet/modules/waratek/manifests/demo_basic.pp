@@ -3,7 +3,7 @@ class waratek::demo_basic() {
     class { 'waratek': }
 
     class { 'waratek::cloudvm-rpm':
-        version     =>  '2.6.0.GA.1-99'
+        version => "2.6.5.GA.2-103"
     }
 
     class { 'waratek::elasticat':
