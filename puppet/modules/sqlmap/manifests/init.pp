@@ -10,7 +10,7 @@ class sqlmap {
     # package { "php-odbc":     ensure => "installed" }
     # package { "php-pear":     ensure => "installed" }
 
-    file { "/var/www/html":
+    file { [ "/var/www", "/var/www/html" ]:
         ensure => "directory",
         owner  => "root",
         group  => "root",
@@ -29,6 +29,7 @@ class sqlmap {
         command => "/usr/bin/git clone https://github.com/sqlmapproject/testenv.git sqlmap",
         cwd     => "/var/www/html",
         creates => "/var/www/html/sqlmap/.git",
+        require => File["/var/www/html"],
         notify  => Exec["setup-db"]
     }
 
