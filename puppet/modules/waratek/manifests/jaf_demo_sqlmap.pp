@@ -16,17 +16,17 @@ class waratek::jaf_demo_sqlmap() {
         pattern   => "tnslsnr"
     }
 
-    service { "httpd":
-        ensure  => "running",
-        enable  => "true",
-        require => Package["httpd"]
-    }
+    # service { "httpd":
+    #     ensure  => "running",
+    #     enable  => "true",
+    #     require => Package["httpd"]
+    # }
 
-    service { "mysqld":
-        ensure  => "running",
-        enable  => "true",
-        require => Package["mysql-server"]
-    }
+    # service { "mysqld":
+    #     ensure  => "running",
+    #     enable  => "true",
+    #     require => Package["mysql-server"]
+    # }
 
 
 }
