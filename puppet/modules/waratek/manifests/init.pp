@@ -1,5 +1,11 @@
 class waratek {
 
+    file { '/etc/localtime':
+        ensure  => 'link',
+        target  => '/usr/share/zoneinfo/UTC',
+        seltype => 'etc_t'
+    }
+
     file { "/etc/profile.d/waratek.sh":
         ensure => 'file',
         owner  => "root",
