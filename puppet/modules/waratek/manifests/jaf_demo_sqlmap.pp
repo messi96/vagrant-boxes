@@ -1,7 +1,10 @@
 class waratek::jaf_demo_sqlmap() {
 
     class { 'waratek': }
-    include waratek::cloudvm-common
+    
+    class { 'waratek::cloudvm-rpm':
+        version => "2.6.5.GA.2.JAS-104"
+    }
 
     class { 'sqlmap': }
 
