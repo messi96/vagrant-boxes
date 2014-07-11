@@ -10,6 +10,13 @@ class sqlmap {
     # package { "php-odbc":     ensure => "installed" }
     # package { "php-pear":     ensure => "installed" }
 
+    file { "/var/www/html":
+        ensure => "directory",
+        owner  => "root",
+        group  => "root",
+        mode   => "0755"
+    }
+
     exec { "clone-sqlmap":
         command => "/usr/bin/git clone https://github.com/sqlmapproject/sqlmap.git",
         cwd     => "/home/${vagrantuser}",
