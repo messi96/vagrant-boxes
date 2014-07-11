@@ -30,8 +30,8 @@ class waratek::cloudvm-rpm( $version ) {
         # }
 
         exec { "install-cloudvm-rpm":
-            command     =>  "/bin/rpm -i /vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm || /bin/rpm -i http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant",
-            creates     =>  "/etc/init.d/javad",
+            command     =>  "/bin/rpm -U /vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm || /bin/rpm -U http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant",
+            creates     =>  "/usr/lib/jvm/java-1.6.0-waratek-${version}.x86_64",
             require     =>  [   Exec[ 'waratek-gpg-key' ],
                                 Package[ 'acl', 'libcgroup' ],
                                 Group[ 'waratek' ],
