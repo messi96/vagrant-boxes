@@ -6,12 +6,6 @@ class waratek::cloudvm-rpm( $version ) {
 
     include waratek::cloudvm-common
 
-    if ( $version =~ /GA/ ) {
-        $rpm_url = "http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant"
-    } else {
-        $rpm_url = "/vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm"
-    }
-
     # Install latest version of JVM
 
     if ( $operatingsystem == "RedHat" or $operatingsystem == "CentOS" ) and
@@ -23,10 +17,21 @@ class waratek::cloudvm-rpm( $version ) {
             unless      =>  '/bin/rpm -q gpg-pubkey-107183fc'
         }
 
-        package { 'java-1.6.0-waratek':
-            ensure      =>  $version,
-            source      =>  $rpm_url,
-            provider    =>  'rpm',
+        # package { 'java-1.6.0-waratek':
+        #     ensure      =>  $version,
+        #     source      =>  $rpm_url,
+        #     provider    =>  'rpm',
+        #     require     =>  [   Exec[ 'waratek-gpg-key' ],
+        #                         Package[ 'acl', 'libcgroup' ],
+        #                         Group[ 'waratek' ],
+        #                         Service[ 'cgconfig' ]
+        #                     ],
+        #     notify      =>  Exec[ 'alternatives-java' ]
+        # }
+
+        exec { "install-cloudvm-rpm":
+            command     =>  "/bin/rpm -i /vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm || /bin/rpm -i http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant",
+            creates     =>  "/etc/init.d/javad",
             require     =>  [   Exec[ 'waratek-gpg-key' ],
                                 Package[ 'acl', 'libcgroup' ],
                                 Group[ 'waratek' ],
@@ -38,7 +43,7 @@ class waratek::cloudvm-rpm( $version ) {
         exec { 'alternatives-java':
             command     =>  '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.6.0-waratek.x86_64/bin/java',
             refreshonly =>  true,
-            require     =>  Package[ 'java-1.6.0-waratek' ]
+            require     =>  Exec[ "install-cloudvm-rpm" ]
         }
 
     } else {
