@@ -1,16 +1,16 @@
 class waratek::demo_basic() {
 
-    class { 'waratek': }
+    class { "waratek": }
 
-    class { 'waratek::cloudvm-rpm':
+    class { "waratek::cloudvm-rpm":
         version => "2.6.5.GA.2-103"
     }
 
-    class { 'waratek::elasticat':
-        version     =>  '1.3.2-86'
+    class { "waratek::elasticat":
+        version     =>  "1.3.2-86"
     }
 
-    class { 'tomcat':
+    class { "tomcat":
         tomcat_version => "7.0.54"
     }
 
