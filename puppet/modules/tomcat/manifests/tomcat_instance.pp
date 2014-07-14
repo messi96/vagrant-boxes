@@ -1,4 +1,4 @@
-define tomcat::tomcat_instance ( $base_dir = $title, $port, $owner, $group ) {
+define tomcat::tomcat_instance ( $base_dir, $port, $owner, $group ) {
 
     $connector_port = $port
     $server_port = $port - 75
@@ -40,6 +40,22 @@ define tomcat::tomcat_instance ( $base_dir = $title, $port, $owner, $group ) {
     file { "${base_dir}/bin/startup.sh":
         ensure  => "file",
         content => template ("tomcat/bin/startup.sh"),
+        owner   => "$owner",
+        group   => "$group",
+        mode    => "0755"
+    }
+
+    file { "${base_dir}/bin/shutdown.sh":
+        ensure  => "file",
+        content => template ("tomcat/bin/shutdown.sh"),
+        owner   => "$owner",
+        group   => "$group",
+        mode    => "0755"
+    }
+
+    file { "${base_dir}/bin/setenv.sh":
+        ensure  => "file",
+        content => template ("tomcat/bin/setenv.sh"),
         owner   => "$owner",
         group   => "$group",
         mode    => "0755"
