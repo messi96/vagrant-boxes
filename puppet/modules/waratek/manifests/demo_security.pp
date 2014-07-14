@@ -30,6 +30,13 @@ class waratek::demo_security() {
         group    => "vagrant"
     }
 
+    class { "tomcat::struts_examples":
+        webapps_dir    => "/home/vagrant/tomcat/webapps",
+        struts_version => "2.2.1.1",
+        owner          => "vagrant",
+        group          => "vagrant"
+    }
+
     file { "/home/${vagrantuser}/demo":
         ensure => "directory",
         owner  => "${vagrantuser}",
@@ -37,20 +44,28 @@ class waratek::demo_security() {
         mode   => 0755
     }
 
+    file { "/home/${vagrantuser}/demo/reload_rules.sh":
+        ensure => "file",
+        owner  => "${vagrantuser}",
+        group  => "${vagrantuser}",
+        mode   => 0755,
+        source => "puppet:///modules/waratek/demo/security/reload_rules.sh",
+    }
+
     file { "/home/${vagrantuser}/demo/restart.sh":
         ensure => "file",
         owner  => "${vagrantuser}",
         group  => "${vagrantuser}",
         mode   => 0755,
-        source => "puppet:///modules/waratek/demo/restart.sh",
+        source => "puppet:///modules/waratek/demo/security/restart.sh",
     }
 
     file { "/home/${vagrantuser}/demo/rules.jaf":
         ensure => "file",
         owner  => "${vagrantuser}",
         group  => "${vagrantuser}",
-        mode   => 0664,
-        source => "puppet:///modules/waratek/demo/rules.jaf",
+        mode   => 0644,
+        source => "puppet:///modules/waratek/demo/security/rules.jaf",
     }
 
 
