@@ -2,24 +2,24 @@ class waratek::cloudvm-common {
 
     include waratek::cgroups
 
-    package { 'acl':
-        ensure      =>  'installed'
+    package { "acl":
+        ensure      =>  "installed"
     }
 
-    user { 'waratek':
-        ensure => 'present',
-        gid    => 'waratek',
-        shell  => '/sbin/nologin',
-        home   => '/var/lib/javad'
+    user { "waratek":
+        ensure => "present",
+        gid    => "waratek",
+        shell  => "/sbin/nologin",
+        home   => "/var/lib/javad"
     }
 
-    group { 'waratek':
-        ensure      =>  'present'
+    group { "waratek":
+        ensure      =>  "present"
     }
 
     user { $vagrantuser:
-        ensure      =>  'present',
-        groups      =>  'waratek',
+        ensure      =>  "present",
+        groups      =>  "waratek",
     }
 
     file { "/var/lib/javad":
