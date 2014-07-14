@@ -16,4 +16,7 @@ VERSION 1.0
 #network:connect:www.google.com::deny:warn
 #network:accept:localhost::deny:warn
 
+# SQL injection mitigation
+#sql:database:oracle:deny:debug
+
 # END
