@@ -23,10 +23,11 @@ class waratek::jaf_demo_sqlmap() {
         tomcat_version => "7.0.54"
     }
 
-    tomcat::tomcat_instance { "/home/vagrant/tomcat":
-        port  => "8080",
-        owner => "vagrant",
-        group => "vagrant"
+    tomcat::tomcat_instance { "tomcat1":
+        base_dir => "/home/vagrant/tomcat",
+        port     => "8080",
+        owner    => "vagrant",
+        group    => "vagrant"
     }
 
     # service { "httpd":
