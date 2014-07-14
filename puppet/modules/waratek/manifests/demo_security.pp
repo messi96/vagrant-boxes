@@ -30,17 +30,4 @@ class waratek::jaf_demo_sqlmap() {
         group    => "vagrant"
     }
 
-    # service { "httpd":
-    #     ensure  => "running",
-    #     enable  => "true",
-    #     require => Package["httpd"]
-    # }
-
-    # service { "mysqld":
-    #     ensure  => "running",
-    #     enable  => "true",
-    #     require => Package["mysql-server"]
-    # }
-
-
 }
