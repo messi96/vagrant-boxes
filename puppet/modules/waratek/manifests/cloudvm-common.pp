@@ -29,4 +29,20 @@ class waratek::cloudvm-common {
         mode   => 2775
     }
 
+    file { "/etc/init.d/javad":
+        ensure =>  "present",
+        owner  =>  "root",
+        group  =>  "root",
+        mode   =>  "0755",
+        source =>  "puppet:///modules/waratek/etc/init.d/javad",
+    }
+
+    file { "/etc/sysconfig/javad":
+        ensure =>  "present",
+        owner  =>  "root",
+        group  =>  "root",
+        mode   =>  "0644",
+        source =>  "puppet:///modules/waratek/etc/sysconfig/javad",
+    }
+
 }
