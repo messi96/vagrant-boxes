@@ -1,4 +1,4 @@
-class waratek::jaf_demo_sqlmap() {
+class waratek::demo_security() {
 
     class { "waratek": }
     
@@ -29,5 +29,29 @@ class waratek::jaf_demo_sqlmap() {
         owner    => "vagrant",
         group    => "vagrant"
     }
+
+    file { "/home/${vagrantuser}/demo":
+        ensure => "directory",
+        owner  => "${vagrantuser}",
+        group  => "${vagrantuser}",
+        mode   => 0755
+    }
+
+    file { "/home/${vagrantuser}/demo/restart.sh":
+        ensure => "file",
+        owner  => "${vagrantuser}",
+        group  => "${vagrantuser}",
+        mode   => 0755,
+        source => "puppet:///modules/waratek/demo/restart.sh",
+    }
+
+    file { "/home/${vagrantuser}/demo/rules.jaf":
+        ensure => "file",
+        owner  => "${vagrantuser}",
+        group  => "${vagrantuser}",
+        mode   => 0664,
+        source => "puppet:///modules/waratek/demo/rules.jaf",
+    }
+
 
 }
