@@ -1,15 +1,15 @@
 class waratek::jaf_demo_sqlmap() {
 
-    class { 'waratek': }
+    class { "waratek": }
     
-    class { 'waratek::cloudvm-rpm':
+    class { "waratek::cloudvm-rpm":
         version => "2.6.5.GA.2.JAS-104"
     }
 
-    class { 'sqlmap': }
+    class { "sqlmap": }
 
-    class { 'oracle_xe':
-        version => '11.2.0-1.0',
+    class { "oracle_xe":
+        version => "11.2.0-1.0",
     }
 
     service { "oracle-xe":
@@ -19,7 +19,7 @@ class waratek::jaf_demo_sqlmap() {
         pattern   => "tnslsnr"
     }
 
-    class { 'tomcat':
+    class { "tomcat":
         tomcat_version => "7.0.54"
     }
 
