@@ -29,7 +29,7 @@ class sqlmap {
         command => "/usr/bin/git clone https://github.com/sqlmapproject/testenv.git sqlmap",
         cwd     => "/var/www/html",
         creates => "/var/www/html/sqlmap/.git",
-        require => File["/var/www/html"],
+        require => [ File["/var/www/html"], Package["git"] ],
         notify  => Exec["setup-db"]
     }
 
