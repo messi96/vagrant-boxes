@@ -24,17 +24,18 @@ class waratek::demo_security() {
     }
 
     tomcat::tomcat_instance { "tomcat1":
-        base_dir => "/home/vagrant/tomcat",
+        base_dir => "/home/${vagrantuser}/tomcat",
         port     => "8080",
-        owner    => "vagrant",
-        group    => "vagrant"
+        owner    => "${vagrantuser}",
+        group    => "${vagrantuser}"
     }
 
     class { "tomcat::struts_examples":
-        webapps_dir    => "/home/vagrant/tomcat/webapps",
+        webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
         struts_version => "2.2.1.1",
-        owner          => "vagrant",
-        group          => "vagrant"
+        owner          => "${vagrantuser}",
+        group          => "${vagrantuser}"
+    }
 
     class { "tomcat::webgoat":
         webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
