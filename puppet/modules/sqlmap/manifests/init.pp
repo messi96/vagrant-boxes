@@ -57,7 +57,8 @@ class sqlmap {
     exec { "setup-db":
         command     => "/root/sqlmap/setupdb.sh",
         refreshonly => "true",
-        require     => [ File["/root/sqlmap/data.sql", "/root/sqlmap/create_user.sql", "/root/sqlmap/system.sql", "/root/sqlmap/setupdb.sh"], Exec["oracle-xe-configure"], Exec["clone-testenv"] ],
+        require     => [ File["/root/sqlmap/data.sql", "/root/sqlmap/create_user.sql", "/root/sqlmap/system.sql", "/root/sqlmap/setupdb.sh"], 
+                         Exec["oracle-xe-configure", "clone-testenv", "install-oracle-xe" ] ],
         notify      => Service["oracle-xe"]
     }
 
