@@ -35,6 +35,11 @@ class waratek::demo_security() {
         struts_version => "2.2.1.1",
         owner          => "vagrant",
         group          => "vagrant"
+
+    class { "tomcat::webgoat":
+        webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
+        owner          => "${vagrantuser}",
+        group          => "${vagrantuser}"
     }
 
     file { "/home/${vagrantuser}/demo":
