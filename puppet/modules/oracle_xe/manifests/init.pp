@@ -1,5 +1,8 @@
 class oracle_xe ( $version ) {
 
+    $filename = "oracle-xe-${version}.x86_64.rpm"
+    $url1 = "http://rpm/vagrant/${filename}"
+    $url2 = "https://s3.amazonaws.com/waratek-download/misc/${filename}"
     $swapfile = "/var/swapfile.xe"
 
     # Create swapfile on EC2
@@ -19,7 +22,7 @@ class oracle_xe ( $version ) {
     }
 
     exec { "install-oracle-xe":
-        command  => "/bin/rpm -i /vagrant/synced_folder/oracle-xe-${version}.x86_64.rpm || /bin/rpm -i http://rpm/vagrant/oracle-xe-${version}.x86_64.rpm",
+        command  => "/bin/rpm -U $url1 || /bin/rpm -U $url2",
         creates  => "/etc/init.d/oracle-xe",
     }
 
