@@ -1,10 +1,5 @@
 class oracle_xe ( $version ) {
 
-    # package { "oracle-xe":
-    #     ensure   => $version,
-    #     source   => "http://rpm/vagrant/oracle-xe-${version}.x86_64.rpm",
-    #     provider => "rpm"
-    # }
 
     exec { "install-oracle-xe":
         command  => "/bin/rpm -i /vagrant/synced_folder/oracle-xe-${version}.x86_64.rpm || /bin/rpm -i http://rpm/vagrant/oracle-xe-${version}.x86_64.rpm",
