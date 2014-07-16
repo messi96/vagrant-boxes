@@ -43,6 +43,12 @@ class waratek::demo_security() {
         group          => "${vagrantuser}"
     }
 
+    class { "tomcat::heisenbergtestapp":
+        webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
+        owner          => "${vagrantuser}",
+        group          => "${vagrantuser}"
+    }
+
     file { "/home/${vagrantuser}/demo":
         ensure => "directory",
         owner  => "${vagrantuser}",
