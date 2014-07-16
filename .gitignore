@@ -4,3 +4,7 @@
 .vagrant
 LICENSE_KEY
 synced_folder
+*.box
+*.iso
+output-virtualbox-iso
+packer_cache

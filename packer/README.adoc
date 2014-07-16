@@ -1,0 +1,26 @@
+= Vagrant Base Boxes
+
+Vagrant base boxes used for Waratek demos
+
+== CentOS 6
+
+link:http://www.vagrantup.com/[Vagrant] link:http://www.virtualbox.org/[VirtualBox] image built using link:http://www.packer.io/[Packer]
+
+.Build:
+----
+$ cd packer-centos6
+$ packer build centos6-x86_64-minimal.json 
+----
+
+== RHEL 6 (AWS)
+
+Contains link:https://aws.amazon.com/partners/redhat/[official Red Hat 6.4 (PV) AMI IDs]
+
+.Build:
+----
+$ cd aws-rhel6
+$ tar zcvf rhel6_aws.box ./Vagrantfile ./metadata.json
+----
+
+* link:https://github.com/mitchellh/vagrant-aws[Vagrant AWS Provider]
+* link:https://github.com/mitchellh/vagrant-aws/tree/master/example_box[Vagrant AWS Example Box]

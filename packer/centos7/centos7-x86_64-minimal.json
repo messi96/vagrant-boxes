@@ -1,0 +1,89 @@
+{
+  "variables": {
+    "vm_name": "centos7-x86_64",
+    "disk_size": 20480,
+    "iso_checksum": "e5a2c3c6d245b17e8d6ae2c31d2f34b62c273a0e",
+    "iso_checksum_type": "sha1",
+    "iso_url": "http://ftp.heanet.ie/pub/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso",
+    "box_desc" : "Centos 7 Minimal"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "headless": "false",
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "guest_os_type": "RedHat_64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "512"],
+        ["modifyvm", "{{.Name}}", "--cpus", "2"]
+      ],
+      "boot_command": [
+        "<tab><wait>",
+        " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "guest_additions_mode": "disable",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    },
+    {
+      "headless": "false",
+      "type": "vmware-iso",
+      "guest_os_type": "rhel6-64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "boot_command": [
+        "<tab><wait>",
+        " ks=http://172.16.43.1:{{ .HTTPPort }}/ks.cfg",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path": "/root/vmware-tools.iso",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "../packer-centos6/scripts/sshd.sh",
+        "../packer-centos6/scripts/vagrant.sh"
+      ],
+      "pause_before": "10s"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+  "post-processors": [  {
+    "type": "vagrant",
+    "output" : "{{user `vm_name`}}_{{.Provider}}.box",
+    "keep_input_artifact": false
+  }
+  ]
+}

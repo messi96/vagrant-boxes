@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.provider :aws do |aws, override|
+    aws.instance_type = "m1.small"
+
+    aws.region_config "us-east-1",      :ami => "ami-8d756fe4"
+    aws.region_config "us-west-1",      :ami => "ami-f6dde5b3"
+    aws.region_config "us-west-2",      :ami => "ami-aa8bfe9a"
+    aws.region_config "eu-west-1",      :ami => "ami-9368ade4"
+    aws.region_config "ap-southeast-1", :ami => "ami-5ebcef0c"
+    aws.region_config "ap-southeast-2", :ami => "ami-b72fb78d"
+    aws.region_config "ap-northeast-1", :ami => "ami-a15e24a0"
+    aws.region_config "sa-east-1",      :ami => "ami-abc76ab6"
+
+    override.ssh.username = "ec2-user"
+  end
+end
