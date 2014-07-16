@@ -17,18 +17,6 @@ class waratek::cloudvm-rpm( $version ) {
             unless      =>  '/bin/rpm -q gpg-pubkey-107183fc'
         }
 
-        # package { 'java-1.6.0-waratek':
-        #     ensure      =>  $version,
-        #     source      =>  $rpm_url,
-        #     provider    =>  'rpm',
-        #     require     =>  [   Exec[ 'waratek-gpg-key' ],
-        #                         Package[ 'acl', 'libcgroup' ],
-        #                         Group[ 'waratek' ],
-        #                         Service[ 'cgconfig' ]
-        #                     ],
-        #     notify      =>  Exec[ 'alternatives-java' ]
-        # }
-
         exec { "install-cloudvm-rpm":
             command     =>  "/bin/rpm -U /vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm || /bin/rpm -U http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant",
             creates     =>  "/usr/lib/jvm/java-1.6.0-waratek-${version}.x86_64",
