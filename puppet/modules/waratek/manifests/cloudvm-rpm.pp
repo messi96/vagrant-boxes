@@ -4,6 +4,9 @@
  */
 class waratek::cloudvm-rpm( $version ) {
 
+    $rpm1 = "/vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm"
+    $rpm2 = "http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant"
+
     include waratek::cloudvm-common
 
     # Install latest version of JVM
@@ -18,7 +21,7 @@ class waratek::cloudvm-rpm( $version ) {
         }
 
         exec { "install-cloudvm-rpm":
-            command     =>  "/bin/rpm -U /vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm || /bin/rpm -U http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant",
+            command     =>  "/bin/rpm -U $rpm1 || /bin/rpm -U $rpm2",
             creates     =>  "/usr/lib/jvm/java-1.6.0-waratek-${version}.x86_64",
             require     =>  [   Exec[ 'waratek-gpg-key' ],
                                 Package[ 'acl', 'libcgroup' ],
