@@ -5,6 +5,7 @@
 LICENSE_KEY
 synced_folder
 *.box
+*.box.md5
 *.iso
 output-virtualbox-iso
 packer_cache
