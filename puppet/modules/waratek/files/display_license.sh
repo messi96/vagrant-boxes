@@ -36,13 +36,6 @@ fi
 
 cat <<EOM
 
-__        ___    ____      _  _____ _____ _  __
-\ \      / / \  |  _ \    / \|_   _| ____| |/ /
- \ \ /\ / / _ \ | |_) |  / _ \ | | |  _| | ' / 
-  \ V  V / ___ \|  _ <  / ___ \| | | |___| . \ 
-   \_/\_/_/   \_\_| \_\/_/   \_\_| |_____|_|\_\\
-                                               
-
 This virtual machine contains an evaluation copy of Waratek's
 CloudVM for Java software.
 
