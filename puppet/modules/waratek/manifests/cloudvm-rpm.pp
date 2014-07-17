@@ -4,7 +4,7 @@
  */
 class waratek::cloudvm-rpm( $version ) {
 
-    $rpm1 = "/vagrant/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm"
+    $rpm1 = "/synced_folder/java-1.6.0-waratek-${version}.x86_64.rpm"
     $rpm2 = "http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant"
 
     include waratek::cloudvm-common

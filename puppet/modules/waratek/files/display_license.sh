@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LICENSE_FILE="/vagrant/LICENSE.txt"
+LICENSE_FILE="/LICENSE.txt"
 ACCEPT_FILE="$HOME/.waratek/LICENSE_ACCEPTED"
 
 trap '' 2

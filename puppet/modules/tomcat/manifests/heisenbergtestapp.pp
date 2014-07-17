@@ -1,7 +1,7 @@
 class tomcat::heisenbergtestapp ( $webapps_dir, $owner, $group ) {
 
     $testapp_war = "HeisenbergTestApp.war"
-    $testapp_path = "/vagrant/synced_folder/${testapp_war}"
+    $testapp_path = "/synced_folder/${testapp_war}"
 
     exec { "deploy-testapp":
         command     =>  "/bin/cp ${testapp_path} ${webapps_dir}",
