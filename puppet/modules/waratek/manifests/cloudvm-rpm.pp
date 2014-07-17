@@ -27,6 +27,7 @@ class waratek::cloudvm-rpm( $version ) {
                                 Package[ 'acl', 'libcgroup' ],
                                 Group[ 'waratek' ],
                                 Service[ 'cgconfig' ]
+            before      =>  File[ "/etc/init.d/javad", "/etc/sysconfig/javad" ],
                             ],
             notify      =>  Exec[ 'alternatives-java' ]
         }
