@@ -8,6 +8,14 @@ class waratek::license() {
         source => 'puppet:///modules/waratek/display_license.sh',
     }
 
+    file { "/LICENSE.txt":
+        ensure => "file",
+        owner  => "root",
+        group  => "root",
+        mode   => "0644",
+        source => "puppet:///modules/waratek/LICENSE.txt",
+    }
+
     exec { 'install-license':
         command => "/bin/cp /vagrant/LICENSE_KEY /var/lib/javad",
         onlyif  => "/usr/bin/test -r /vagrant/LICENSE_KEY",
