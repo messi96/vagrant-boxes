@@ -19,7 +19,14 @@ function refuse_license {
     echo "License refused."
     echo ""
 
-    sudo /sbin/shutdown -h now
+    sudo -n id > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        sudo /sbin/shutdown -h now
+    else
+        kill -9 $PPID
+    fi
+
+    exit 1
 }
 
 if [ -r "$ACCEPT_FILE" ]

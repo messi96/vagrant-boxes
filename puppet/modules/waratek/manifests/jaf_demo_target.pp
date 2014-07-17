@@ -3,15 +3,15 @@ class waratek::jaf_demo_target() {
     class { 'waratek': }
 
     class { 'waratek::cloudvm-rpm':
-        version     =>  '2.6.1.alpha.4-001'
+        version     =>  '2.6.5.GA.2.JAS-104'
     }
 
     class { 'tomcat':
-        tomcat_version => '7.0.53',
+        tomcat_version => '7.0.54',
     }
 
     class { 'tomcat::struts_examples':
-        tomcat_version => '7.0.53',
+        tomcat_version => '7.0.54',
         struts_version => '2.2.1.1'
     }
 

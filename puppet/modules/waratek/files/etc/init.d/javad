@@ -1,0 +1,147 @@
+#!/bin/bash
+#
+# /etc/rc.d/init.d/javad
+#
+# Waratek CloudVM
+# Starts an instance of javad
+#
+# chkconfig: 345 97 03
+# description: Starts the Waratek Cloud JVM
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+exec=javad
+
+[ -e /etc/sysconfig/$exec ] && . /etc/sysconfig/$exec
+
+WARATEK_HOME=${WARATEK_HOME:-/usr/lib/jvm/java-1.6.0-waratek.x86_64/jre}
+JVM_NAME=${JVM_NAME:-jvm-1}
+JAVAD_USER=${JAVAD_USER:-waratek}
+
+JAVAD_OPTS="-Xdaemon -Dcom.waratek.jvm.name=$JVM_NAME"
+
+if [ -n "$JPROC" ]; then
+    JAVAD_OPTS="$JAVAD_OPTS -Dcom.waratek.rootdir=$JPROC"
+fi
+
+if [ -n "$MAX_HEAP" ]; then
+    JAVAD_OPTS="$JAVAD_OPTS -Xmx$MAX_HEAP"
+fi
+
+if [ -n "$EMULATE" ]; then
+    JAVAD_OPTS="$JAVAD_OPTS -Dcom.waratek.emulate=$EMULATE"
+fi
+
+if [[ "$SECURITY_ENABLE" == true ]]; then
+    if [ -n "$SECURITY_POLICY" ] && [ -n "$SECURITY_AUTH_LOGIN_CONFIG" ] && [ -n "$SECURITY_JAAS_LOGIN_MODULE" ]; then
+        JAVAD_OPTS="$JAVAD_OPTS\
+            -Djava.security.policy==$SECURITY_POLICY\
+            -Djava.security.auth.login.config=$SECURITY_AUTH_LOGIN_CONFIG\
+            -classpath $SECURITY_JAAS_LOGIN_MODULE"
+    else
+        echo "ERROR: Security is enabled but all security options are not set"
+        echo "Please make sure all security options are set in your /etc/sysconfig/javad file"
+        exit 1
+    fi
+fi
+
+SSH_SERVER_OPTS=""
+if [[ "$SSH_SERVER_ENABLE" == true ]]; then
+    SSH_SERVER_OPTS="-Dcom.waratek.ssh.server=on"
+fi
+if [ -n "$SSH_SERVER_PORT" ]; then
+    SSH_SERVER_OPTS="$SSH_SERVER_OPTS -Dcom.waratek.ssh.port=$SSH_SERVER_PORT"
+fi
+if [ -n "$SSH_SERVER_ADDRESS" ]; then
+    SSH_SERVER_OPTS="$SSH_SERVER_OPTS -Dcom.waratek.ssh.ip=$SSH_SERVER_ADDRESS"
+fi
+JAVAD_OPTS="$JAVAD_OPTS $SSH_SERVER_OPTS"
+
+if [[ "$JMX_ENABLE" == true || "$JMX_JOLOKIA_ENABLE" == true ]]; then
+    JMX_PORT=${JMX_PORT:-8899}
+    JMX_AUTHENTICATE=${JMX_AUTHENTICATE:-true}
+    JMX_SSL=${JMX_SSL:-false}
+    JMX_PASSWORD=${JMX_PASSWORD:-false}
+    JMX_NO_ACCESS_FILE=${JMX_NO_ACCESS_FILE:-true}
+    JMX_LOGIN_CONFIG=${JMX_LOGIN_CONFIG:-Waratek}
+    JMX_OPTS="\
+            -Dcom.sun.management.jmxremote\
+            -Dcom.sun.management.jmxremote.port=$JMX_PORT\
+            -Dcom.sun.management.jmxremote.authenticate=$JMX_AUTHENTICATE\
+            -Dcom.sun.management.jmxremote.ssl=$JMX_SSL\
+            -Dcom.sun.management.jmxremote.password=$JMX_PASSWORD\
+            -Dcom.waratek.jmxremote.noaccessfile=$JMX_NO_ACCESS_FILE\
+            -Dcom.sun.management.jmxremote.login.config=$JMX_LOGIN_CONFIG"
+    if [[ "$JMX_JOLOKIA_ENABLE" ==  true ]]; then
+        JMX_JOLOKIA_OPTS="="
+        if [ -n "$JMX_JOLOKIA_ADDRESS" ]; then
+            JMX_JOLOKIA_OPTS="${JMX_JOLOKIA_OPTS}host=$JMX_JOLOKIA_ADDRESS,"
+        fi
+        if [ -n "$JMX_JOLOKIA_PORT" ]; then
+            JMX_JOLOKIA_OPTS="${JMX_JOLOKIA_OPTS}port=$JMX_JOLOKIA_PORT,"
+        fi
+        if [ -n "$JMX_JOLOKIA_KEYSTORE" ]; then
+            JMX_JOLOKIA_OPTS="${JMX_JOLOKIA_OPTS}keystore=$JMX_JOLOKIA_KEYSTORE,"
+        fi
+        if [ -n "$JMX_JOLOKIA_KEYSTORE_PASSWORD" ]; then
+            JMX_JOLOKIA_OPTS="${JMX_JOLOKIA_OPTS}keystorePassword=$JMX_JOLOKIA_KEYSTORE_PASSWORD,"
+        fi
+        if [[ "$JMX_JOLOKIA_AUTHENTICATION_ENABLE" == true ]]; then
+            JMX_JOLOKIA_OPTS="${JMX_JOLOKIA_OPTS}authentication=true,protocol=https,"
+        fi
+        JMX_JOLOKIA_OPTS=${JMX_JOLOKIA_OPTS%?}
+        JMX_OPTS="$JMX_OPTS -Dcom.waratek.jmxhttp.jolokia${JMX_JOLOKIA_OPTS}"
+    fi
+    JAVAD_OPTS="$JAVAD_OPTS $JMX_OPTS"
+fi
+
+javad=$WARATEK_HOME/bin/$exec
+pidfile=/var/lib/$exec/$JVM_NAME/jvm.pid
+lockfile=/var/lock/subsys/$exec-$JVM_NAME
+
+start()
+{
+    echo -n $"Starting $exec: "
+    /sbin/runuser -s /bin/bash $JAVAD_USER -c "$javad $JAVAD_OPTS" && success || failure
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && touch ${lockfile}
+    return $RETVAL
+}
+
+stop()
+{
+    echo -n $"Stopping javad: "
+    killproc -p ${pidfile} -d 3 $javad
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status -p ${pidfile} $javad
+        RETVAL=$?
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    reload)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $exec {start|stop|status|restart|reload}"
+        RETVAL=2
+        ;;
+esac
+
+exit $RETVAL

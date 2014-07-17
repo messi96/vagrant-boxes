@@ -8,4 +8,16 @@ class packages {
         ensure      =>  'installed'
     }
 
+    package { 'git':
+        ensure      =>  'installed',
+        name        =>  $operatingsystem ? {
+            'SLES'  =>  'git-core',
+            default =>  'git'
+        }
+    }
+
+    package { 'htop':
+        ensure      =>  'installed'
+    }
+
 }
