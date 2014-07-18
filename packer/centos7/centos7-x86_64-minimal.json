@@ -68,8 +68,8 @@
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "../packer-centos6/scripts/sshd.sh",
-        "../packer-centos6/scripts/vagrant.sh"
+        "../centos6/scripts/sshd.sh",
+        "../centos6/scripts/vagrant.sh"
       ],
       "pause_before": "10s"
     },
