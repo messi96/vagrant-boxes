@@ -19,10 +19,8 @@ class sqlmap {
 
     exec { "clone-sqlmap":
         command => "/usr/bin/git clone https://github.com/sqlmapproject/sqlmap.git",
-        cwd     => "/home/${vagrantuser}",
-        user    => "${vagrantuser}",
-        group   => "${vagrantuser}",
-        creates => "/home/${vagrantuser}/sqlmap/.git",
+        cwd     => "/opt",
+        creates => "/opt/sqlmap/.git",
     }
 
     exec { "clone-testenv":
