@@ -1,20 +1,20 @@
 class waratek::jaf_demo_attacker() {
 
-    host { 'target':
-        ensure => 'present',
-        ip     => '192.168.100.101'
+    host { "target":
+        ensure => "present",
+        ip     => "192.168.100.101"
 
     }
     
     file { "/root/jaf_demo":
-        ensure => 'directory',
+        ensure => "directory",
         owner  => "root",
         group  => "root",
         mode   => 0755
     }
 
     file { "/root/jaf_demo/cve-2013-2251.rc":
-        ensure => 'file',
+        ensure => "file",
         owner  => "root",
         group  => "root",
         mode   => 0644,
@@ -23,7 +23,7 @@ class waratek::jaf_demo_attacker() {
 
 
     file { "/root/jaf_demo/exploit.sh":
-        ensure => 'file',
+        ensure => "file",
         owner  => "root",
         group  => "root",
         mode   => 0755,
