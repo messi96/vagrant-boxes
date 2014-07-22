@@ -21,6 +21,7 @@ class sqlmap {
         command => "/usr/bin/git clone https://github.com/sqlmapproject/sqlmap.git",
         cwd     => "/opt",
         creates => "/opt/sqlmap/.git",
+        require => Package["git"]
     }
 
     exec { "clone-testenv":
