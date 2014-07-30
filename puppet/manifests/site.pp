@@ -1,7 +1,9 @@
 
-class { "ssh": }
+include base
+include ssh
 
-if ($waratek_demo) {
-    class { "waratek::$waratek_demo": }
+if ($node_type == "javasploitable") {
+	include javasploitable
+	include nyancat
 }
 
