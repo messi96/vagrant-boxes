@@ -1,0 +1,104 @@
+{
+  "variables": {
+    "vm_name": "javasploitable",
+    "disk_size": 20480,
+    "iso_checksum": "f21a71e8e31df73297bdd1ccd4a64a36831284bd",
+    "iso_checksum_type": "sha1",
+    "iso_url": "http://ftp.heanet.ie/pub/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-minimal.iso",
+    "box_desc" : "Javasploitable"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "headless": "false",
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "guest_os_type": "RedHat_64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "512"],
+        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+      ],
+      "boot_command": [
+        "<tab><wait>",
+        " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    },
+    {
+      "headless": "false",
+      "type": "vmware-iso",
+      "guest_os_type": "rhel6-64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "boot_command": [
+        "<tab><wait>",
+        " ks=http://172.16.43.1:{{ .HTTPPort }}/ks.cfg",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path": "/root/vmware-tools.iso",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/sshd.sh",
+        "scripts/vagrant.sh"
+      ],
+      "pause_before": "10s"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/virtualbox.sh",
+      "only": ["virtualbox-iso"]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/vmware.sh",
+      "only": ["vmware-iso"]
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/javasploitable.pp",
+        "module_paths": ["../../puppet/modules"]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+  "post-processors": [  {
+    "type": "vagrant",
+    "output" : "{{user `vm_name`}}_{{.Provider}}.box",
+    "keep_input_artifact": false
+  }
+  ]
+}
