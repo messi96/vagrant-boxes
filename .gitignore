@@ -2,7 +2,8 @@
 .DS_Store?
 *.swp
 .vagrant
-synced_folder
+synced_folder/**
+!synced_folder/readme.txt
 *.box
 *.box.md5
 *.iso
