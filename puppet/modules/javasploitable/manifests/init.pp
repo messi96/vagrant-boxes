@@ -8,6 +8,21 @@ class javasploitable inherits base {
             ensure => "installed"
     }
 
+    file { "/var/lib/tomcat/webapps/ROOT":
+        ensure  => "directory",
+        owner   => "tomcat",
+        group   => "tomcat",
+        mode    => "0755",
+        require => Package["tomcat"]
+    }
+
+    file { "/var/lib/tomcat/webapps/ROOT/index.html":
+        source => "puppet:///modules/javasploitable/tomcat/ROOT/index.html",
+        owner  => "tomcat",
+        group  => "tomcat",
+        mode   => "0644"
+    }
+
     file { "/etc/motd":
         source => "puppet:///modules/javasploitable/etc/motd",
         owner  => "root",
