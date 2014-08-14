@@ -9,5 +9,9 @@ if ($node_type == "javasploitable") {
 	class { "elasticsearch":
 		version => "1.1.1"
 	}
+
+	class { "roller":
+		version => "5.0.1"
+	}
 }
 
