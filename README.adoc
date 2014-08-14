@@ -48,4 +48,4 @@ Please refer to the link:LICENSE.txt[Waratek Software License Agreement] for fur
 
 The Waratek CloudVM software will be installed for a time limited evaluation period of 30 days and will allow the use of four Java Virtual Containers (JVCs).  To obtain an extended evaluation license, please contact licensing@waratek.com.
 
-If you have received a license key file from Waratek, you can save it to the same directory as the Vagrantfile and it will be installed when the box is provisioned.  Alternately, you can copy the _LICENSE_KEY_ file directly to _/var/lib/javad/_ on the box.
+If you have received a license key file from Waratek, you can save it in the _/synced_folder_ directory and it will be installed when the box is provisioned.  Alternately, you can copy the _LICENSE_KEY_ file directly to _/var/lib/javad/_ on the box.

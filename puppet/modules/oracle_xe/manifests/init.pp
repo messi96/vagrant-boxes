@@ -6,7 +6,7 @@ class oracle_xe ( $version ) {
     $swapfile = "/var/swapfile.xe"
 
     # Create swapfile on EC2
-    if ($ec2_ami_id) {
+    if ( ($ec2_ami_id) or ($domain =~ /.*compute.internal/) ) {
         exec { "create-swapfile":
             command => "/bin/dd if=/dev/zero of=${swapfile} bs=1M count=2560",
             creates => "${swapfile}",
