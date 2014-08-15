@@ -1,26 +1,26 @@
 class javasploitable inherits base {
 
-    package { [
-        "tomcat",
-        "tomcat-admin-webapps",
-        ]:
-            ensure => "installed"
-    }
+    # package { [
+    #     "tomcat",
+    #     "tomcat-admin-webapps",
+    #     ]:
+    #         ensure => "installed"
+    # }
 
-    file { "/var/lib/tomcat/webapps/ROOT":
-        ensure  => "directory",
-        owner   => "tomcat",
-        group   => "tomcat",
-        mode    => "0755",
-        require => Package["tomcat"]
-    }
+    # file { "/var/lib/tomcat/webapps/ROOT":
+    #     ensure  => "directory",
+    #     owner   => "tomcat",
+    #     group   => "tomcat",
+    #     mode    => "0755",
+    #     require => Package["tomcat"]
+    # }
 
-    file { "/var/lib/tomcat/webapps/ROOT/index.html":
-        source => "puppet:///modules/javasploitable/tomcat/ROOT/index.html",
-        owner  => "tomcat",
-        group  => "tomcat",
-        mode   => "0644"
-    }
+    # file { "/var/lib/tomcat/webapps/ROOT/index.html":
+    #     source => "puppet:///modules/javasploitable/tomcat/ROOT/index.html",
+    #     owner  => "tomcat",
+    #     group  => "tomcat",
+    #     mode   => "0644"
+    # }
 
     class { 'motd':
         template => 'javasploitable/etc/motd',
