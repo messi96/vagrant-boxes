@@ -8,6 +8,18 @@ class roller::config inherits roller {
         require => Package [ "tomcat" ]
     }
 
+    file { "/root/roller":
+        ensure  => "directory",
+        owner   => "root",
+        group   => "root"
+    }
+
+    file { "/root/roller/rollerdb.sql":
+        source  => "puppet:///modules/roller/rollerdb.sql",
+        owner   => "root",
+        group   => "root"
+    }
+
     file { [ "${roller_data_dir}",
              "${roller_data_dir}/logs",
              "${roller_data_dir}/mediafiles",
@@ -16,4 +28,5 @@ class roller::config inherits roller {
         owner  => "tomcat",
         group  => "tomcat",    
     }
+
 }
