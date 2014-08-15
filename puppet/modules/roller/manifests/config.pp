@@ -8,4 +8,12 @@ class roller::config inherits roller {
         require => Package [ "tomcat" ]
     }
 
+    file { [ "${roller_data_dir}",
+             "${roller_data_dir}/logs",
+             "${roller_data_dir}/mediafiles",
+             "${roller_data_dir}/searchindex" ]:
+        ensure => "directory",
+        owner  => "tomcat",
+        group  => "tomcat",    
+    }
 }
