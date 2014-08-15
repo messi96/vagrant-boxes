@@ -1,9 +1,9 @@
 class roller::install inherits roller {
 	
     exec { "download-roller.war":
-        command => "/usr/bin/wget -q $roller_war_url",
+        command => "/usr/bin/wget -q -O roller.war $roller_war_url",
         cwd     => "$tomcat_webapps_dir",
-        creates => "${tomcat_webapps_dir}/${roller_war_file}",
+        creates => "${tomcat_webapps_dir}/roller.war",
         user    => "tomcat",
         group   => "tomcat",
         require => Package [ "tomcat" ]
