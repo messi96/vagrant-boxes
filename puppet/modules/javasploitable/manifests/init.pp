@@ -27,13 +27,6 @@ class javasploitable inherits base {
         template => 'javasploitable/etc/motd',
     }
 
-    # file { "/etc/motd":
-    #     source => "puppet:///modules/javasploitable/etc/motd",
-    #     owner  => "root",
-    #     group  => "root",
-    #     mode   => "0644"
-    # }
-
     Service [ "iptables", "ip6tables" ] {
         ensure => "stopped",
         enable => "false"
