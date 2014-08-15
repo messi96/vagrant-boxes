@@ -1,7 +1,6 @@
 class javasploitable inherits base {
 
     package { [
-        "mysql-server",
         "tomcat",
         "tomcat-admin-webapps",
         ]:

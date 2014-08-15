@@ -6,6 +6,7 @@ include ssh
 
 if ($node_type == "javasploitable") {
     include javasploitable
+    include '::mysql::server'
     include nyancat
 
     class { "elasticsearch":
