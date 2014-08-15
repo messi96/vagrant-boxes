@@ -1,8 +1,7 @@
-
 class base {
 
     package { [
-    	"bc",
+        "bc",
         "byobu",
         "htop",
         "java-1.6.0-openjdk",
