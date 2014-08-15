@@ -12,7 +12,8 @@ if ($node_type == "javasploitable") {
     class { "elasticsearch":
         version      => "1.1.1-1",
         manage_repo  => true,
-        repo_version => "1.1"
+        repo_version => "1.1",
+        status       => 'enabled'
     }
 
     class { "roller":
