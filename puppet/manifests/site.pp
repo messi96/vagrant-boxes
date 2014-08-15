@@ -10,7 +10,9 @@ if ($node_type == "javasploitable") {
     include nyancat
 
     class { "elasticsearch":
-        version => "1.1.1"
+        version      => "1.1.1-1",
+        manage_repo  => true,
+        repo_version => "1.1"
     }
 
     class { "roller":
