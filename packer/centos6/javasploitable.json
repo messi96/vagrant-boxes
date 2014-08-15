@@ -84,8 +84,11 @@
     },
     {
       "type": "puppet-masterless",
-        "manifest_file": "../../puppet/manifests/javasploitable.pp",
-        "module_paths": ["../../puppet/modules"]
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "facter": {
+          "node_type": "javasploitable"
+        }
     },
     {
       "type": "shell",
