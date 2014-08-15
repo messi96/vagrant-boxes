@@ -21,8 +21,4 @@ class base {
         }
     }
 
-    service { [ "iptables", "ip6tables" ]:
-        ensure => "running",
-        enable => "true"
-    }
 }
