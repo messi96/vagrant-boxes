@@ -1,4 +1,6 @@
 
+File { backup => false }
+
 include base
 include ssh
 
