@@ -19,6 +19,6 @@ class waratek {
     class { "waratek::license": }
     class { "waratek::motd": }
 
-    include packages
+    #include packages
 
 }
