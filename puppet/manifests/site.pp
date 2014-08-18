@@ -19,5 +19,7 @@ if ($node_type == "javasploitable") {
     class { "roller":
         version => "5.0.1"
     }
+if ($node_type) {
+  include "profiles::$node_type"
 }
 
