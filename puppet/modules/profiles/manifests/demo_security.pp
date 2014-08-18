@@ -17,22 +17,7 @@ class profiles::demo_security inherits profiles::base {
     pattern   => "tnslsnr"
   }
 
-  class { 'tomcat':
-    user          => "$vagrantuser",
-    group         => "$vagrantuser",
-    manage_user   => false,
-    manage_group  => false
-  }
-  
-  tomcat::instance { 'tomcat-demo':
-    catalina_base => '/home/vagrant/tomcat',
-    source_url    => 'https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz'
-  } ->
-
-  tomcat::war { 'HeisenbergTestApp.war':
-    catalina_base => '/home/vagrant/tomcat',
-    war_source    => '/synced_folder/HeisenbergTestApp.war'
-  }
+  include 'profiles::demo_security::tomcat'
   include 'profiles::sqlmap'
 
 }
