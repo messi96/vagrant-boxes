@@ -1,11 +1,13 @@
 class profiles::base {
 
+    class { 'java':
+      package => 'java-1.6.0-openjdk-devel'
+    }
+
     package { [
         "bc",
         "byobu",
         "htop",
-        "java-1.6.0-openjdk",
-        "java-1.6.0-openjdk-devel",
         "unzip",
         "vim-enhanced",
         "wget"
