@@ -24,10 +24,11 @@ class profiles::demo_security::tomcat {
 
   # Struts blank application
   staging::deploy { 'struts-2.2.1.1-apps.zip':
-    source => 'https://archive.apache.org/dist/struts/examples/struts-2.2.1.1-apps.zip',
-    target => '/tmp/',
-    user   => "$vagrantuser",
-    group  => "$vagrantuser",
+    source  => 'https://archive.apache.org/dist/struts/examples/struts-2.2.1.1-apps.zip',
+    target  => '/tmp/',
+    creates => '/tmp/struts-2.2.1.1/LICENSE.txt',
+    user    => "$vagrantuser",
+    group   => "$vagrantuser"
   } ->
 
   tomcat::war { 'struts2-blank.war':,
