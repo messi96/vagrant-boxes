@@ -82,6 +82,11 @@
       "only": ["vmware-iso"]
     },
     {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"]
+    },
+    {
       "type": "shell",
       "scripts": [
         "scripts/cleanup.sh",
