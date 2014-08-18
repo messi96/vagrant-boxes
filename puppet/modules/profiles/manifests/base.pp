@@ -1,5 +1,7 @@
 class profiles::base {
 
+    include '::ssh'
+
     class { 'java':
       package => 'java-1.6.0-openjdk-devel'
     }

@@ -67,7 +67,6 @@
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "scripts/sshd.sh",
         "scripts/vagrant.sh"
       ],
       "pause_before": "10s"
