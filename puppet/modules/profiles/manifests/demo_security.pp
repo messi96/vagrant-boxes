@@ -8,7 +8,7 @@ class profiles::demo_security inherits profiles::base {
 
   class { "oracle_xe":
     version => "11.2.0-1.0",
-  }
+  } ->
 
   service { "oracle-xe":
     ensure    => "running",
