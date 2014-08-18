@@ -6,8 +6,6 @@ class profiles::demo_security inherits profiles::base {
     version => "2.6.5.GA.2.JAS-104"
   }
 
-  class { "sqlmap": }
-
   class { "oracle_xe":
     version => "11.2.0-1.0",
   }
@@ -35,5 +33,6 @@ class profiles::demo_security inherits profiles::base {
     catalina_base => '/home/vagrant/tomcat',
     war_source    => '/synced_folder/HeisenbergTestApp.war'
   }
+  include 'profiles::sqlmap'
 
 }
