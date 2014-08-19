@@ -50,8 +50,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vmf.vmx["numvcpus"] = "4"
   end
 
-  config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
-
   config.vm.provision "puppet" do |puppet|
     puppet.manifests_path = "../../puppet/manifests"
     puppet.manifest_file = "site.pp"

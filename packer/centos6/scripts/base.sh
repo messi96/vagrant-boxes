@@ -14,7 +14,7 @@ yum -y update
 
 # Install misc packages
 echo "[*] Installing misc packages"
-yum -y --setopt=tsflags=nodocs install puppet yum-plugin-versionlock yum-utils
+yum -y --setopt=tsflags=nodocs install yum-plugin-versionlock yum-utils
 
 # Remove 5s grub timeout to speed up booting
 echo "[*] Removing grub timeout"

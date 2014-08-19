@@ -25,6 +25,9 @@ cat <<EOF > /etc/rc.local
 # This script will be executed *after* all the other init scripts.
 # You can put your own initialization stuff in here if you don't
 # want to do the full Sys V style init stuff.
+# Install puppet
+rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
+yum -y install puppet
 
 touch /var/lock/subsys/local
 if [ ! -d /root/.ssh ] ; then
