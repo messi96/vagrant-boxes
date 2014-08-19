@@ -15,8 +15,7 @@ chmod 0600 /home/vagrant/.ssh/authorized_keys
 chown -R vagrant:vagrant /home/vagrant/.ssh
 
 # Set up sudo
-cp /etc/sudoers /etc/sudoers.orig
-sed -i '/Defaults.*requiretty/d' /etc/sudoers
+sed -i.orig '/Defaults\s*requiretty/d' /etc/sudoers
 
 ( cat <<'EOP'
 %vagrant ALL=NOPASSWD:ALL

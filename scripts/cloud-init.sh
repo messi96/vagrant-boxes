@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sed -i '/.*requiretty/d' /etc/sudoers
+sed -i.orig '/Defaults\s*requiretty/d' /etc/sudoers
 
 # Add Vagrant user for EC2 access
 # We don't disable standard user e.g. ec2-user for RHEL
@@ -18,27 +18,7 @@ echo "" >> /etc/ssh/sshd_config
 echo "" >> /etc/ssh/sshd_config
 echo "UseDNS no" >> /etc/ssh/sshd_config
 
-cp /etc/rc.local /etc/rc.local.orig
-cat <<EOF > /etc/rc.local
-#!/bin/sh
-#
-# This script will be executed *after* all the other init scripts.
-# You can put your own initialization stuff in here if you don't
-# want to do the full Sys V style init stuff.
 # Install puppet
 rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
 yum -y install puppet
 
-touch /var/lock/subsys/local
-if [ ! -d /root/.ssh ] ; then
-    mkdir -p /root/.ssh
-    chmod 0700 /root/.ssh
-    restorecon /root/.ssh
-fi
-
-# bz 707364
-if [ ! -f /etc/blkid/blkid.tab ] ; then
-        blkid /dev/xvda &>/dev/null
-fi
-
-EOF
