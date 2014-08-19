@@ -1,7 +1,12 @@
 
-class { "ssh": }
+File { backup => false }
 
-if ($waratek_demo) {
-    class { "waratek::$waratek_demo": }
+class { 'staging':
+  path => '/tmp/staging'
 }
 
+include 'profiles::base'
+
+if ($node_type) {
+  include "profiles::$node_type"
+}

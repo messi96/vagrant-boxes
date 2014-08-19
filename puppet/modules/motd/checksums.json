@@ -1,0 +1,15 @@
+{
+  "CHANGELOG.md": "9fbe385f8941ad963911d14941217d14",
+  "Gemfile": "c1cd7b0477f1a99e0156a471aac6cd58",
+  "LICENSE": "6089b6bd1f0d807edb8bdfd76da0b038",
+  "README.md": "9d553dbb3a45e0bae67cf7c162112147",
+  "Rakefile": "0254db5d3fc38c67a2c160d7296a24f8",
+  "manifests/init.pp": "8148507544e4d4af759c70c975f11603",
+  "metadata.json": "fa565ff9c27a9da48b6db70bbfc66de0",
+  "spec/classes/motd_spec.rb": "11abd4107baeb867bfe25be9849b3f5f",
+  "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+  "spec/spec_helper.rb": "0db89c9a486df193c0e40095422e19dc",
+  "templates/motd.erb": "b88ffca4b55b96f838626dd270e5f7ba",
+  "templates/spec.erb": "cad8f5ed937a14f8ecb735d82678df56",
+  "tests/init.pp": "5086992bfbe4109aef08a6dc91736250"
+}

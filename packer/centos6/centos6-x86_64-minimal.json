@@ -67,7 +67,6 @@
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "scripts/sshd.sh",
         "scripts/vagrant.sh"
       ],
       "pause_before": "10s"
@@ -81,6 +80,11 @@
       "type": "shell",
       "script": "scripts/vmware.sh",
       "only": ["vmware-iso"]
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"]
     },
     {
       "type": "shell",
