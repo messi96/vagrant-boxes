@@ -34,6 +34,30 @@ class profiles::demo_security::tomcat {
   tomcat::war { 'struts2-blank.war':,
     catalina_base => "$catalina_base",
     war_source    => '/tmp/struts-2.2.1.1/apps/struts2-blank.war'
-  } 
+  } ->
+
+  file { "${catalina_base}/webapps/struts2-blank":
+    ensure      =>  "directory",
+    owner       =>  "${vagrantuser}",
+    group       =>  "${vagrantuser}",
+    mode        =>  0755
+  } ->
+
+  exec { "extract-struts-warfile":
+    command     =>  "/usr/bin/jar -xf ${catalina_base}/webapps/struts2-blank.war",
+    cwd         =>  "${catalina_base}/webapps/struts2-blank",
+    creates     =>  "${catalina_base}/webapps/struts2-blank/index.html",
+    user        =>  "${vagrantuser}",
+    group       =>  "${vagrantuser}",
+  } -> 
+
+  file { "${catalina_base}/webapps/struts2-blank/example/HelloWorld.jsp":
+    ensure      =>  "present",
+    owner       =>  "${vagrantuser}",
+    group       =>  "${vagrantuser}",
+    mode        =>  0644,
+    source      =>  "puppet:///modules/profiles/HelloWorld.jsp",
+  }
+
 
 }
