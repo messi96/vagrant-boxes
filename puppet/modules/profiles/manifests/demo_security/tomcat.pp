@@ -57,7 +57,16 @@ class profiles::demo_security::tomcat {
     group       =>  "${vagrantuser}",
     mode        =>  0644,
     source      =>  "puppet:///modules/profiles/HelloWorld.jsp",
+  } ->
+
+  tomcat::setenv::entry { 'JAVA_HOME':
+    value      => "/usr/lib/jvm/java-waratek/jre\n",
+    base_path  => "${catalina_base}/bin",
   }
 
+  tomcat::setenv::entry { 'CATALINA_OPTS':
+    value      => "--jvc=tomcat1\n",
+    base_path  => "${catalina_base}/bin",
+  }
 
 }

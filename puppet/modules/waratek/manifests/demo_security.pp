@@ -1,41 +1,41 @@
 class waratek::demo_security() {
 
-    class { "waratek": }
+    # class { "waratek": }
     
-    class { "waratek::cloudvm-rpm":
-        version => "2.6.5.GA.2.JAS-104"
-    }
+    # class { "waratek::cloudvm-rpm":
+    #     version => "2.6.5.GA.2.JAS-104"
+    # }
 
-    class { "sqlmap": }
+    # class { "sqlmap": }
 
-    class { "oracle_xe":
-        version => "11.2.0-1.0",
-    }
+    # class { "oracle_xe":
+    #     version => "11.2.0-1.0",
+    # }
 
-    service { "oracle-xe":
-        ensure    => "running",
-        enable    => "true",
-        hasstatus => "false",
-        pattern   => "tnslsnr"
-    }
+    # service { "oracle-xe":
+    #     ensure    => "running",
+    #     enable    => "true",
+    #     hasstatus => "false",
+    #     pattern   => "tnslsnr"
+    # }
 
-    class { "tomcat":
-        tomcat_version => "7.0.54"
-    }
+    # class { "tomcat":
+    #     tomcat_version => "7.0.54"
+    # }
 
-    tomcat::tomcat_instance { "tomcat1":
-        base_dir => "/home/${vagrantuser}/tomcat",
-        port     => "8080",
-        owner    => "${vagrantuser}",
-        group    => "${vagrantuser}"
-    }
+    # tomcat::tomcat_instance { "tomcat1":
+    #     base_dir => "/home/${vagrantuser}/tomcat",
+    #     port     => "8080",
+    #     owner    => "${vagrantuser}",
+    #     group    => "${vagrantuser}"
+    # }
 
-    class { "tomcat::struts_examples":
-        webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
-        struts_version => "2.2.1.1",
-        owner          => "${vagrantuser}",
-        group          => "${vagrantuser}"
-    }
+    # class { "tomcat::struts_examples":
+    #     webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
+    #     struts_version => "2.2.1.1",
+    #     owner          => "${vagrantuser}",
+    #     group          => "${vagrantuser}"
+    # }
 
     # class { "tomcat::webgoat":
     #     webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
@@ -43,11 +43,11 @@ class waratek::demo_security() {
     #     group          => "${vagrantuser}"
     # }
 
-    class { "tomcat::heisenbergtestapp":
-        webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
-        owner          => "${vagrantuser}",
-        group          => "${vagrantuser}"
-    }
+    # class { "tomcat::heisenbergtestapp":
+    #     webapps_dir    => "/home/${vagrantuser}/tomcat/webapps",
+    #     owner          => "${vagrantuser}",
+    #     group          => "${vagrantuser}"
+    # }
 
     file { "/home/${vagrantuser}/demo":
         ensure => "directory",
