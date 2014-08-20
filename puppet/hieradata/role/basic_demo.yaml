@@ -1,0 +1,4 @@
+---
+classes:
+  - profiles::demo_basic
+  - tomcat

@@ -1,12 +1,5 @@
 
 File { backup => false }
 
-class { 'staging':
-  path => '/tmp/staging'
-}
+hiera_include('classes')
 
-include 'profiles::base'
-
-if ($node_type) {
-  include "profiles::$node_type"
-}

@@ -1,0 +1,5 @@
+---
+classes:
+  - elasticsearch
+  - tomcat
+  - oracle_xe
