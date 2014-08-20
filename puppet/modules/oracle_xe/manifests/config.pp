@@ -35,17 +35,27 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class oracle_xe (
-  $package_ensure  = $oracle_xe::params::package_ensure,
-  $package_source  = $oracle_xe::params::package_source,
-  $service_enable  = $oracle_xe::params::service_enable,
-  $service_ensure  = $oracle_xe::params::service_ensure
-) inherits oracle_xe::params {
+class oracle_xe::config inherits oracle_xe {
 
-  anchor { 'oracle_xe::begin': } ->
-  class { '::oracle_xe::install': } ->
-  class { '::oracle_xe::config': } ->
-  class { '::oracle_xe::service': } ->
-  anchor { 'oracle_xe::end': }
+  file { '/root/xe.rsp':
+    ensure   => 'present',
+    source   => 'puppet:///modules/oracle_xe/xe.rsp',
+    owner    => 'root',
+    group    => 'root',
+    mode     => '0600'
+  } ->
+
+  exec { 'oracle-xe-configure':
+    command  => '/etc/init.d/oracle-xe configure responseFile=/root/xe.rsp',
+    creates  => '/etc/sysconfig/oracle-xe',
+  }
+
+  file { "/etc/profile.d/oracle-xe.sh":
+    ensure => 'file',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/oracle_xe/etc/profile.d/oracle-xe.sh',
+  }
 
 }

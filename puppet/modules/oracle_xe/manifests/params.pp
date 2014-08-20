@@ -35,17 +35,12 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class oracle_xe (
-  $package_ensure  = $oracle_xe::params::package_ensure,
-  $package_source  = $oracle_xe::params::package_source,
-  $service_enable  = $oracle_xe::params::service_enable,
-  $service_ensure  = $oracle_xe::params::service_ensure
-) inherits oracle_xe::params {
+class oracle_xe::params {
 
-  anchor { 'oracle_xe::begin': } ->
-  class { '::oracle_xe::install': } ->
-  class { '::oracle_xe::config': } ->
-  class { '::oracle_xe::service': } ->
-  anchor { 'oracle_xe::end': }
-
+  $package_ensure  = 'installed'
+  $package_version = '11.2.0-1.0'
+  $service_enable  = 'true'
+  $service_ensure  = 'running'
+  $package_source  = "https://s3.amazonaws.com/waratek-download/misc/oracle-xe-${package_version}.x86_64.rpm"
+  
 }
