@@ -39,8 +39,8 @@ class oracle_xe::params {
 
   $package_ensure  = 'installed'
   $package_version = '11.2.0-1.0'
-  $service_enable  = 'true'
-  $service_ensure  = 'running'
+  $service_enable  = true
+  $service_ensure  = true
   $package_source  = "https://s3.amazonaws.com/waratek-download/misc/oracle-xe-${package_version}.x86_64.rpm"
   
 }

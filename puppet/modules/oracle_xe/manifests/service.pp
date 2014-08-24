@@ -40,7 +40,7 @@ class oracle_xe::service inherits oracle_xe {
   service { 'oracle-xe':
   	enable    => $service_enable,
     ensure    => $service_ensure,
-    hasstatus => 'false',
+    hasstatus => false,
     pattern   => 'tnslsnr'
   }
 
