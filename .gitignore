@@ -9,3 +9,4 @@ synced_folder/**
 *.iso
 output-virtualbox-iso
 packer_cache
+.project
