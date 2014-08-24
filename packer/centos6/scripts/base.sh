@@ -2,12 +2,6 @@
 
 set -e
 
-# Import key first so that yum doesn't complain later.
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
-
-rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
-
 # Update the box
 echo "[*] Updating yum"
 yum -y update
