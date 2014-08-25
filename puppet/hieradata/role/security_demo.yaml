@@ -6,3 +6,9 @@ classes:
   - tomcat
   - oracle_xe
   - sqlmap
+  - waratek_java
+waratek_java::version: 2.6.5.GA.2.JAS-104
+waratek_java::package_source: /synced_folder
+waratek_java::users:
+  vagrant:
+    groups: waratek
