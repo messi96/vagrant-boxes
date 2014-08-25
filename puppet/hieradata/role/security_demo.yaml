@@ -1,5 +1,8 @@
 ---
 classes:
   - profiles::demo_security
+  - profiles::demo_security::tomcat
+  - profiles::demo_security::heisenberg
   - tomcat
   - oracle_xe
+  - sqlmap

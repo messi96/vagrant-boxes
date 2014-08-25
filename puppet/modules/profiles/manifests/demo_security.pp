@@ -6,7 +6,6 @@ class profiles::demo_security inherits profiles::base {
     version => "2.6.5.GA.2.JAS-104"
   }
 
-  class { "::waratek::demo_security": }
   file { "/home/${vagrantuser}/demo":
     ensure => "directory",
     owner  => "${vagrantuser}",
@@ -22,8 +21,6 @@ class profiles::demo_security inherits profiles::base {
     source => "puppet:///modules/profiles/demo/security/reload_rules.sh",
   }
 
-  include 'profiles::demo_security::tomcat'
-  include '::sqlmap'
   file { "/home/${vagrantuser}/demo/restart.sh":
     ensure => "file",
     owner  => "${vagrantuser}",
