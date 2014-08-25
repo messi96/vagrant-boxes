@@ -14,8 +14,6 @@ class waratek {
         source => 'puppet:///modules/waratek/etc/profile.d/waratek.sh',
     }
 
-    class { "iptables": }
-
     class { "waratek::license": }
     class { "waratek::motd": }
 
