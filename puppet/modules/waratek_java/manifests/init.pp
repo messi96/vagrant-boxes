@@ -35,12 +35,32 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class waratek_java {
+class waratek_java (
+  $package_ensure  = $waratek_java::params::package_ensure,
+  $package_source  = $waratek_java::params::package_source,
+  $service_enable  = $waratek_java::params::service_enable,
+  $service_ensure  = $waratek_java::params::service_ensure,
+  $version         = $waratek_java::params::version,
+) inherits waratek_java::params {
+
+  validate_bool($service_enable)
+  validate_bool($service_ensure)
+
+  if ( ( ! $package_source ) and ( ! $version ) ) {
+  	fail('No version or package source specified')
+  }
+
+  if ( ! $package_source ) {
+  	$real_package_source = "http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant"
+  } else {
+  	$real_package_source = "$package_source/java-1.6.0-waratek-${version}.x86_64.rpm"
+  }
 
   anchor { 'waratek_java::begin': } ->
   class { '::waratek_java::install': } ->
+  class { '::waratek_java::libcgroup': } ->
   class { '::waratek_java::config': } ->
-  class { '::waratek_java::service': } ->
+  #class { '::waratek_java::service': } ->
   anchor { 'waratek_java::end': }
 
 }

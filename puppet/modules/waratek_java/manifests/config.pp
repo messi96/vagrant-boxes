@@ -35,12 +35,9 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class waratek_java::params {
+class waratek_java::config inherits waratek_java {
 
-  $package_ensure = 'installed'
-  $package_source = undef
-  $service_enable = false
-  $service_ensure = false
-  $version        = undef
+  $waratek_users = hiera( 'waratek_java::users', {} )
+  create_resources(user, $waratek_users)
 
 }

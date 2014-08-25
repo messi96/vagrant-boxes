@@ -35,12 +35,20 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class waratek_java::params {
+class waratek_java::libcgroup inherits waratek_java {
 
-  $package_ensure = 'installed'
-  $package_source = undef
-  $service_enable = false
-  $service_ensure = false
-  $version        = undef
+  package { 'libcgroup':
+    ensure    => 'installed',
+    name      => $::operatingsystem ? {
+      'SLES'  => 'libcgroup1',
+      default => 'libcgroup'
+    }
+  }
+
+  service { 'cgconfig':
+    ensure  => 'running',
+    enable  => 'true',
+    require => Package[ 'libcgroup' ]
+  }
 
 }
