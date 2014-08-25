@@ -26,7 +26,6 @@ class profiles::demo_security::heisenberg {
 
     exec { "setup-db":
         command     => "/root/sqlmap/setupdb.sh",
-        refreshonly => "true",
         require     => [ File["/root/sqlmap/data.sql", "/root/sqlmap/create_user.sql", "/root/sqlmap/system.sql", "/root/sqlmap/setupdb.sh"] ],
         notify      => Service["oracle-xe"]
     }
