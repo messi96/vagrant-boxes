@@ -7,6 +7,19 @@ classes:
   - oracle_xe
   - sqlmap
   - waratek_java
+tomcat::catalina_home: /opt/apache-tomcat
+tomcat::user: vagrant
+tomcat::group: vagrant
+tomcat::manage_user: false
+tomcat::manage_group: false
+tomcat::instances:
+  tomcat1:
+    catalina_base: /opt/apache-tomcat/tomcat1
+    source_url: https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz
+tomcat::wars:
+  HeisenbergTestApp.war:
+    catalina_base: /opt/apache-tomcat/tomcat1
+    war_source: /synced_folder/HeisenbergTestApp.war
 waratek_java::version: 2.6.5.GA.2.JAS-104
 waratek_java::package_source: /synced_folder
 waratek_java::users:
