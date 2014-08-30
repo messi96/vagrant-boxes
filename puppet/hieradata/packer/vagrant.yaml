@@ -1,0 +1,7 @@
+---
+classes:
+  - base::vagrant
+sudo::configs:
+  'vagrant':
+    'content'   : "vagrant ALL=(ALL) NOPASSWD: ALL"
+    'priority'  : 10

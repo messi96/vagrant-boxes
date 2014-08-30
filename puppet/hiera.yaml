@@ -4,6 +4,7 @@
 :yaml:
   :datadir: /tmp/hieradata
 :hierarchy:
+  - "packer/%{::packer}"
   - "node/%{::fqdn}"
   - "osfamily/%{::osfamily}"
   - "role/%{::role}"
