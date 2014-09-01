@@ -43,12 +43,11 @@ class waratek_java::libcgroup inherits waratek_java {
       'SLES'  => 'libcgroup1',
       default => 'libcgroup'
     }
-  }
+  } ->
 
   service { 'cgconfig':
     ensure  => 'running',
-    enable  => 'true',
-    require => Package[ 'libcgroup' ]
+    enable  => 'true'
   }
 
 }

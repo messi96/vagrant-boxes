@@ -56,10 +56,10 @@ class waratek_java (
   	$real_package_source = "$package_source/java-1.6.0-waratek-${version}.x86_64.rpm"
   }
 
-  anchor { 'waratek_java::begin': } ->
-  class { '::waratek_java::install': } ->
+  anchor { 'waratek_java::begin': }      ->
   class { '::waratek_java::libcgroup': } ->
-  class { '::waratek_java::config': } ->
+  class { '::waratek_java::install': }   ->
+  class { '::waratek_java::config': }    ->
   #class { '::waratek_java::service': } ->
   anchor { 'waratek_java::end': }
 
