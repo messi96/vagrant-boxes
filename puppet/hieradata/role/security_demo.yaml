@@ -4,6 +4,7 @@ classes:
   - profiles::demo_security::tomcat
   - profiles::demo_security::heisenberg
   - tomcat
+  - iptables
   - oracle_xe
   - sqlmap
   - waratek_java
