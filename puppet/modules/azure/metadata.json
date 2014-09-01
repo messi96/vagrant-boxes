@@ -1,0 +1,17 @@
+{
+  "name": "waratek-azure",
+  "version": "0.1.0",
+  "author": "waratek",
+  "summary": null,
+  "license": "Apache 2.0",
+  "source": "",
+  "issues_url": null,
+  "project_page": null,
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    }
+  ]
+}
+
