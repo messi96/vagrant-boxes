@@ -10,3 +10,4 @@ synced_folder/**
 output-virtualbox-iso
 packer_cache
 .project
+*.vhd
