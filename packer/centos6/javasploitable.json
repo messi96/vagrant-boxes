@@ -25,7 +25,7 @@
       ],
       "boot_command": [
         "<tab><wait>",
-        " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg",
+        " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks-minimal.cfg",
         "<enter><wait>"
       ],
       "boot_wait": "10s",
@@ -48,7 +48,7 @@
       "disk_size": "{{user `disk_size`}}",
       "boot_command": [
         "<tab><wait>",
-        " ks=http://172.16.43.1:{{ .HTTPPort }}/ks.cfg",
+        " ks=http://172.16.43.1:{{ .HTTPPort }}/ks-minimal.cfg",
         "<enter><wait>"
       ],
       "boot_wait": "10s",
