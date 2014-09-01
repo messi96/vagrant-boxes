@@ -1,34 +1,19 @@
 class profiles::demo_security::tomcat {
 
-  $tomcat_instances = hiera('tomcat::instances', {})
-  create_resources('tomcat::instance', $tomcat_instances)
+  $catalina_base = hiera('tomcat::catalina_home')
+  $version       = hiera('tomcat::version')
+  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-${version}.tar.gz"
 
-  $tomcat_wars = hiera('tomcat::wars', {})
-  create_resources('tomcat::war', $tomcat_wars)
+  tomcat::instance { 'tomcat-demo':
+    catalina_base => "$catalina_base",
+    source_url    => "$source_url"
+  } ->
 
-  $catalina_base = $tomcat_instances[tomcat1][catalina_base]
-  notice ($catalina_base)
-
-  # $version       = '7.0.55'
-  # $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-${version}.tar.gz"
-
-  # class { '::tomcat':
-  #   user          => "$vagrantuser",
-  #   group         => "$vagrantuser",
-  #   manage_user   => false,
-  #   manage_group  => false
-  # } ->
-  
-  # tomcat::instance { 'tomcat-demo':
-  #   catalina_base => "$catalina_base",
-  #   source_url    => "$source_url"
-  # } ->
-
-  # # Waratek test application
-  # tomcat::war { 'HeisenbergTestApp.war':,
-  #   catalina_base => "$catalina_base",
-  #   war_source    => '/synced_folder/HeisenbergTestApp.war'
-  # } -> 
+  # Waratek test application
+  tomcat::war { 'HeisenbergTestApp.war':,
+    catalina_base => "$catalina_base",
+    war_source    => '/synced_folder/HeisenbergTestApp.war'
+  } -> 
 
   # Struts blank application
   staging::deploy { 'struts-2.2.1.1-apps.zip':

@@ -21,5 +21,5 @@ echo "--------------------------------------------"
 cp rules.jaf /var/lib/javad/jvm-1/tomcat1
 
 echo "[*] Starting Tomcat"
-$HOME/tomcat/bin/startup.sh
+/opt/apache-tomcat/bin/startup.sh
 
