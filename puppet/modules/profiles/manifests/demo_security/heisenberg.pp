@@ -1,33 +1,23 @@
 class profiles::demo_security::heisenberg {
 
-    include '::oracle_xe'
-    include '::sqlmap'
+  include '::oracle_xe'
 
-    file { "/root/sqlmap":
-        ensure => "directory"
-    }
+  file { '/root/heisenberg':
+    ensure => 'directory'
+  } ->
 
-    file { "/root/sqlmap/data.sql":
-        source  => "puppet:///modules/sqlmap/data.sql"
-    }
+  file { '/root/heisenberg/setupdb.sql':
+    source  => 'puppet:///modules/profiles/heisenberg/setupdb.sql'
+  } ~>
 
-    file { "/root/sqlmap/create_user.sql":
-        source  => "puppet:///modules/sqlmap/create_user.sql"
-    }
-
-    file { "/root/sqlmap/system.sql":
-        source  => "puppet:///modules/sqlmap/system.sql"
-    }
-
-    file { "/root/sqlmap/setupdb.sh":
-        source  => "puppet:///modules/sqlmap/setupdb.sh",
-        mode    => "0755"
-    }
-
-    exec { "setup-db":
-        command     => "/root/sqlmap/setupdb.sh",
-        require     => [ File["/root/sqlmap/data.sql", "/root/sqlmap/create_user.sql", "/root/sqlmap/system.sql", "/root/sqlmap/setupdb.sh"] ],
-        notify      => Service["oracle-xe"]
-    }
+  exec { 'setup-db':
+    command     => '/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < /root/heisenberg/setupdb.sql',
+    environment => [ 'ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe',
+                     'ORACLE_SID=XE',
+                     'NLS_LANG=ENGLISH_IRELAND.AL32UTF8',
+                     'PATH=/u01/app/oracle/product/11.2.0/xe/bin:/usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin' ],
+    refreshonly => true,
+    require     => Service['oracle-xe']
+  }
 
 }
