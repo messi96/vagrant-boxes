@@ -38,6 +38,7 @@
 class waratek_java::params {
 
   $package_ensure = 'installed'
+  $package_name   = 'java-1.7.0-waratek'
   $package_source = undef
   $service_enable = false
   $service_ensure = false

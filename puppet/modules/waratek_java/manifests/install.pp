@@ -46,14 +46,14 @@ class waratek_java::install inherits waratek_java {
     unless  => '/bin/rpm -q gpg-pubkey-107183fc'
   } ->
 
-  package { 'java-1.6.0-waratek':
+  package { "$package_name":
     ensure   => $version,
     provider => 'rpm',
     source   => $real_package_source
   } ~>
 
   exec { 'alternatives-java':
-    command     => '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.6.0-waratek.x86_64/bin/java',
+    command     => $alternatives_command,
     refreshonly => true
   }
 

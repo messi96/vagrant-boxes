@@ -37,6 +37,7 @@
 #
 class waratek_java (
   $package_ensure  = $waratek_java::params::package_ensure,
+  $package_name    = $waratek_java::params::package_name,
   $package_source  = $waratek_java::params::package_source,
   $service_enable  = $waratek_java::params::service_enable,
   $service_ensure  = $waratek_java::params::service_ensure,
@@ -51,9 +52,15 @@ class waratek_java (
   }
 
   if ( ! $package_source ) {
-  	$real_package_source = "http://download.waratek.com/rpm/x86_64/java-1.6.0-waratek-${version}.x86_64.rpm?src=vagrant"
+  	$real_package_source = "http://download.waratek.com/rpm/x86_64/${package_name}-${version}.x86_64.rpm?src=vagrant"
   } else {
-  	$real_package_source = "$package_source/java-1.6.0-waratek-${version}.x86_64.rpm"
+  	$real_package_source = "$package_source/${package_name}-${version}.x86_64.rpm"
+  }
+
+  case $package_name {
+    'java-1.6.0-waratek': { $alternatives_command = '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.6.0-waratek.x86_64/bin/java' }
+    'java-1.7.0-waratek': { $alternatives_command = '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.7.0-waratek.x86_64/bin/java' }
+    default:              { fail 'Invalid package name'}
   }
 
   anchor { 'waratek_java::begin': }      ->

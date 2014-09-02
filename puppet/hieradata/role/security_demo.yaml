@@ -14,7 +14,7 @@ tomcat::user: vagrant
 tomcat::group: vagrant
 tomcat::manage_user: false
 tomcat::manage_group: false
-waratek_java::version: 2.6.5.GA.2.JAS-104
+waratek_java::version: 2.8.0.CA.3-105
 waratek_java::package_source: /synced_folder
 waratek_java::users:
   vagrant:
