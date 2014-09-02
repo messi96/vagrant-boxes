@@ -1,8 +1,8 @@
 ---
 classes:
-  - profiles::demo_security
-  - profiles::demo_security::tomcat
-  - profiles::demo_security::heisenberg
+  - demo_security
+  - demo_security::tomcat
+  - demo_security::heisenberg
   - tomcat
   - iptables
   - oracle_xe
