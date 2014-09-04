@@ -3,7 +3,8 @@ VERSION 1.0
 # Demonstration rules.jaf file
 
 # File Rules
-#file:read:*:allow:trace
+file:read:/opt/apache-tomcat:allow:off
+file:read:*:allow:trace
 file:write:*:allow:trace
 file:exec:*:deny:warn
 file:read:/etc/:deny:warn
