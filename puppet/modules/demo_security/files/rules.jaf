@@ -4,9 +4,14 @@ VERSION 1.0
 
 # File Rules
 file:read:/opt/apache-tomcat:allow:off
+file:read:/dev/random:allow:off
+file:read:/dev/urandom:allow:off
+file:read:/usr/lib/jvm:allow:off
+
 file:read:*:allow:trace
 file:write:*:allow:trace
 file:exec:*:deny:warn
+
 file:read:/etc/:deny:warn
 file:read:/etc/hosts:allow:info
 file:write:/tmp:deny:warn
