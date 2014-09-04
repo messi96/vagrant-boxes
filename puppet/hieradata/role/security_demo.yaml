@@ -1,5 +1,6 @@
 ---
 classes:
+  - profiles::base
   - demo_security
   - demo_security::tomcat
   - demo_security::heisenberg
