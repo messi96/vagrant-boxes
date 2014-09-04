@@ -11,6 +11,9 @@ jvmkill --all
 echo "[*] Undefining existing JVC configuration"
 jvmundefine --all
 
+echo "[*] Cleaning up logs"
+rm -f /var/log/javad/jvm-1/jaf.log
+
 echo "[*] Starting javad"
 $JAVA_HOME/bin/javad $JVM_OPTS $JMX_OPTS
 
