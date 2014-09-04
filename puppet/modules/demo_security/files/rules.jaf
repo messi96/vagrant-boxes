@@ -29,9 +29,16 @@ sql:database:oracle:allow:warn
 #sql:database:oracle:deny:warn
 
 # Static Linking
+classlink:class:java.*:allow:off
+classlink:class:javax.*:allow:off
+classlink:class:com.sun.*:allow:off
+classlink:class:org.apache.*:allow:off
+classlink:class:org.xml.*:allow:off
+classlink:class:sun.reflect.*:allow:off
 #classlink:class:*:allow:trace
 
-#Reflection
+# Reflection
+reflect:class:org.apache.*:allow:off
 reflect:class:*:allow:trace
 reflect:class:*:field:*:allow:trace
 reflect:class:*:constructor:*:allow:trace
