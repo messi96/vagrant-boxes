@@ -20,11 +20,7 @@
       "disk_size": "{{user `disk_size`}}",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "1024"],
-        ["modifyvm", "{{.Name}}", "--cpus", "1"],
-        ["storageattach", "{{user `vm_name`}}", "--storagectl", "IDE Controller", "--port", "0", "--device", "0", "--type", "hdd", "--medium", "none"],
-        ["closemedium", "disk", "output-virtualbox-iso/{{user `vm_name`}}.vdi", "--delete"],
-        ["createhd", "--filename", "output-virtualbox-iso/{{user `vm_name`}}.vhd", "--size", "{{user `disk_size`}}", "--format", "VHD", "--variant", "Standard"],
-        ["storageattach", "{{user `vm_name`}}", "--storagectl", "IDE Controller", "--port", "0", "--device", "0", "--type", "hdd", "--medium", "output-virtualbox-iso/{{user `vm_name`}}.vhd"]
+        ["modifyvm", "{{.Name}}", "--cpus", "1"]
       ],
       "boot_command": [
         "<tab><wait>",
@@ -40,7 +36,7 @@
       "ssh_username": "root",
       "ssh_wait_timeout": "10000s",
       "vboxmanage_post": [
-        ["clonehd", "output-virtualbox-iso/{{user `vm_name`}}.vhd", "{{user `vm_name`}}.vhd", "--variant", "Standard"]
+        ["clonehd", "output-virtualbox-iso/{{user `vm_name`}}.vdi", "{{user `vm_name`}}.vhd", "--variant", "Standard", "--format", "VHD"]
       ]
     }
   ],
@@ -64,7 +60,7 @@
         "hiera_config_path": "../../puppet/hiera.yaml",
         "facter":
           {
-            "packer": "vagrant"
+            "packer": "azure"
           }
     },
     {
