@@ -1,51 +1,51 @@
-class oracle_xe ( $version ) {
+# == Class: oracle_xe
+#
+# Full description of class oracle_xe here.
+#
+# === Parameters
+#
+# Document parameters here.
+#
+# [*sample_parameter*]
+#   Explanation of what this parameter affects and what it defaults to.
+#   e.g. "Specify one or more upstream ntp servers as an array."
+#
+# === Variables
+#
+# Here you should define a list of variables that this module would require.
+#
+# [*sample_variable*]
+#   Explanation of how this variable affects the funtion of this class and if
+#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
+#   External Node Classifier as a comma separated list of hostnames." (Note,
+#   global variables should be avoided in favor of class parameters as
+#   of Puppet 2.6.)
+#
+# === Examples
+#
+#  class { oracle_xe:
+#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#  }
+#
+# === Authors
+#
+# Author Name <author@domain.com>
+#
+# === Copyright
+#
+# Copyright 2014 Your name here, unless otherwise noted.
+#
+class oracle_xe (
+  $package_ensure  = $oracle_xe::params::package_ensure,
+  $package_source  = $oracle_xe::params::package_source,
+  $service_enable  = $oracle_xe::params::service_enable,
+  $service_ensure  = $oracle_xe::params::service_ensure
+) inherits oracle_xe::params {
 
-    $filename = "oracle-xe-${version}.x86_64.rpm"
-    $url1 = "http://rpm/vagrant/${filename}"
-    $url2 = "https://s3.amazonaws.com/waratek-download/misc/${filename}"
-    $swapfile = "/var/swapfile.xe"
-
-    # Create swapfile on EC2
-    if ( ($ec2_ami_id) or ($domain =~ /.*compute.internal/) ) {
-        exec { "create-swapfile":
-            command => "/bin/dd if=/dev/zero of=${swapfile} bs=1M count=2560",
-            creates => "${swapfile}",
-            notify  => Exec["enable-swap"]
-        }
-
-        exec { "enable-swap":
-            command     => "/sbin/mkswap ${swapfile} && /sbin/swapon ${swapfile}",
-            unless      => "/sbin/swapon -s | /bin/grep ${swapfile}",
-            before      => Exec["install-oracle-xe"],
-            require     => Exec["create-swapfile"]
-        }
-    }
-
-    exec { "install-oracle-xe":
-        command  => "/bin/rpm -U $url1 || /bin/rpm -U $url2",
-        creates  => "/etc/init.d/oracle-xe",
-    }
-
-    file { "/root/xe.rsp":
-        ensure   => "present",
-        source   => "puppet:///modules/oracle_xe/xe.rsp",
-        owner    => "root",
-        group    => "root",
-        mode     => "0600"
-    }
-
-    exec { "oracle-xe-configure":
-        command  => "/etc/init.d/oracle-xe configure responseFile=/root/xe.rsp",
-        creates  => "/etc/sysconfig/oracle-xe",
-        require  => [ Exec [ "install-oracle-xe"], File [ "/root/xe.rsp"] ]
-    }
-
-    file { "/etc/profile.d/oracle-xe.sh":
-        ensure => 'file',
-        owner  => "root",
-        group  => "root",
-        mode   => '0644',
-        source => 'puppet:///modules/oracle_xe/etc/profile.d/oracle-xe.sh',
-    }
+  anchor { 'oracle_xe::begin': } ->
+  class { '::oracle_xe::install': } ->
+  class { '::oracle_xe::config': } ->
+  class { '::oracle_xe::service': } ->
+  anchor { 'oracle_xe::end': }
 
 }

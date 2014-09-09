@@ -1,0 +1,22 @@
+---
+classes:
+  - profiles::base
+  - demo_security
+  - demo_security::tomcat
+  - demo_security::heisenberg
+  - tomcat
+  - iptables
+  - oracle_xe
+  - sqlmap
+  - waratek_java
+tomcat::catalina_home: /opt/apache-tomcat
+tomcat::version: 7.0.55
+tomcat::user: vagrant
+tomcat::group: vagrant
+tomcat::manage_user: false
+tomcat::manage_group: false
+waratek_java::version: 2.8.0.CA.3-105
+waratek_java::package_source: /synced_folder
+waratek_java::users:
+  vagrant:
+    groups: waratek

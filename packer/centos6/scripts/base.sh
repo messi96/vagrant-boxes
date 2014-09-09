@@ -2,19 +2,13 @@
 
 set -e
 
-# Import key first so that yum doesn't complain later.
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
-
-rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
-
 # Update the box
 echo "[*] Updating yum"
 yum -y update
 
 # Install misc packages
 echo "[*] Installing misc packages"
-yum -y --setopt=tsflags=nodocs install puppet yum-plugin-versionlock yum-utils
+yum -y --setopt=tsflags=nodocs install yum-plugin-versionlock yum-utils
 
 # Remove 5s grub timeout to speed up booting
 echo "[*] Removing grub timeout"

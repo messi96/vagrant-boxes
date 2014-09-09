@@ -1,0 +1,8 @@
+---
+classes:
+  - elasticsearch
+  - tomcat
+elasticsearch::version: "1.1.1-1"
+elasticsearch::manage_repo: true
+elasticsearch::repo_version: "1.1"
+elasticsearch::status: enabled

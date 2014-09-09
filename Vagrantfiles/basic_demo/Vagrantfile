@@ -6,12 +6,13 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "waratek/centos6-x86_64"
-  config.vm.hostname = "demo1.localdomain"
+  config.vm.hostname = "waratek.localdomain"
 
   config.vm.network "forwarded_port", guest: 80, host: 8000
   config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   config.vm.synced_folder "../../synced_folder", "/synced_folder"
+  config.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
   
   # VirtualBox
   config.vm.provider "virtualbox" do |vb|
@@ -50,16 +51,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vmf.vmx["numvcpus"] = "4"
   end
 
-  config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
-
   config.vm.provision "puppet" do |puppet|
     puppet.manifests_path = "../../puppet/manifests"
     puppet.manifest_file = "site.pp"
     puppet.module_path = "../../puppet/modules"
+    puppet.hiera_config_path = "../../puppet/hiera.yaml"
     #puppet.options = "--verbose --debug"
     puppet.facter = {
+      "role"        => "basic_demo",
+      "vagrant"     => "true",
       "vagrantuser" => "vagrant",
-      "node_type"   => "demo_basic"
     }
   end
 

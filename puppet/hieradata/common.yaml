@@ -1,0 +1,10 @@
+---
+classes:
+  - base
+  - java
+  - staging
+  - sudo
+  - sudo::configs
+staging::path: /tmp/staging
+sudo::purge: false
+sudo::config_file_replace: false
