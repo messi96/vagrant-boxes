@@ -2,9 +2,9 @@
   "variables": {
     "vm_name": "centos7-x86_64",
     "disk_size": 20480,
-    "iso_checksum": "e5a2c3c6d245b17e8d6ae2c31d2f34b62c273a0e",
+    "iso_checksum": "495a7d50eb7633c4667fbfc5e817bf244697c627",
     "iso_checksum_type": "sha1",
-    "iso_url": "http://ftp.heanet.ie/pub/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-NetInstall.iso",
+    "iso_url": "http://ftp.heanet.ie/pub/centos/7.0.1406/isos/x86_64/CentOS-7.0-1406-x86_64-Minimal.iso",
     "box_desc" : "Centos 7 Minimal"
   },
   "description": "{{user `box_desc`}}",
@@ -68,7 +68,6 @@
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "../centos6/scripts/sshd.sh",
         "../centos6/scripts/vagrant.sh"
       ],
       "pause_before": "10s"
