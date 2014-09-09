@@ -40,4 +40,12 @@ class waratek_java::config inherits waratek_java {
   $waratek_users = hiera( 'waratek_java::users', {} )
   create_resources(user, $waratek_users)
 
+  file { [ "/var/lib/javad",
+  	       "/var/log/javad" ]:
+    ensure => directory,
+    owner  => "waratek",
+    group  => "waratek",
+    mode   => 2775
+  }
+
 }
