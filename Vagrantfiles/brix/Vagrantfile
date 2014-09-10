@@ -30,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     centos.vm.provider "virtualbox" do |v|
       v.name = "Waratek:CentOS"
       v.cpus = 2
-      v.memory = 1536
+      v.memory = 2048
     end
 
     centos.vm.provision "puppet" do |puppet|
