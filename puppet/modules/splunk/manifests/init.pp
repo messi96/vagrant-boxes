@@ -31,6 +31,10 @@
 #   If you want to forward to more than one servers, use an array.
 #   Example: [ "splunk1.example42.com:9997" , "splunk2.example42.com:9997" ]
 #
+# [*deployment_server*]
+#   The server to receieve apps from. MUST be in host:port format
+#   Example: "splunk1.example42.com:8089"
+#
 # [*monitor_path*]
 #   The path of files or directories that you want to monitor with Splunk
 #   Either on the central server or the forwarders. May be an array.
@@ -191,6 +195,7 @@ class splunk (
   $install_source     = params_lookup('install_source'),
   $admin_password     = params_lookup('admin_password'),
   $forward_server     = params_lookup('forward_server'),
+  $deployment_server  = params_lookup('deployment_server'),
   $monitor_path       = params_lookup('monitor_path'),
   $monitor_sourcetype = params_lookup('monitor_sourcetype'),
   $template_inputs    = params_lookup('template_inputs'),
@@ -237,8 +242,8 @@ class splunk (
   $process_args = ''
   $config_dir = "${splunk::basedir}/etc/"
   $config_file_mode = '0644'
-  $config_file_owner = 'splunk'
-  $config_file_group = 'splunk'
+  $config_file_owner = 'root'
+  $config_file_group = 'root'
   $pid_file = "${splunk::basedir}/var/run/splunk/splunkd.pid"
   $data_dir = "${splunk::basedir}/var/lib/splunk"
   $log_dir = "${splunk::basedir}/var/log/splunk"
@@ -318,27 +323,28 @@ class splunk (
   if $splunk::install_source != '' {
 
     $install_command = $::operatingsystem ? {
-      /(?i:Debian|Ubuntu|Mint)/                        => "wget \'${splunk::install_source}\' -O /tmp/splunk.deb ; dpkg -i /tmp/splunk.deb",
-      /(?i:RedHat|Centos|Scientific|Suse|OracleLinux)/ => "rpm -U ${splunk::install_source}",
+      /(?i:Debian|Ubuntu|Mint)/                               => "wget \'${splunk::install_source}\' -O /tmp/puppet-splunk.deb ; dpkg -i /tmp/puppet-splunk.deb ; rm -f /tmp/puppet-splunk.deb",
+      /(?i:RedHat|Centos|Scientific|Suse|OracleLinux|Amazon)/ => "rpm -U ${splunk::install_source}",
     }
 
     exec { 'splunk_manage_package':
-      command     => '/root/puppet_manage_package',
+      command     => "${splunk::basedir}/puppet_manage_package",
       refreshonly => true,
       before      => Package['splunk'],
     }
 
     file { 'splunk_manage_package':
       ensure   => present,
-      path     => '/root/puppet_manage_package',
+      path     => "${splunk::basedir}/puppet_manage_package",
       mode     => '0700',
-      owner    => 'root',
-      group    => 'root',
       content  => template('splunk/manage_package.erb'),
       before   => Package['splunk'] ,
       notify   => Exec['splunk_manage_package'],
     }
 
+    file { $splunk::basedir:
+      ensure => directory
+    }
   }
 
   package { 'splunk':
@@ -356,7 +362,7 @@ class splunk (
   }
 
   exec { 'splunk_create_service':
-    command  => "${splunk::basedir}/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt",
+    command  => "${splunk::basedir}/bin/splunk --accept-license enable boot-start --answer-yes --no-prompt",
     creates  => '/etc/init.d/splunk',
     require  => Package['splunk'],
   }
@@ -378,6 +384,20 @@ class splunk (
       content  => template('splunk/add_forward_server.erb'),
       require  => Package['splunk'],
       notify   => Exec['splunk_add_forward_server'],
+    }
+  }
+
+  # Setting of deployment server
+  if $splunk::deployment_server {
+    file { 'splunk_deployment_server' :
+      ensure  => present,
+      path    => "${splunk::basedir}/etc/system/local/deploymentclient.conf",
+      mode    => '0700',
+      owner   => $splunk::config_file_owner,
+      group   => $splunk::config_file_group,
+      content => template('splunk/deploymentclient.erb'),
+      require => Package['splunk'],
+      notify  => Service['splunk'],
     }
   }
 
