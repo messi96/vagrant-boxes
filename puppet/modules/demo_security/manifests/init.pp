@@ -68,4 +68,11 @@ class demo_security {
     source => "puppet:///modules/demo_security/rules.jaf",
   }
 
+  vcsrepo { '/opt/splunk/etc/apps/waratek':
+    ensure   => present,
+    provider => git,
+    source   => 'https://github.com/prateepb/splunk-test-app.git',
+    require  => Package['splunk']
+  }
+
 }
