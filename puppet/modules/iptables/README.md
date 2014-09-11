@@ -1,79 +1,201 @@
-# iptables
+# Puppet module: iptables
 
-#### Table of Contents
 
-1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with iptables](#setup)
-    * [What iptables affects](#what-iptables-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with iptables](#beginning-with-iptables)
-4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+This is a Puppet module for iptables based on the second generation layout ("NextGen") of Example42 Puppet Modules.
 
-## Overview
+Made by Alessandro Franceschi / Lab42
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+Official site: http://www.example42.com
 
-## Module Description
+Official git repository: http://github.com/example42/puppet-iptables
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
+Released under the terms of Apache 2 License.
 
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+This module requires functions provided by the Example42 Puppi module (you need it even if you don't use and install Puppi)
 
-## Setup
+## DESCRIPTION:
+This module manages iptables.
+In order to have functionality and flexibility some design decisions have been enforced:
 
-### What iptables affects
+* Rules are based on a iptables-save format file. 
+* On RedHat/Centos systems it has been followed the standard iptables service approach
+* On Debian/Ubuntu the same approach is achived via the iptables-persistent package
+* Custom firewall solutions and builders are ignored or disabled (Shorewall, Ufw...) 
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
+The rules configuration can be made in two ways:
 
-### Setup Requirements **OPTIONAL**
+* File Mode: Providing custom iptables files (as static files or templates)
+* Concat Mode: Buildind up rules files with concat (this is the default choice and allows
+  dynamic automatic firewalling rules with Example42 firewall extension)
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+## USAGE - Overrides and Customizations
+* Default usage (Concat mode). It follows these defaults:
+  * Default policy is ACCEPT (to permit reachability in case of syntax errors)
+  * Last rule of every chain is a DENY as defined by $iptables_block_policy
+  * Intermediate rules are generally ACCEPTs
+  * Localhost and established traffic is ALLOWED
 
-### Beginning with iptables
+So a simple:
 
-The very basic steps needed for a user to get the module up and running.
+        class { 'iptables':
+        }
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+  * Allows SSH access on port TCP 22
+  * Allows ping and all ICMP packets
+  * Allows localhost and established traffic
+  * Allows outbound traffic
+  * Allows multicast and broadcast traffic
+  * Blocks everything else
 
-## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+* Use custom sources for iptables file
 
-## Reference
+        class { 'iptables':
+          config => 'file', # This is needed to activate file mode
+          source => [ "puppet:///modules/lab42/iptables/iptables-${hostname}" , "puppet:///modules/lab42/iptables/iptables" ], 
+        }
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
 
-## Limitations
+* Use custom template for iptables file. Note that template and source arguments are alternative. 
 
-This is where you list OS compatibility, version compatibility, etc.
+        class { 'iptables':
+          config => 'file', # This is needed to activate file mode
+          template => 'example42/iptables/iptables.conf.erb',
+        }
 
-## Development
+* Automatically include a custom subclass
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+        class { 'iptables':
+          my_class => 'iptables::example42',
+        }
 
-## Release Notes/Contributors/Etc **Optional**
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+### CONCAT MODE SPECIFIC USER VARIABLES:
+
+In concat mode some parameters define the general behaviour:
+
+* $block_policy *
+
+Define what to do with packets not expressively accepted:
+
+* `drop` (Default) - DROP them silently
+* `reject` - REJECT them with ICMP unreachable
+* `accept` - ACCEPT them (Beware, if you do this you have no firewall :-)
+
+* $icmp_policy *
+
+Define what to to with ICMP packets
+
+* `drop` - DROP them all
+* `safe` - ALLOW all ICMP types except echo & reply (Ping) 
+* `accept` (Default) - ACCEPT them all
+
+* $output_policy *
+
+Define what to to with outbound packets
+* `drop` - DROP them (except for established and localhost 
+* `accept` (Default) - ACCEPT them 
+
+* $log *
+
+Define what you what to log (`all` | `dropped` | `none`)
+
+* $log_level *
+
+Define the level of logging (numeric or see `syslog.conf(5)`)
+
+* $safe_ssh *
+
+Define if you want to force the precence of a rule that allows access to SSH port (tcp/22).
+
+* $broadcast_policy *
+
+Define what to do with INPUT broadcast packets
+
+* `drop` - Treat them with the $iptables_block_policy 
+* `accept` (Default) - Expressely ACCEPT them
+
+* $multicast_policy * 
+
+Define what to do with INPUT multicast
+
+* "drop" - Treat them with the $iptables_block_policy
+* "accept" (Default) - Expressely ACCEPT them
+
+So for example for a stricter setup, compared to default:
+
+        class { 'iptables':
+          config           => 'concat', # This enforces concat mode (Default value)
+          safe_ssh         => false,
+          broadcast_policy => 'drop',
+          multicast_policy => 'drop',
+          icmp_policy      => 'drop',
+          output_policy    => 'drop',
+        }
+
+### IPv6 specific configuration
+In order to enable IPv6 there have to be configured two parts:
+- iptables should be IPv6 enabled:
+          class{ 'iptables' :
+            enable_v6 => true,
+          }
+- then iptables::rules can be IPv6 enabled also:
+        iptables::rule { 'http': 
+          port       => '80',
+          protocol   => 'tcp',
+          enable_v6  => true,
+        }
+        
+If specific source / destination adresses should be used, a definition will look like: 
+        iptables::rule { 'http':
+          source          => '10.42.0.0/24',
+          source_v6       => '2001:0db8:3c4d:0015:0000:0000:abcd:ef12',
+          destination     => '$ipaddress_eth0',
+          destination_v6  => '2001:470:27:37e::2/64', 
+          port            => '80',
+          protocol        => 'tcp',
+          enable_v6       => true,
+        }
+
+### Usage of iptables module with Example42 automatic firewalling 
+
+The concat mode of this module is particularly useful when used with Example42's
+automatic firewalling features.
+
+You can enable them either setting a topscope variable or passing the firewall => true
+parameter to a (nextgen) class.
+
+You have also to set firewall_tool => 'iptables'.
+
+So, for example, you can enable site wide automatic firewalling with:
+
+        $::firewall = true
+        $::firewall_tool = 'iptables'
+
+and then whenever you add a NextGen Example42 module to a node, it's port is automatically openened (to every ip).
+
+If you want to have better control on who can access to that port, you can use the firewall_src parameter and you can define the destination IP with the firewall_dst one.
+For example the following accepts connections on MySql port only form 10.42.42.42/32 on eth1:
+
+        class { 'mysql':
+          firewall_src  => '10.42.42.42/32', # Allowed source
+          firewall_dst  => $ipaddress_eth1,  # Destination IP (default is $ipaddress
+        }
+
+
+###  Module specific defines
+
+All the single rules in Concat mode are managed by the iptables::rule define.
+You can use it to automatically allow access from all your nodes when you don't know their address upstream (for example in the cloud)
+
+        @@firewall { $hostname:
+          source => $ipaddress,
+          tag    => prod,
+        }
+        Firewall <| tag == prod |>
+
+If you have a single node from where you want to ensure access you can also do something like:
+
+        firewall { 'alfa': source => '42.42.42.42', }
+
+

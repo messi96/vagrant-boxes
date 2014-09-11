@@ -1,17 +1,22 @@
-dir = File.expand_path(File.dirname(__FILE__))
-$LOAD_PATH.unshift File.join(dir, 'lib')
-
-require 'mocha'
 require 'puppet'
-require 'rspec'
-require 'spec/autorun'
+require 'rspec-puppet'
+require 'tmpdir'
 
-Spec::Runner.configure do |config|
-    config.mock_with :mocha
+RSpec.configure do |c|
+  c.before :each do
+    # Create a temporary puppet confdir area and temporary site.pp so
+    # when rspec-puppet runs we don't get a puppet error.
+    @puppetdir = Dir.mktmpdir("iptables")
+    manifestdir = File.join(@puppetdir, "manifests")
+    Dir.mkdir(manifestdir)
+    FileUtils.touch(File.join(manifestdir, "site.pp"))
+    Puppet[:confdir] = @puppetdir
+  end
+
+  c.after :each do
+    FileUtils.rm_rf(Dir.glob('/tmp/iptables20*') , :secure => true)
+  end
+
+  c.module_path = File.join(File.dirname(__FILE__), '../../')
 end
 
-# We need this because the RAL uses 'should' as a method.  This
-# allows us the same behaviour but with a different method name.
-class Object
-    alias :must :should
-end
