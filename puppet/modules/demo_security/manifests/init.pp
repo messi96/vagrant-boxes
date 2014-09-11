@@ -72,7 +72,8 @@ class demo_security {
     ensure   => present,
     provider => git,
     source   => 'https://github.com/prateepb/splunk-test-app.git',
-    require  => Package['splunk']
+    require  => Package['splunk'],
+    notify   => Service['splunk']
   }
 
 }
