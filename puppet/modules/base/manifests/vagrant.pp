@@ -83,10 +83,10 @@ class base::vagrant {
   }
 
   # Configure sshd
-  augeas { "sshd_config":
-    context => "/files/etc/ssh/sshd_config",
+  augeas { 'sshd_config':
+    context => '/files/etc/ssh/sshd_config',
     changes => [
-      "set UseDNS no"
+      'set UseDNS no'
     ],
   } ~>
 
