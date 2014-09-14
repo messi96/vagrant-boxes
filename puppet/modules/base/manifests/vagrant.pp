@@ -75,6 +75,13 @@ class base::vagrant {
     mode   => '0644'
   }
 
+  augeas { 'sudoers':
+    context => '/files/etc/sudoers',
+    changes => [
+      'set Defaults[*]/requiretty/negate ""'
+    ],
+  }
+
   # Configure sshd
   augeas { "sshd_config":
     context => "/files/etc/ssh/sshd_config",
