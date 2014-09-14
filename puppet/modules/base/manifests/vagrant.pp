@@ -66,10 +66,8 @@ class base::vagrant {
     user   => 'vagrant'
   }
 
-  $timestamp = strftime ("%c%n")
-
   file { '/etc/vagrant_box_build_time':
-    content => "$timestamp",
+    content => strftime ("%c%n"),
     owner  => 'root',
     group  => 'root',
     mode   => '0644'
