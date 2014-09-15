@@ -35,18 +35,15 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box {
+class vagrant_base_box::grub {
 
-  class { '::vagrant_base_box::grub': }
-  class { '::vagrant_base_box::sshd': }
-  class { '::vagrant_base_box::sudoers': }
-  class { '::vagrant_base_box::users': }
-
-  file { '/etc/vagrant_box_build_time':
-    content => strftime ("%c%n"),
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644'
+  if ($::osfamily == "RedHat") and ($::operatingsystemmajrelease == 6) {
+    augeas { 'grub.conf':
+      context => '/files/boot/grub/grub.conf',
+      changes => [
+        'set timeout 0'
+      ],
+    }
   }
 
 }
