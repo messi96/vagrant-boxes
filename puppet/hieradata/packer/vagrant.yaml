@@ -1,6 +1,10 @@
 ---
 classes:
-  - base::vagrant
+  - sudo
+  - sudo::configs
+  - vagrant_base_box
+sudo::purge: false
+sudo::config_file_replace: false
 sudo::configs:
   'vagrant':
     'content'   : "vagrant ALL=(ALL) NOPASSWD: ALL"

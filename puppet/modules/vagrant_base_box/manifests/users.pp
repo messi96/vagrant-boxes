@@ -1,6 +1,6 @@
-# == Class: base
+# == Class: vagrant_base_box
 #
-# Full description of class base here.
+# Full description of class vagrant_base_box here.
 #
 # === Parameters
 #
@@ -23,7 +23,7 @@
 #
 # === Examples
 #
-#  class { base:
+#  class { vagrant_base_box:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
@@ -35,9 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class base::vagrant {
-
-  include stdlib
+class vagrant_base_box::users {
 
   # Create Vagrant user and ssh public key
   user { 'vagrant':
@@ -65,29 +63,5 @@ class base::vagrant {
     type   => 'ssh-rsa',
     user   => 'vagrant'
   }
-
-  file { '/etc/vagrant_box_build_time':
-    content => strftime ("%c%n"),
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644'
-  }
-
-  augeas { 'sudoers':
-    context => '/files/etc/sudoers',
-    changes => [
-      'set Defaults[*]/requiretty/negate ""'
-    ],
-  }
-
-  # Configure sshd
-  augeas { 'sshd_config':
-    context => '/files/etc/ssh/sshd_config',
-    changes => [
-      'set UseDNS no'
-    ],
-  } ~>
-
-  service { sshd: }
 
 }
