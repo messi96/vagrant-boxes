@@ -72,8 +72,7 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/vagrant.sh"
+        "scripts/base.sh"
       ]
     },
     {

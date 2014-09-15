@@ -66,20 +66,25 @@ class base::vagrant {
     user   => 'vagrant'
   }
 
-  $timestamp = strftime ("%c%n")
-
   file { '/etc/vagrant_box_build_time':
-    content => "$timestamp",
+    content => strftime ("%c%n"),
     owner  => 'root',
     group  => 'root',
     mode   => '0644'
   }
 
-  # Configure sshd
-  augeas { "sshd_config":
-    context => "/files/etc/ssh/sshd_config",
+  augeas { 'sudoers':
+    context => '/files/etc/sudoers',
     changes => [
-      "set UseDNS no"
+      'set Defaults[*]/requiretty/negate ""'
+    ],
+  }
+
+  # Configure sshd
+  augeas { 'sshd_config':
+    context => '/files/etc/ssh/sshd_config',
+    changes => [
+      'set UseDNS no'
     ],
   } ~>
 
