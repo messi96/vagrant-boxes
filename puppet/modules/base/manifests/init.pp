@@ -40,7 +40,6 @@ class base {
   ensure_packages ( [
     "bc",
     "unzip",
-    "vim-enhanced",
     "wget"
   ] )
 

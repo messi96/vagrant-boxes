@@ -10,10 +10,6 @@ apt-get -y update
 echo "[*] Upgrading"
 apt-get -y dist-upgrade
 
-# Install misc packages
-echo "[*] Installing misc packages"
-apt-get -y install byobu curl htop puppet sudo tcpdump unzip vim
-
 # Enable metasploit and postgresql services
 echo "[*] Enabling metasploit and postgresql services"
 update-rc.d postgresql enable

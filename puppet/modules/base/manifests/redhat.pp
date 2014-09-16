@@ -42,7 +42,8 @@ class base::redhat inherits ::base {
   ensure_packages ( [
     "byobu",
     "git",
-    "htop"
+    "htop",
+    "vim-enhanced"
   ] )
 
 }
