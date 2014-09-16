@@ -46,4 +46,18 @@ class vagrant_base_box::grub {
     }
   }
 
+  if ($::osfamily == "Debian") {
+    augeas { 'grub.conf':
+      context => '/files/etc/default/grub',
+      changes => [
+        'set GRUB_TIMEOUT 0'
+      ],
+    } ~>
+
+    exec { 'update-grub':
+      command     => '/usr/sbin/update-grub',
+      refreshonly => true
+    }
+  }
+
 }

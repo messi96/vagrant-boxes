@@ -19,11 +19,6 @@ echo "[*] Enabling metasploit and postgresql services"
 update-rc.d postgresql enable
 update-rc.d metasploit enable
 
-# Remove 5s grub timeout to speed up booting
-echo "[*] Removing grub timeout"
-sed -i.orig -e 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/' /etc/default/grub
-update-grub
-
 # Enable gdm autologin
 echo "[*] Enabling gdm autlogin"
 sed -i.orig -r -e 's/^#\s+(AutomaticLogin.*)/\1/' /etc/gdm3/daemon.conf
