@@ -19,5 +19,3 @@ update-rc.d metasploit enable
 echo "[*] Enabling gdm autlogin"
 sed -i.orig -r -e 's/^#\s+(AutomaticLogin.*)/\1/' /etc/gdm3/daemon.conf
 
-# Refresh root dotfiles from /etc/skel
-cp /etc/skel/.bash* /etc/skel/.profile /root
