@@ -37,6 +37,11 @@
 #
 class vagrant_base_box::users {
 
+  $passwd_command = $::operatingsystem ? {
+    Debian => '/bin/echo vagrant:vagrant | /usr/sbin/chpasswd',
+    RedHat => '/bin/echo vagrant | /usr/bin/passwd --stdin vagrant'
+  }
+
   # Create Vagrant user and ssh public key
   user { 'vagrant':
     ensure     => 'present',
@@ -47,7 +52,7 @@ class vagrant_base_box::users {
   } ->
 
   exec { 'vagrant-passwd':
-    command => '/bin/echo vagrant | /usr/bin/passwd --stdin vagrant'
+    command => "$passwd_command"
   } ->
 
   file { '/home/vagrant/.ssh':

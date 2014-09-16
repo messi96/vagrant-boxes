@@ -37,6 +37,11 @@
 #
 class vagrant_base_box::sshd {
 
+  $service_name = $::operatingsystem ? {
+  	Debian => 'ssh',
+  	RedHat => 'sshd'
+  }
+
   # Configure sshd
   augeas { 'sshd_config':
     context => '/files/etc/ssh/sshd_config',
@@ -45,6 +50,8 @@ class vagrant_base_box::sshd {
     ],
   } ~>
 
-  service { sshd: }
+  service { 'sshd':
+  	name => "$service_name"
+  }
 
 }
