@@ -1,0 +1,68 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
+    v.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
+    v.customize ["modifyvm", :id, "--bioslogofadein", "off"]
+    v.customize ["modifyvm", :id, "--bioslogofadeout", "off"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+  end
+
+  # CentOS
+  config.vm.define "centos" do |centos|
+    centos.vm.box = "waratek/centos6-x86_64"
+    centos.vm.hostname = "centos.brix.waratek.com"
+
+    centos.vm.network "public_network", ip: "10.1.2.101", :netmask => "255.255.0.0"
+    centos.vm.network "forwarded_port", guest: 80, host: 8000
+    centos.vm.network "forwarded_port", guest: 8080, host: 8080
+
+    centos.vm.synced_folder "../../synced_folder", "/synced_folder"
+    centos.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+    
+    centos.vm.provider "virtualbox" do |v|
+      v.name = "Waratek:CentOS"
+      v.cpus = 2
+      v.memory = 2048
+    end
+
+    centos.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "../../puppet/manifests"
+      puppet.manifest_file = "site.pp"
+      puppet.module_path = "../../puppet/modules"
+      puppet.hiera_config_path = "../../puppet/hiera.yaml"
+      #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "vagrant"     => "true",
+        "vagrantuser" => "vagrant",
+      }
+    end
+  end
+
+  # Kali
+  config.vm.define "kali" do |kali|
+    kali.vm.box = "waratek/kali-mini"
+    kali.vm.guest = "debian"
+    kali.vm.hostname = "kali.brix.waratek.com"
+    kali.ssh.username = "root"
+
+    kali.vm.network "public_network", ip: "10.1.2.102", :netmask => "255.255.0.0"
+
+    kali.vm.synced_folder "../../synced_folder", "/synced_folder"
+    kali.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+    
+    kali.vm.provider "virtualbox" do |v|
+      v.name = "Waratek:Kali"
+      v.cpus = 2
+      v.memory = 2048
+    end
+  end
+
+end
