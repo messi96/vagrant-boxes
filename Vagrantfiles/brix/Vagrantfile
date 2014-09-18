@@ -18,7 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # CentOS
   config.vm.define "centos" do |centos|
     centos.vm.box = "waratek/centos6-x86_64"
-    centos.vm.hostname = "demo.localdomain"
+    centos.vm.hostname = "centos.brix.waratek.com"
 
     centos.vm.network "public_network", ip: "10.1.2.101", :netmask => "255.255.0.0"
     centos.vm.network "forwarded_port", guest: 80, host: 8000
@@ -40,7 +40,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.hiera_config_path = "../../puppet/hiera.yaml"
       #puppet.options = "--verbose --debug"
       puppet.facter = {
-        "role"        => "security_demo_brix_centos",
         "vagrant"     => "true",
         "vagrantuser" => "vagrant",
       }
