@@ -2,6 +2,7 @@
 classes:
   - profiles::base
   - demo_security
+  - demo_security::brix_centos
   - demo_security::tomcat
   - demo_security::heisenberg
   - tomcat
