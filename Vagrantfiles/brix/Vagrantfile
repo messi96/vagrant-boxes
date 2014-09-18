@@ -50,7 +50,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "kali" do |kali|
     kali.vm.box = "waratek/kali-mini"
     kali.vm.guest = "debian"
-    kali.vm.hostname = "kali.localdomain"
+    kali.vm.hostname = "kali.brix.waratek.com"
     kali.ssh.username = "root"
 
     kali.vm.network "public_network", ip: "10.1.2.102", :netmask => "255.255.0.0"
