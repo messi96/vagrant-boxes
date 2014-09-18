@@ -35,12 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box::users {
-
-  $passwd_command = $::operatingsystem ? {
-    Debian => '/bin/echo vagrant:vagrant | /usr/sbin/chpasswd',
-    RedHat => '/bin/echo vagrant | /usr/bin/passwd --stdin vagrant'
-  }
+class vagrant_base_box::users inherits vagrant_base_box {
 
   # Create Vagrant user and ssh public key
   user { 'vagrant':
@@ -59,14 +54,30 @@ class vagrant_base_box::users {
     ensure => 'directory',
     owner  => 'vagrant',
     group  => 'vagrant',
-    mode   => '0600'
+    mode   => '0700'
   } ->
 
-  ssh_authorized_key { 'vagrant insecure public key':
+  ssh_authorized_key { 'vagrant_insecure_public_key':
     ensure => 'present',
-    key    => 'AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ==',
+    key    => "$vagrant_insecure_public_key",
     type   => 'ssh-rsa',
     user   => 'vagrant'
+  }
+
+  if ($create_root_key) {
+    file { '/root/.ssh':
+      ensure => 'directory',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0700'
+    } ->
+
+    ssh_authorized_key { 'vagrant_insecure_public_key-root':
+      ensure => 'present',
+      key    => "$vagrant_insecure_public_key",
+      type   => 'ssh-rsa',
+      user   => 'root'
+    }    
   }
 
 }
