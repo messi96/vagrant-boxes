@@ -37,7 +37,7 @@
         "<esc><wait>",
         "install auto url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
         "locale=en_US.UTF-8 kbd-chooser/method=us <wait>",
-        "netcfg/get_hostname=kali netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
+        "netcfg/get_hostname=kali-mini netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
         "console-keymaps-at/keymap=us keymap=us <wait>",
         "<enter><wait>"
       ],
@@ -63,7 +63,7 @@
         "<esc><wait>",
         "install auto url=http://172.16.43.1:{{ .HTTPPort }}/preseed.cfg <wait>",
         "locale=en_IE.UTF-8 kbd-chooser/method=us <wait>",
-        "netcfg/get_hostname=kali netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
+        "netcfg/get_hostname=kali-mini netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
   "console-keymaps-at/keymap=us keymap=us <wait>",
         "<enter><wait>"
       ],
