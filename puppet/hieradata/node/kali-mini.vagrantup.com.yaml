@@ -1,5 +1,6 @@
 ---
 classes:
+  - base::kali
   - vagrant_base_box
 sudo::configs:
   'vagrant':
