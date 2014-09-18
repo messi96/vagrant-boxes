@@ -35,37 +35,18 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security {
+class demo_security::brix_centos {
 
-  file { "/home/${vagrantuser}/demo":
-    ensure => "directory",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0755
+  host { 'kali':
+    ip => '10.1.2.102'
   }
 
-  file { "/home/${vagrantuser}/demo/reload_rules.sh":
-    ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0755,
-    source => "puppet:///modules/demo_security/reload_rules.sh",
-  }
-
-  file { "/home/${vagrantuser}/demo/restart.sh":
-    ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0755,
-    source => "puppet:///modules/demo_security/restart.sh",
-  }
-
-  file { "/home/${vagrantuser}/demo/rules.jaf":
-    ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0644,
-    source => "puppet:///modules/demo_security/rules.jaf",
+  vcsrepo { '/opt/splunk/etc/apps/waratek':
+    ensure   => present,
+    provider => git,
+    source   => 'https://github.com/prateepb/splunk-test-app.git',
+    require  => Package['splunk'],
+    notify   => Service['splunk']
   }
 
 }
