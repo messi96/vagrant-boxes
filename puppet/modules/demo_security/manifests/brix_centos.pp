@@ -38,7 +38,8 @@
 class demo_security::brix_centos {
 
   host { 'kali':
-    ip => '10.1.2.102'
+    ip           => '10.1.2.102',
+    host_aliases => 'kali.brix.waratek.com'
   }
 
   vcsrepo { '/opt/splunk/etc/apps/waratek':
