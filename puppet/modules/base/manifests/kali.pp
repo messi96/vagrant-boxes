@@ -46,6 +46,14 @@ class base::kali {
     target => '/opt/metasploit/apps/pro/ui/config/database.yml'
   }
 
+
+  file { '/etc/postgresql/9.1/main/postgresql.conf':
+    owner => 'postgres',
+    group => 'postgres',
+    mode  => '0644',
+    source => 'puppet:///modules/base/kali/postgresql.conf',
+  } 
+
   service { 'postgresql':
     enable    => true,
   }
