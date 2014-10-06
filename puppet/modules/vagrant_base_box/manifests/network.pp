@@ -35,23 +35,15 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box (
-  $create_root_key             = $vagrant_base_box::params::create_root_key,
-  $passwd_command              = $vagrant_base_box::params::passwd_command,
-  $vagrant_insecure_public_key = $vagrant_base_box::params::vagrant_insecure_public_key
-) inherits vagrant_base_box::params {
+class vagrant_base_box::network {
 
-  class { '::vagrant_base_box::grub': }
-  class { '::vagrant_base_box::network': }
-  class { '::vagrant_base_box::sshd': }
-  class { '::vagrant_base_box::sudoers': }
-  class { '::vagrant_base_box::users': }
-
-  file { '/etc/vagrant_box_build_time':
-    content => strftime ("%c%n"),
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644'
+  if ($::osfamily == "RedHat") and ($::operatingsystemmajrelease == 6) {
+    file { '/etc/sysconfig/network-scripts/ifcfg-eth0':
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => 'puppet:///modules/vagrant_base_box/etc/sysconfig/network-scripts/ifcfg-eth0'
+    }
   }
 
 }
