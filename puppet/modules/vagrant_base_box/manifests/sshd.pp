@@ -37,7 +37,7 @@
 #
 class vagrant_base_box::sshd {
 
-  $service_name = $::operatingsystem ? {
+  $service_name = $::osfamily ? {
   	Debian => 'ssh',
   	RedHat => 'sshd'
   }
