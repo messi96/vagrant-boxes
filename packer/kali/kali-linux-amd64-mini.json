@@ -2,9 +2,8 @@
   "variables": {
     "vm_name": "kali-linux-amd64-mini",
     "disk_size": 20480,
-    "iso_checksum": "058948de5d1f01a43a51fb68fc498316",
-    "iso_checksum_type": "md5",
-    "iso_url": "/Users/prateep/tmp/binary.hybrid.iso",
+    "iso_checksum_type": "none",
+    "iso_url": "{{env `HOME`}}/tmp/binary.hybrid.iso",
     "box_desc" : "Kali Linux 64 Bit Mini"
   },
   "description": "{{user `box_desc`}}",
@@ -16,7 +15,6 @@
       "guest_os_type": "Debian_64",
       "vm_name": "{{user `vm_name`}}",
       "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
       "vboxmanage": [
@@ -56,7 +54,6 @@
       "guest_os_type": "debian7-64",
       "vm_name": "{{user `vm_name`}}",
       "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
       "boot_command": [
