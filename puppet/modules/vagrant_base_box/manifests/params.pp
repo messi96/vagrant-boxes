@@ -37,7 +37,7 @@
 #
 class vagrant_base_box::params {
 
-  $passwd_command = $::operatingsystem ? {
+  $passwd_command = $::osfamily ? {
     Debian => '/bin/echo vagrant:vagrant | /usr/sbin/chpasswd',
     RedHat => '/bin/echo vagrant | /usr/bin/passwd --stdin vagrant'
   }
