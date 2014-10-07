@@ -35,7 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box::grub {
+class vagrant_base_box::grub inherits vagrant_base_box {
 
   if ($::osfamily == "RedHat") and ($::operatingsystemmajrelease == 6) {
     augeas { 'grub.conf':
@@ -46,7 +46,7 @@ class vagrant_base_box::grub {
     }
   }
 
-  if ($::osfamily == "Debian") {
+  if ($::osfamily == "Debian") or (($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == 7)) {
     augeas { 'grub.conf':
       context => '/files/etc/default/grub',
       changes => [
@@ -55,7 +55,7 @@ class vagrant_base_box::grub {
     } ~>
 
     exec { 'update-grub':
-      command     => '/usr/sbin/update-grub',
+      command     => "$update_grub_command",
       refreshonly => true
     }
   }

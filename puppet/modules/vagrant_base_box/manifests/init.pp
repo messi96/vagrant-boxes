@@ -38,6 +38,7 @@
 class vagrant_base_box (
   $create_root_key             = $vagrant_base_box::params::create_root_key,
   $passwd_command              = $vagrant_base_box::params::passwd_command,
+  $update_grub_command         = $vagrant_base_box::params::update_grub_command,
   $vagrant_insecure_public_key = $vagrant_base_box::params::vagrant_insecure_public_key
 ) inherits vagrant_base_box::params {
 
