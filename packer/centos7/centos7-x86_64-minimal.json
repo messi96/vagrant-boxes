@@ -65,17 +65,25 @@
   ],
   "provisioners": [
     {
-      "type": "shell",
-      "scripts": [
-        "scripts/base.sh",
-        "../centos6/scripts/vagrant.sh"
-      ],
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
       "pause_before": "10s"
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "hiera_config_path": "../../puppet/hiera.yaml",
+        "facter":
+          {
+            "packer": "vagrant"
+          }
     },
     {
       "type": "shell",
       "scripts": [
-        "scripts/zerodisk.sh"
+        "../centos6/scripts/zerodisk.sh"
       ]
     }
   ],
