@@ -5,17 +5,17 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "waratek/centos6-x86_64"
-  config.vm.hostname = "splunk.localdomain"
-
-  config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.box = "waratek/kali-mini"
+  config.vm.hostname = "kali.localdomain"
+  config.vm.guest = "debian"
+  config.ssh.username = "root"
 
   config.vm.synced_folder "../../synced_folder", "/synced_folder"
   config.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
   
   # VirtualBox
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "Splunk"
+    vb.name = "Kali Mini"
     vb.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
     vb.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
     vb.customize ["modifyvm", :id, "--bioslogofadein", "off"]
@@ -27,15 +27,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
   end
 
+  # VMware Fusion
+  config.vm.provider "vmware_fusion" do |vmf|
+    vmf.vmx["memsize"] = "1536"
+    vmf.vmx["numvcpus"] = "2"
+  end
+
   config.vm.provision "puppet" do |puppet|
     puppet.manifests_path = "../../puppet/manifests"
     puppet.manifest_file = "site.pp"
     puppet.module_path = "../../puppet/modules"
     puppet.hiera_config_path = "../../puppet/hiera.yaml"
     #puppet.options = "--verbose --debug"
-    puppet.facter = {
-      "role"        => "splunk"
-    }
   end
 
 end

@@ -1,6 +1,6 @@
-# == Class: vagrant_base_box
+# == Class: base
 #
-# Full description of class vagrant_base_box here.
+# Full description of class base here.
 #
 # === Parameters
 #
@@ -23,7 +23,7 @@
 #
 # === Examples
 #
-#  class { vagrant_base_box:
+#  class { base:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
@@ -35,23 +35,12 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box::sshd {
+class base::debian inherits ::base {
 
-  $service_name = $::osfamily ? {
-  	Debian => 'ssh',
-  	RedHat => 'sshd'
-  }
-
-  # Configure sshd
-  augeas { 'sshd_config':
-    context => '/files/etc/ssh/sshd_config',
-    changes => [
-      'set UseDNS no'
-    ],
-  } ~>
-
-  service { 'sshd':
-  	name => "$service_name"
-  }
+  ensure_packages ( [
+    "byobu",
+    "git",
+    "htop"
+  ] )
 
 }

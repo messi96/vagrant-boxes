@@ -35,23 +35,15 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box::sshd {
+class vagrant_base_box::network {
 
-  $service_name = $::osfamily ? {
-  	Debian => 'ssh',
-  	RedHat => 'sshd'
-  }
-
-  # Configure sshd
-  augeas { 'sshd_config':
-    context => '/files/etc/ssh/sshd_config',
-    changes => [
-      'set UseDNS no'
-    ],
-  } ~>
-
-  service { 'sshd':
-  	name => "$service_name"
+  if ($::osfamily == "RedHat") and ($::operatingsystemmajrelease == 6) {
+    file { '/etc/sysconfig/network-scripts/ifcfg-eth0':
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => 'puppet:///modules/vagrant_base_box/etc/sysconfig/network-scripts/ifcfg-eth0'
+    }
   }
 
 }

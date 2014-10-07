@@ -2,9 +2,8 @@
   "variables": {
     "vm_name": "kali-linux-amd64-mini",
     "disk_size": 20480,
-    "iso_checksum": "058948de5d1f01a43a51fb68fc498316",
-    "iso_checksum_type": "md5",
-    "iso_url": "/Users/prateep/tmp/binary.hybrid.iso",
+    "iso_checksum_type": "none",
+    "iso_url": "{{env `HOME`}}/tmp/binary.hybrid.iso",
     "box_desc" : "Kali Linux 64 Bit Mini"
   },
   "description": "{{user `box_desc`}}",
@@ -16,7 +15,6 @@
       "guest_os_type": "Debian_64",
       "vm_name": "{{user `vm_name`}}",
       "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
       "vboxmanage": [
@@ -37,7 +35,7 @@
         "<esc><wait>",
         "install auto url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
         "locale=en_US.UTF-8 kbd-chooser/method=us <wait>",
-        "netcfg/get_hostname=kali netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
+        "netcfg/get_hostname=kali-mini netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
         "console-keymaps-at/keymap=us keymap=us <wait>",
         "<enter><wait>"
       ],
@@ -56,14 +54,13 @@
       "guest_os_type": "debian7-64",
       "vm_name": "{{user `vm_name`}}",
       "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
       "boot_command": [
         "<esc><wait>",
         "install auto url=http://172.16.43.1:{{ .HTTPPort }}/preseed.cfg <wait>",
         "locale=en_IE.UTF-8 kbd-chooser/method=us <wait>",
-        "netcfg/get_hostname=kali netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
+        "netcfg/get_hostname=kali-mini netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
   "console-keymaps-at/keymap=us keymap=us <wait>",
         "<enter><wait>"
       ],
@@ -80,13 +77,17 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
+      "pause_before": "10s"
+    },
+    {
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "scripts/sshd.sh",
-        "scripts/vagrant.sh"
-      ],
-      "pause_before": "10s"
+        "scripts/puppet.sh"
+      ]
     },
     {
       "type": "shell",
@@ -97,6 +98,12 @@
       "type": "shell",
       "script": "scripts/vmware.sh",
       "only": ["vmware-iso"]
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "hiera_config_path": "../../puppet/hiera.yaml"
     },
     {
       "type": "shell",

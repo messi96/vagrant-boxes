@@ -35,9 +35,15 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box {
+class vagrant_base_box (
+  $create_root_key             = $vagrant_base_box::params::create_root_key,
+  $passwd_command              = $vagrant_base_box::params::passwd_command,
+  $update_grub_command         = $vagrant_base_box::params::update_grub_command,
+  $vagrant_insecure_public_key = $vagrant_base_box::params::vagrant_insecure_public_key
+) inherits vagrant_base_box::params {
 
   class { '::vagrant_base_box::grub': }
+  class { '::vagrant_base_box::network': }
   class { '::vagrant_base_box::sshd': }
   class { '::vagrant_base_box::sudoers': }
   class { '::vagrant_base_box::users': }

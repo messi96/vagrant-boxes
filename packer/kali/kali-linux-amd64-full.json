@@ -2,9 +2,9 @@
   "variables": {
     "vm_name": "kali-linux-amd64-full",
     "disk_size": 20480,
-    "iso_checksum": "6deb789fa05d84cd335d5afb86983119784dd978",
+    "iso_checksum": "325b03bf3e0d019a5764b0ebc1507d8cdf9f8f33",
     "iso_checksum_type": "sha1",
-    "iso_url": "http://cdimage.kali.org/kali-1.0.7/kali-linux-1.0.7-amd64.iso",
+    "iso_url": "http://cdimage.kali.org/kali-1.0.9/kali-linux-1.0.9-amd64.iso",
     "box_desc" : "Kali Linux 64 Bit"
   },
   "description": "{{user `box_desc`}}",
@@ -80,13 +80,17 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
+      "pause_before": "10s"
+    },
+    {
       "type": "shell",
       "scripts": [
         "scripts/base.sh",
-        "scripts/sshd.sh",
-        "scripts/vagrant.sh"
-      ],
-      "pause_before": "10s"
+        "scripts/puppet.sh"
+      ]
     },
     {
       "type": "shell",
@@ -97,6 +101,12 @@
       "type": "shell",
       "script": "scripts/vmware.sh",
       "only": ["vmware-iso"]
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "hiera_config_path": "../../puppet/hiera.yaml"
     },
     {
       "type": "shell",

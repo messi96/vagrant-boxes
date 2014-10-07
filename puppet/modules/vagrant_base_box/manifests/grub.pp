@@ -35,7 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class vagrant_base_box::grub {
+class vagrant_base_box::grub inherits vagrant_base_box {
 
   if ($::osfamily == "RedHat") and ($::operatingsystemmajrelease == 6) {
     augeas { 'grub.conf':
@@ -43,6 +43,20 @@ class vagrant_base_box::grub {
       changes => [
         'set timeout 0'
       ],
+    }
+  }
+
+  if ($::osfamily == "Debian") or (($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == 7)) {
+    augeas { 'grub.conf':
+      context => '/files/etc/default/grub',
+      changes => [
+        'set GRUB_TIMEOUT 0'
+      ],
+    } ~>
+
+    exec { 'update-grub':
+      command     => "$update_grub_command",
+      refreshonly => true
     }
   }
 
