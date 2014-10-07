@@ -12,6 +12,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   config.vm.synced_folder "../../synced_folder", "/synced_folder"
+  config.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
   
   # VirtualBox
   config.vm.provider "virtualbox" do |vb|
@@ -56,10 +57,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.manifests_path = "../../puppet/manifests"
     puppet.manifest_file = "site.pp"
     puppet.module_path = "../../puppet/modules"
+    puppet.hiera_config_path = "../../puppet/hiera.yaml"
     #puppet.options = "--verbose --debug"
     puppet.facter = {
+      "role"        => "javasploitable",
+      "vagrant"     => "true",
       "vagrantuser" => "vagrant",
-      "node_type"   => "javasploitable"
     }
   end
 
