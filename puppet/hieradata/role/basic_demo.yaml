@@ -18,7 +18,8 @@ tomcat::instances:
   elasticat:
     catalina_base: /opt/elasticat
     source_url: http://www.elasticat.com/release/waratek-elasticat-1.3.2-86.tar.gz
-waratek_java::version: 2.6.5.GA.2-103
+waratek_java::package_name: java-1.6.0-waratek
+waratek_java::version: 2.6.5.GA.3-001
 waratek_java::users:
   vagrant:
     groups: waratek
