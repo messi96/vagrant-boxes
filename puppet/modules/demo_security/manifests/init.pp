@@ -37,35 +37,5 @@
 #
 class demo_security {
 
-  file { "/home/${vagrantuser}/demo":
-    ensure => "directory",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0755
-  }
-
-  file { "/home/${vagrantuser}/demo/reload_rules.sh":
-    ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0755,
-    source => "puppet:///modules/demo_security/reload_rules.sh",
-  }
-
-  file { "/home/${vagrantuser}/demo/restart.sh":
-    ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0755,
-    source => "puppet:///modules/demo_security/restart.sh",
-  }
-
-  file { "/home/${vagrantuser}/demo/rules.jaf":
-    ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
-    mode   => 0644,
-    source => "puppet:///modules/demo_security/rules.jaf",
-  }
 
 }
