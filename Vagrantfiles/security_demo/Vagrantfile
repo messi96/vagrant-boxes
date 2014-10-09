@@ -5,66 +5,78 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "waratek/centos6-x86_64"
-  config.vm.hostname = "waratek.localdomain"
-
-  #config.vm.network "public_network"
-  config.vm.network "forwarded_port", guest: 80, host: 8000
-  config.vm.network "forwarded_port", guest: 8080, host: 8080
-
-  config.vm.synced_folder "../../synced_folder", "/synced_folder"
-  config.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
-  
-  # VirtualBox
-  config.vm.provider "virtualbox" do |vb|
-    vb.name = "Waratek Security Demo"
-    vb.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
-    vb.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
-    vb.customize ["modifyvm", :id, "--bioslogofadein", "off"]
-    vb.customize ["modifyvm", :id, "--bioslogofadeout", "off"]
-    vb.customize ["modifyvm", :id, "--cpus", "2"]
-    vb.customize ["modifyvm", :id, "--ioapic", "on"]
-    vb.customize ["modifyvm", :id, "--memory", "1536"]
-    vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+  config.vm.provider "virtualbox" do |v|
+    v.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
+    v.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
+    v.customize ["modifyvm", :id, "--bioslogofadein", "off"]
+    v.customize ["modifyvm", :id, "--bioslogofadeout", "off"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
   end
 
-  # AWS
-  config.vm.provider "aws" do |aws,override|
-    override.vm.box = "waratek/aws-rhel6-PV"
-    aws.access_key_id = ENV['AWS_ACCESS_KEY']
-    aws.secret_access_key = ENV['AWS_SECRET_KEY']
-    aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
-    aws.region = ENV['AWS_REGION']
-    aws.instance_type = "m1.small"
-    aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 }]
-    override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
-    override.ssh.username = "vagrant"
+  # CentOS
+  config.vm.define "centos", primary: true do |centos|
+    centos.vm.box = "waratek/centos6-x86_64"
+    centos.vm.hostname = "centos.localdomain"
 
-    aws.user_data = File.read("../../scripts/cloud-init.sh")
-    aws.tags = {
-        'Name' => 'Waratek Security Demo',
-        'User' => ENV['USER']
-    }
+    centos.vm.network "private_network", ip: "172.21.21.21"
+    #centos.vm.network "public_network", ip: "10.1.2.101", :netmask => "255.255.0.0"
+    centos.vm.network "forwarded_port", guest: 80, host: 8000
+    centos.vm.network "forwarded_port", guest: 8080, host: 8080
+
+    centos.vm.synced_folder "../../synced_folder", "/synced_folder"
+    centos.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+    
+    centos.vm.provider "virtualbox" do |v|
+      v.name = "Waratek:CentOS"
+      v.cpus = 2
+      v.memory = 2048
+    end
+
+    centos.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "../../puppet/manifests"
+      puppet.manifest_file = "site.pp"
+      puppet.module_path = "../../puppet/modules"
+      puppet.hiera_config_path = "../../puppet/hiera.yaml"
+      #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "role"        => "security_demo_centos",
+        "vagrant"     => "true",
+        "vagrantuser" => "vagrant",
+      }
+    end
   end
 
-  # VMware Fusion
-  config.vm.provider "vmware_fusion" do |vmf|
-    vmf.vmx["memsize"] = "1536"
-    vmf.vmx["numvcpus"] = "2"
-  end
+  # Kali
+  config.vm.define "kali", autostart: false do |kali|
+    kali.vm.box = "waratek/kali-mini"
+    kali.vm.guest = "debian"
+    kali.vm.hostname = "kali.localdomain"
+    kali.ssh.username = "root"
 
-  config.vm.provision "puppet" do |puppet|
-    puppet.manifests_path = "../../puppet/manifests"
-    puppet.manifest_file = "site.pp"
-    puppet.module_path = "../../puppet/modules"
-    puppet.hiera_config_path = "../../puppet/hiera.yaml"
-    #puppet.options = "--verbose --debug"
-    puppet.facter = {
-      "role"        => "security_demo",
-      "vagrant"     => "true",
-      "vagrantuser" => "vagrant",
-    }
+    #kali.vm.network "public_network", ip: "10.1.2.102", :netmask => "255.255.0.0"
+    kali.vm.network "private_network", ip: "172.21.21.22"
+
+    kali.vm.synced_folder "../../synced_folder", "/synced_folder"
+    kali.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+    
+    kali.vm.provider "virtualbox" do |v|
+      v.name = "Waratek:Kali"
+      v.cpus = 2
+      v.memory = 2048
+    end
+
+    kali.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "../../puppet/manifests"
+      puppet.manifest_file = "site.pp"
+      puppet.module_path = "../../puppet/modules"
+      puppet.hiera_config_path = "../../puppet/hiera.yaml"
+      #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "role"        => "security_demo_kali"
+      }
+    end
   end
 
 end
