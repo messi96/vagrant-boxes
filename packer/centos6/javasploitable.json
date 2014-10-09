@@ -64,12 +64,16 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
+      "pause_before": "10s"
+    },
+    {
       "type": "shell",
       "scripts": [
-        "scripts/base.sh",
-        "scripts/vagrant.sh"
-      ],
-      "pause_before": "10s"
+        "scripts/base.sh"
+      ]
     },
     {
       "type": "shell",
@@ -85,9 +89,11 @@
       "type": "puppet-masterless",
         "manifest_file": "../../puppet/manifests/site.pp",
         "module_paths": ["../../puppet/modules"],
-        "facter": {
-          "node_type": "javasploitable"
-        }
+        "hiera_config_path": "../../puppet/hiera.yaml",
+        "facter":
+          {
+            "packer": "vagrant"
+          }
     },
     {
       "type": "shell",
