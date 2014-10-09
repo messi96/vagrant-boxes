@@ -37,10 +37,15 @@
 #
 class demo_security::kali {
 
+  file { "/root/cve-2013-2251.rc":
+    ensure => "file",
+    mode   => 0644,
+    source => "puppet:///modules/demo_security/cve-2013-2251.rc",
+  }
+
   host { 'centos':
     ip           => '172.21.21.21',
     host_aliases => 'centos.localdomain'
   }
-
 
 }
