@@ -20,6 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     centos.vm.box = "waratek/centos6-x86_64"
     centos.vm.hostname = "centos.brix.waratek.com"
 
+    centos.vm.network "private_network", ip: "172.21.21.21"
     centos.vm.network "public_network", ip: "10.1.2.101", :netmask => "255.255.0.0"
     centos.vm.network "forwarded_port", guest: 80, host: 8000
     centos.vm.network "forwarded_port", guest: 8080, host: 8080
@@ -40,6 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.hiera_config_path = "../../puppet/hiera.yaml"
       #puppet.options = "--verbose --debug"
       puppet.facter = {
+        "role"        => "security_demo_centos",
         "vagrant"     => "true",
         "vagrantuser" => "vagrant",
       }
@@ -53,6 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     kali.vm.hostname = "kali.brix.waratek.com"
     kali.ssh.username = "root"
 
+    kali.vm.network "private_network", ip: "172.21.21.22"
     kali.vm.network "public_network", ip: "10.1.2.102", :netmask => "255.255.0.0"
 
     kali.vm.synced_folder "../../synced_folder", "/synced_folder"
@@ -62,6 +65,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.name = "Waratek:Kali"
       v.cpus = 2
       v.memory = 2048
+    end
+
+    kali.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "../../puppet/manifests"
+      puppet.manifest_file = "site.pp"
+      puppet.module_path = "../../puppet/modules"
+      puppet.hiera_config_path = "../../puppet/hiera.yaml"
+      #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "role"        => "security_demo_kali"
+      }
     end
   end
 
