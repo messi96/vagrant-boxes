@@ -10,6 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.guest = "debian"
   config.ssh.username = "root"
 
+  #config.vm.network "public_network"
   config.vm.synced_folder "../../synced_folder", "/synced_folder"
   config.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
   
