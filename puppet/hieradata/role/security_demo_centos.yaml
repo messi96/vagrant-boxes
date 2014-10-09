@@ -5,7 +5,7 @@ classes:
   - demo_security::tomcat
   - oracle_xe
   - profiles::base
-  - splunk
+#  - splunk
   - sqlmap
   - tomcat
   - waratek_java
