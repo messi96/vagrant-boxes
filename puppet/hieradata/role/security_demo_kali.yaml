@@ -1,0 +1,4 @@
+---
+classes:
+  - demo_security::kali
+  - profiles::base
