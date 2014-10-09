@@ -42,6 +42,16 @@ class demo_security::brix_centos {
     host_aliases => 'kali.brix.waratek.com'
   }
 
+  service { 'iptables':
+    ensure => false,
+    enable => false
+  }
+
+  service { 'ip6tables':
+    ensure => false,
+    enable => false
+  }
+
   vcsrepo { '/opt/splunk/etc/apps/waratek':
     ensure   => present,
     provider => git,
