@@ -6,6 +6,7 @@ classes:
   - oracle_xe
   - profiles::base
 #  - splunk
+#  - splunk_dashboard
   - sqlmap
   - tomcat
   - waratek_java
