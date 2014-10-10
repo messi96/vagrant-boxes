@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "metasploitable2"
+  config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/waratek-vagrant-boxes/metasploitable2_virtualbox.box"
+  config.vm.box_download_checksum = "feacd783225859336ef3dc9ca620a5c3"
+  config.vm.box_download_checksum_type = "md5"
+  config.vm.guest = "ubuntu"
+
+  #config.vm.network "private_network", ip: "172.21.21.100"
+  #config.vm.network "public_network"
+
+  # VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Metasploitable2"
+    vb.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
+    vb.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
+    vb.customize ["modifyvm", :id, "--bioslogofadein", "off"]
+    vb.customize ["modifyvm", :id, "--bioslogofadeout", "off"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+  end
+
+end
