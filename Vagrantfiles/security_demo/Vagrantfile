@@ -57,6 +57,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     kali.vm.network "private_network", ip: "172.21.21.22"
     #kali.vm.network "public_network"
+    kali.vm.network "forwarded_port", guest: 3790, host: 3790
 
     kali.vm.synced_folder "../../synced_folder", "/synced_folder"
     kali.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
