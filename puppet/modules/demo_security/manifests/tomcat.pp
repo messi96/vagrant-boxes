@@ -104,12 +104,10 @@ class demo_security::tomcat inherits demo_security {
 
   tomcat::setenv::entry { 'JAVA_HOME':
     value      => "/usr/lib/jvm/java-waratek/jre\n",
-    base_path  => "${catalina_base}/bin",
   }
 
   tomcat::setenv::entry { 'CATALINA_OPTS':
     value      => "--jvc=tomcat1\n",
-    base_path  => "${catalina_base}/bin",
   }
 
 }
