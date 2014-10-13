@@ -41,6 +41,13 @@ class demo_security::tomcat {
   $version       = hiera('tomcat::version')
   $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${version}/bin/apache-tomcat-${version}.tar.gz"
 
+  class { '::tomcat':
+    user         => "$demo_user",
+    group        => "$demo_group",
+    manage_user  => false,
+    manage_group => false
+  }
+
   tomcat::instance { 'tomcat-demo':
     catalina_base => "$catalina_base",
     source_url    => "$source_url"
