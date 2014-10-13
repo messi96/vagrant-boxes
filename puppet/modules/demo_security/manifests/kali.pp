@@ -44,7 +44,7 @@ class demo_security::kali {
   }
 
   host { 'centos':
-    ip           => '172.21.21.21',
+    ip           => "$centos_ip",
     host_aliases => 'centos.localdomain'
   }
 

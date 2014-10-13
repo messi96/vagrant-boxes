@@ -69,7 +69,7 @@ class demo_security::centos inherits demo_security {
   }
 
   host { 'kali':
-    ip           => '172.21.21.22',
+    ip           => "$kali_ip",
     host_aliases => 'kali.localdomain'
   }
 
