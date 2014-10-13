@@ -14,7 +14,7 @@
     * [Classes](#classes)
     * [Defined Types](#defined-types)
     * [Parameters](#parameters)
-        - [tomcat](#tomcat)
+        - [tomcat](#tomcat-1)
         - [tomcat::config::server](#tomcatconfigserver)
         - [tomcat::config::server::connector](#tomcatconfigserverconnector)
         - [tomcat::config::server::engine](#tomcatconfigserverengine)
@@ -41,6 +41,14 @@ Tomcat is a Java web service provider. The Puppet Labs module gives you a way to
 ##Setup
 
 **NOTE: You must have Java installed in order to use this module. The version of Java needed will depend on the version of Tomcat you are installing. Older versions of Tomcat require >=java6, while the latest version of Tomcat needs >=java7.**
+
+###Stdlib
+
+This module requires puppetlabs-stdlib >= 4.0. On Puppet Enterprise, this upgrade must be completed manually before this module can be installed. To update stdlib, run:
+
+```
+puppet module upgrade puppetlabs-stdlib
+```
 
 ###Beginning with tomcat
 
@@ -124,6 +132,8 @@ tomcat::service { 'tomcat6':
 
 ###I want to deploy WAR files.
 
+The name of the WAR must end with '.war'. 
+
 ```puppet
 tomcat::war { 'sample.war':
         catalina_base => '/opt/apache-tomcat/tomcat8',
@@ -131,6 +141,39 @@ tomcat::war { 'sample.war':
       }
 ```
 The `war_source` can be a local file, puppet:/// file, http, or ftp.
+
+###I want to change my congfiguration
+
+Tomcat will not restart if its configuration changes unless you provide a `notify`.
+
+For instance, to remove a connector, you would start with a manifest like this:
+
+```puppet
+tomcat::config::server::connector { 'tomcat8-jsvc':
+        catalina_base         => '/opt/apache-tomcat/tomcat8-jsvc',
+        port                  => '80',
+        protocol              => 'HTTP/1.1',
+        additional_attributes => {
+          'redirectPort' => '443'
+        },
+        connector_ensure => 'present'
+}
+```
+
+Then you would set `connector_ensure` to 'absent', and provide `notify` for the service.   
+
+```puppet 
+tomcat::config::server::connector { 'tomcat8-jsvc':
+        catalina_base         => '/opt/apache-tomcat/tomcat8-jsvc',
+        port                  => '80',
+        protocol              => 'HTTP/1.1',
+        additional_attributes => {
+          'redirectPort' => '443'
+        },
+        connector_ensure => 'present'
+        notify => Tomcat::Service['jsvc-default'],
+}
+```
 
 ##Reference
 
@@ -156,7 +199,7 @@ The `war_source` can be a local file, puppet:/// file, http, or ftp.
 * `tomcat::config::server::valve`: Configures a [Valve](http://tomcat.apache.org/tomcat-8.0-doc/config/valve.html) element in $CATALINA_BASE/conf/server.xml.
 * `tomcat::instance`: Installs a Tomcat instance.
 * `tomcat::service`: Provides Tomcat service management.
-* `tomcat::setenv::entry`: Adds an entry to the setenv.sh script.
+* `tomcat::setenv::entry`: Adds an entry to the configuration file (ie. setenv.sh, /etc/sysconfig/tomcat, ...).
 * `tomcat::war`:  Manages the deployment of WAR files.
 
 ####Private Defined Types
@@ -386,11 +429,11 @@ Specifies any attributes to remove from the Valve. Should be a hash of the forma
 
 #####`$catalina_home` 
 
-Specifies the root of the Tomcat installation.
+Specifies the root of the Tomcat installation. Only affects the instance installation if `$install_from_source` is true.
 
 #####`$catalina_base` 
 
-Specifies the base directory for the Tomcat installation.
+Specifies the base directory for the Tomcat installation. Only affects the instance installation if `$install_from_source` is true.
 
 #####`$install_from_source` 
 
@@ -433,7 +476,7 @@ Specifies the path Java is installed under. Only applies if `$use_jsvc = 'true'`
 
 #####`$service_ensure` 
 
-Determines whether the Tomcat service is on or off. (To determine whether the service is present/absent, see [tomcat::config::server::service](#tomcatconfigserverservice).)
+Determines whether the Tomcat service is on or off. Valid values are 'running', 'stopped', 'true', and 'false'. (To determine whether the service is present/absent, see [tomcat::config::server::service](#tomcatconfigserverservice).)
 
 #####`$use_init`
 
@@ -462,11 +505,15 @@ Specifies the value of the parameter you're setting.
 
 Determines whether the fragment should be present or absent.
 
+#####`$config_file`
+
+Path to the configuration file to edit. Defaults to '$::tomcat::catalina_home/bin/setenv.sh'.
+
 #####`$base_path` 
 
-Sets the path to create the setenv.sh script under. Should be either '$catalina_base/bin' or '$catalina_home/bin'.
+Sets the path to create the setenv.sh script under. Should be either '$catalina_base/bin' or '$catalina_home/bin'. **Deprecated** This parameter is being deperecated, please use `$config_file`.
 
-#####`$parameter` 
+#####`$param`
 
 Specifies the parameter you're setting. Defaults to '[name]' passed in the define.
 
@@ -494,7 +541,11 @@ Specifies whether to add or remove the WAR. Valid values are 'present', 'absent'
 
 #####`$war_name`
 
-Specifies the name of the WAR. Defaults to '[name]' passed in the define. This parameter is optional.
+Specifies the name of the WAR. Must end in '.war'. Defaults to '[name]' passed in the define. This parameter is optional.
+
+#####`$war_purge`
+
+Specifies whether to purge the exploded WAR directory.  Boolean defaulting to true. This parameter is only applicable when `$war_ensure` is 'absent' or 'false'. Setting this parameter to false will not prevent Tomcat from removing the exploded WAR directory if Tomcat is running and autoDeploy is set to true.
 
 #####`$war_source` 
 
@@ -502,7 +553,19 @@ Specifies the source to deploy the WAR from. Currently supports http(s)://, pupp
 
 ##Limitations
 
-This module only supports Tomcat installations on \*nix systems.
+This module only supports Tomcat installations on \*nix systems.  The `tomcat::config::server*` defines require augeas >= 1.0.0.
+
+###Stdlib
+
+This module requires puppetlabs-stdlib >= 4.0. On Puppet Enterprise, this upgrade must be completed manually before this module can be installed. To update stdlib, run:
+
+```
+puppet module upgrade puppetlabs-stdlib
+```
+
+###Multiple Instances
+
+If you are not installing Tomcat instances from source, depending on your packaging, multiple instances may not work.
 
 ##Development
 
