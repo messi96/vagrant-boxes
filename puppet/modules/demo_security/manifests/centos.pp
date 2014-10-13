@@ -68,19 +68,20 @@ class demo_security::centos inherits demo_security {
     source => "puppet:///modules/demo_security/rules.jaf",
   }
 
-  host { 'kali':
-    ip           => "$kali_ip",
-    host_aliases => 'kali.localdomain'
-  }
+  if ($::vagrant == "true") {
+    host { 'kali':
+      ip           => "$kali_ip",
+      host_aliases => 'kali.localdomain'
+    }
 
-  service { 'iptables':
-    ensure => false,
-    enable => false
-  }
+    service { 'iptables':
+      ensure => false,
+      enable => false
+    }
 
-  service { 'ip6tables':
-    ensure => false,
-    enable => false
+    service { 'ip6tables':
+      ensure => false,
+      enable => false
+    }
   }
-
 }
