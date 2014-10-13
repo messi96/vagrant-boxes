@@ -38,18 +38,18 @@ fi
 echo $#
 
 if [[ $# -ne 1 ]]; then
-	echo "[*] Invalid parameters"
+    echo "[*] Invalid parameters"
 else
-	ROLE=$1
+    ROLE=$1
 fi
 
 case $ROLE in
-	security_demo_centos)
-		echo "[*] Setting up security demo"
-		;;
-	*)
-		exit 1
-		;;
+    security_demo_centos)
+        echo "[*] Setting up security demo"
+        ;;
+    *)
+        exit 1
+        ;;
 esac
 
 export FACTER_role=$ROLE
