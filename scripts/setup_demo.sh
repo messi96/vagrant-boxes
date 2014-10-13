@@ -7,6 +7,15 @@ PUPPET_DIR="../puppet"
 PUPPET_MANIFESTS_DIR="${PUPPET_DIR}/manifests"
 PUPPET_MODULES_DIR="${PUPPET_DIR}/modules"
 
+if [ "$( id -u )" -ne 0 ] ; then
+    echo "Please run this script as the root user"
+    exit 1
+fi
+
+
+function intro_message {
+
+clear
 cat << EOF
 
 __        ___    ____      _  _____ _____ _  __
@@ -20,37 +29,38 @@ This script will use puppet to setup a Waratek Demo environment on this machine.
 
 Prior to proceeding, please review the following requirements:
 
-- this script should be run as the root user
 - puppet 3.x should be installed
 - hiera data files are modified if necessary (refer to README or other documentation)
 
-Press <enter> to proceed
+Select an option:
+
+    [1] - Setup Security Demo
+    [9] - exit
 
 EOF
 
-read 
+}
 
-if [ "$( id -u )" -ne 0 ] ; then
-    echo "Please run this script as the root user"
-    exit 1
-fi
+while (true)
+do
+    intro_message
 
-echo $#
+    read -n 1 -s CHOICE
 
-if [[ $# -ne 1 ]]; then
-    echo "[*] Invalid parameters"
-else
-    ROLE=$1
-fi
+    case $CHOICE in
+        1)  echo "[*] Setting up security demo"
+            ROLE="security_demo_centos"
+            break
+            ;;
+        9)  exit 0
+            ;;
+        *)  echo ""
+            echo "INVALID OPTION"
+            sleep 1
+            ;;
+    esac
 
-case $ROLE in
-    security_demo_centos)
-        echo "[*] Setting up security demo"
-        ;;
-    *)
-        exit 1
-        ;;
-esac
+done
 
 export FACTER_role=$ROLE
 
