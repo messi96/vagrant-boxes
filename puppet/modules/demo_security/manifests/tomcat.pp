@@ -35,7 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::tomcat {
+class demo_security::tomcat inherits demo_security {
 
   $catalina_base = hiera('tomcat::catalina_home')
   $version       = hiera('tomcat::version')

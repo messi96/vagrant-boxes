@@ -35,7 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::centos {
+class demo_security::centos inherits demo_security {
 
   file { "/home/${vagrantuser}/demo":
     ensure => "directory",
