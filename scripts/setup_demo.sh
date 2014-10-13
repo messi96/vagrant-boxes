@@ -62,9 +62,10 @@ do
 
 done
 
+export FACTER_puppet_dir=$PUPPET_DIR
 export FACTER_role=$ROLE
 
 echo "[*] Running puppet..."
-puppet apply --modulepath $PUPPET_MODULES_DIR --hiera_config=${PUPPET_DIR}/hiera.yaml \
+puppet apply --modulepath $PUPPET_MODULES_DIR --hiera_config=${PUPPET_DIR}/hiera2.yaml \
 --manifestdir $PUPPET_MANIFESTS_DIR --detailed-exitcodes ${PUPPET_MANIFESTS_DIR}/site.pp
 
