@@ -16,7 +16,7 @@ splunk::install_source: file:///synced_folder/splunk-6.1.3-220630-linux-2.6-x86_
 tomcat::catalina_home: /opt/apache-tomcat
 tomcat::version: 7.0.55
 waratek_java::version: 2.8.0.CA.3-105
-waratek_java::package_source: /synced_folder
+#waratek_java::package_source: /synced_folder
 waratek_java::users:
   - vagrant
 #  - user1
