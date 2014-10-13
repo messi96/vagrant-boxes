@@ -37,33 +37,33 @@
 #
 class demo_security::centos inherits demo_security {
 
-  file { "/home/${vagrantuser}/demo":
+  file { "/home/${demo_user}/demo":
     ensure => "directory",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0755
   }
 
-  file { "/home/${vagrantuser}/demo/reload_rules.sh":
+  file { "/home/${demo_user}/demo/reload_rules.sh":
     ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0755,
     source => "puppet:///modules/demo_security/reload_rules.sh",
   }
 
-  file { "/home/${vagrantuser}/demo/restart.sh":
+  file { "/home/${demo_user}/demo/restart.sh":
     ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0755,
     source => "puppet:///modules/demo_security/restart.sh",
   }
 
-  file { "/home/${vagrantuser}/demo/rules.jaf":
+  file { "/home/${demo_user}/demo/rules.jaf":
     ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0644,
     source => "puppet:///modules/demo_security/rules.jaf",
   }

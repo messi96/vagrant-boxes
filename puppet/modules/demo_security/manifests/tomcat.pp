@@ -64,8 +64,8 @@ class demo_security::tomcat inherits demo_security {
     source  => 'https://archive.apache.org/dist/struts/examples/struts-2.2.1.1-apps.zip',
     target  => '/tmp/',
     creates => '/tmp/struts-2.2.1.1/LICENSE.txt',
-    user    => "$vagrantuser",
-    group   => "$vagrantuser"
+    user    => "$demo_user",
+    group   => "$demo_group"
   } ->
 
   tomcat::war { 'struts2-blank.war':,
@@ -75,8 +75,8 @@ class demo_security::tomcat inherits demo_security {
 
   file { "${catalina_base}/webapps/struts2-blank":
     ensure      =>  "directory",
-    owner       =>  "${vagrantuser}",
-    group       =>  "${vagrantuser}",
+    owner       =>  "${demo_user}",
+    group       =>  "${demo_group}",
     mode        =>  0755
   } ->
 
@@ -84,14 +84,14 @@ class demo_security::tomcat inherits demo_security {
     command     =>  "/usr/bin/jar -xf ${catalina_base}/webapps/struts2-blank.war",
     cwd         =>  "${catalina_base}/webapps/struts2-blank",
     creates     =>  "${catalina_base}/webapps/struts2-blank/index.html",
-    user        =>  "${vagrantuser}",
-    group       =>  "${vagrantuser}",
+    user        =>  "${demo_user}",
+    group       =>  "${demo_group}",
   } -> 
 
   file { "${catalina_base}/webapps/struts2-blank/example/HelloWorld.jsp":
     ensure      =>  "present",
-    owner       =>  "${vagrantuser}",
-    group       =>  "${vagrantuser}",
+    owner       =>  "${demo_user}",
+    group       =>  "${demo_group}",
     mode        =>  0644,
     source      =>  "puppet:///modules/profiles/HelloWorld.jsp",
   } ->
