@@ -16,5 +16,6 @@ tomcat::version: 7.0.55
 waratek_java::version: 2.8.0.CA.3-105
 waratek_java::package_source: /synced_folder
 waratek_java::users:
-  vagrant:
-    groups: waratek
+  - vagrant
+#  - user1
+#  - user2
