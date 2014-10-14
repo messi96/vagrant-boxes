@@ -1,0 +1,48 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "kali-linux-amd64-mini_nexpose_virtualbox"
+  config.vm.hostname = "kali.localdomain"
+  config.vm.guest = "debian"
+  config.ssh.username = "root"
+
+  #config.vm.network "public_network"
+  config.vm.network "forwarded_port", guest: 3780, host: 3780
+  config.vm.network "forwarded_port", guest: 3790, host: 3790
+
+  config.vm.synced_folder "../../synced_folder", "/synced_folder"
+  config.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+  
+  # VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Nexpose"
+    vb.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
+    vb.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
+    vb.customize ["modifyvm", :id, "--bioslogofadein", "off"]
+    vb.customize ["modifyvm", :id, "--bioslogofadeout", "off"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--memory", "8192"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+  end
+
+  # VMware Fusion
+  config.vm.provider "vmware_fusion" do |vmf|
+    vmf.vmx["memsize"] = "8192"
+    vmf.vmx["numvcpus"] = "2"
+  end
+
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "../../puppet/manifests"
+    puppet.manifest_file = "site.pp"
+    puppet.module_path = "../../puppet/modules"
+    puppet.hiera_config_path = "../../puppet/hiera.yaml"
+    #puppet.options = "--verbose --debug"
+  end
+
+end

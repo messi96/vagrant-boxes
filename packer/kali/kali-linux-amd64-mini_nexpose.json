@@ -1,0 +1,116 @@
+{
+  "variables": {
+    "vm_name": "kali-linux-amd64-mini_nexpose",
+    "disk_size": 51200,
+    "iso_checksum_type": "none",
+    "iso_url": "{{env `HOME`}}/tmp/binary.hybrid.iso",
+    "box_desc" : "Kali Linux 64 Bit Mini Nexpose"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "headless": "false",
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "guest_os_type": "Debian_64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "512"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
+      "boot_command": [
+        "<esc><wait>",
+        "install auto url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "locale=en_US.UTF-8 kbd-chooser/method=us <wait>",
+        "netcfg/get_hostname=kali-mini netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
+        "console-keymaps-at/keymap=us keymap=us <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    },
+    {
+      "headless": "false",
+      "type": "vmware-iso",
+      "guest_os_type": "debian7-64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "boot_command": [
+        "<esc><wait>",
+        "install auto url=http://172.16.205.1:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "locale=en_IE.UTF-8 kbd-chooser/method=us <wait>",
+        "netcfg/get_hostname=kali-mini netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
+  "console-keymaps-at/keymap=us keymap=us <wait>",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
+      "pause_before": "10s"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/puppet.sh",
+        "scripts/nexpose.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/virtualbox.sh",
+      "only": ["virtualbox-iso"]
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "hiera_config_path": "../../puppet/hiera.yaml"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+  "post-processors": [  {
+    "type": "vagrant",
+    "output" : "{{user `vm_name`}}_{{.Provider}}.box",
+    "keep_input_artifact": false
+  }
+  ]
+}
