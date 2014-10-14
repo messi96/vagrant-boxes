@@ -40,7 +40,8 @@ class oracle_xe::swapfile inherits oracle_xe {
   if ( $swapsize_mb < 2560 ) {
     class { 'swap_file':
       swapfile => '/var/swapfile.xe',
-      swapfilesize => '2560'
+      swapfilesize => '2560',
+      before => Package['oracle-xe']
     }
   }
 
