@@ -38,6 +38,13 @@
 class waratek_java::config inherits waratek_java {
 
   $waratek_users = hiera( 'waratek_java::users', {} )
-  create_resources(user, $waratek_users)
+  
+  ensure_resource( 'user', $waratek_users, 
+  	{
+  	  'ensure'     => 'present',
+  	  'groups'     => 'waratek',
+      'managehome' => 'true',
+    }
+  )
 
 }

@@ -1,6 +1,6 @@
-# == Class: oracle_xe
+# == Class: demo_security
 #
-# Full description of class oracle_xe here.
+# Full description of class demo_security here.
 #
 # === Parameters
 #
@@ -23,7 +23,7 @@
 #
 # === Examples
 #
-#  class { oracle_xe:
+#  class { demo_security:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
@@ -35,18 +35,14 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class oracle_xe (
-  $package_ensure  = $oracle_xe::params::package_ensure,
-  $package_source  = $oracle_xe::params::package_source,
-  $service_enable  = $oracle_xe::params::service_enable,
-  $service_ensure  = $oracle_xe::params::service_ensure
-) inherits oracle_xe::params {
+class demo_security::params {
 
-  anchor { 'oracle_xe::begin': } ->
-  class { '::oracle_xe::swapfile': } ->
-  class { '::oracle_xe::install': } ->
-  class { '::oracle_xe::config': } ->
-  class { '::oracle_xe::service': } ->
-  anchor { 'oracle_xe::end': }
+  $centos_ip = '172.21.21.21'
+  $kali_ip   = '172.21.21.22'
+
+  if ($demo_user == undef) and ($::vagrantuser) {
+  	$demo_user  = $::vagrantuser
+  	$demo_group = $::vagrantuser
+  }
 
 }

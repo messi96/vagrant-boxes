@@ -35,7 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::heisenberg {
+class demo_security::heisenberg inherits demo_security {
 
   include '::oracle_xe'
 

@@ -35,52 +35,53 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::centos {
+class demo_security::centos inherits demo_security {
 
-  file { "/home/${vagrantuser}/demo":
+  file { "/home/${demo_user}/demo":
     ensure => "directory",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0755
   }
 
-  file { "/home/${vagrantuser}/demo/reload_rules.sh":
+  file { "/home/${demo_user}/demo/reload_rules.sh":
     ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0755,
     source => "puppet:///modules/demo_security/reload_rules.sh",
   }
 
-  file { "/home/${vagrantuser}/demo/restart.sh":
+  file { "/home/${demo_user}/demo/restart.sh":
     ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0755,
     source => "puppet:///modules/demo_security/restart.sh",
   }
 
-  file { "/home/${vagrantuser}/demo/rules.jaf":
+  file { "/home/${demo_user}/demo/rules.jaf":
     ensure => "file",
-    owner  => "${vagrantuser}",
-    group  => "${vagrantuser}",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
     mode   => 0644,
     source => "puppet:///modules/demo_security/rules.jaf",
   }
 
-  host { 'kali':
-    ip           => '172.21.21.22',
-    host_aliases => 'kali.localdomain'
-  }
+  if ($::vagrant == "true") {
+    host { 'kali':
+      ip           => "$kali_ip",
+      host_aliases => 'kali.localdomain'
+    }
 
-  service { 'iptables':
-    ensure => false,
-    enable => false
-  }
+    service { 'iptables':
+      ensure => false,
+      enable => false
+    }
 
-  service { 'ip6tables':
-    ensure => false,
-    enable => false
+    service { 'ip6tables':
+      ensure => false,
+      enable => false
+    }
   }
-
 }

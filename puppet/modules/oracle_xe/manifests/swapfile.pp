@@ -8,7 +8,7 @@
 #
 # [*sample_parameter*]
 #   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+#   e.g. 'Specify one or more upstream ntp servers as an array.'
 #
 # === Variables
 #
@@ -16,8 +16,8 @@
 #
 # [*sample_variable*]
 #   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
+#   it has a default. e.g. 'The parameter enc_ntp_servers must be set by the
+#   External Node Classifier as a comma separated list of hostnames.' (Note,
 #   global variables should be avoided in favor of class parameters as
 #   of Puppet 2.6.)
 #
@@ -35,18 +35,14 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class oracle_xe (
-  $package_ensure  = $oracle_xe::params::package_ensure,
-  $package_source  = $oracle_xe::params::package_source,
-  $service_enable  = $oracle_xe::params::service_enable,
-  $service_ensure  = $oracle_xe::params::service_ensure
-) inherits oracle_xe::params {
+class oracle_xe::swapfile inherits oracle_xe {
 
-  anchor { 'oracle_xe::begin': } ->
-  class { '::oracle_xe::swapfile': } ->
-  class { '::oracle_xe::install': } ->
-  class { '::oracle_xe::config': } ->
-  class { '::oracle_xe::service': } ->
-  anchor { 'oracle_xe::end': }
+  if ( $swapsize_mb < 2560 ) {
+    class { 'swap_file':
+      swapfile => '/var/swapfile.xe',
+      swapfilesize => '2560',
+      before => Package['oracle-xe']
+    }
+  }
 
 }

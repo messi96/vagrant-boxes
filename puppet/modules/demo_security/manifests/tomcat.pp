@@ -35,11 +35,18 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::tomcat {
+class demo_security::tomcat inherits demo_security {
 
   $catalina_base = hiera('tomcat::catalina_home')
   $version       = hiera('tomcat::version')
-  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-${version}.tar.gz"
+  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${version}/bin/apache-tomcat-${version}.tar.gz"
+
+  class { '::tomcat':
+    user         => "$demo_user",
+    group        => "$demo_group",
+    manage_user  => false,
+    manage_group => false
+  }
 
   tomcat::instance { 'tomcat-demo':
     catalina_base => "$catalina_base",
@@ -49,16 +56,22 @@ class demo_security::tomcat {
   # Waratek test application
   tomcat::war { 'HeisenbergTestApp.war':,
     catalina_base => "$catalina_base",
-    war_source    => '/synced_folder/HeisenbergTestApp.war'
+    war_source    => 'http://download.waratek.com/test_app/HeisenbergTestApp.war'
   } -> 
+
+  file { "$catalina_base/webapps/HeisenbergTestApp.war":
+    owner => "$demo_user",
+    group => "$demo_group",
+    mode  => "0644"
+  } ->
 
   # Struts blank application
   staging::deploy { 'struts-2.2.1.1-apps.zip':
     source  => 'https://archive.apache.org/dist/struts/examples/struts-2.2.1.1-apps.zip',
     target  => '/tmp/',
     creates => '/tmp/struts-2.2.1.1/LICENSE.txt',
-    user    => "$vagrantuser",
-    group   => "$vagrantuser"
+    user    => "$demo_user",
+    group   => "$demo_group"
   } ->
 
   tomcat::war { 'struts2-blank.war':,
@@ -68,8 +81,8 @@ class demo_security::tomcat {
 
   file { "${catalina_base}/webapps/struts2-blank":
     ensure      =>  "directory",
-    owner       =>  "${vagrantuser}",
-    group       =>  "${vagrantuser}",
+    owner       =>  "${demo_user}",
+    group       =>  "${demo_group}",
     mode        =>  0755
   } ->
 
@@ -77,26 +90,24 @@ class demo_security::tomcat {
     command     =>  "/usr/bin/jar -xf ${catalina_base}/webapps/struts2-blank.war",
     cwd         =>  "${catalina_base}/webapps/struts2-blank",
     creates     =>  "${catalina_base}/webapps/struts2-blank/index.html",
-    user        =>  "${vagrantuser}",
-    group       =>  "${vagrantuser}",
+    user        =>  "${demo_user}",
+    group       =>  "${demo_group}",
   } -> 
 
   file { "${catalina_base}/webapps/struts2-blank/example/HelloWorld.jsp":
     ensure      =>  "present",
-    owner       =>  "${vagrantuser}",
-    group       =>  "${vagrantuser}",
+    owner       =>  "${demo_user}",
+    group       =>  "${demo_group}",
     mode        =>  0644,
     source      =>  "puppet:///modules/profiles/HelloWorld.jsp",
   } ->
 
   tomcat::setenv::entry { 'JAVA_HOME':
     value      => "/usr/lib/jvm/java-waratek/jre\n",
-    base_path  => "${catalina_base}/bin",
   }
 
   tomcat::setenv::entry { 'CATALINA_OPTS':
     value      => "--jvc=tomcat1\n",
-    base_path  => "${catalina_base}/bin",
   }
 
 }

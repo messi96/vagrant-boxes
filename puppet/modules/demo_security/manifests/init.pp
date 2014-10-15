@@ -35,7 +35,15 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security {
+class demo_security (
+  $centos_ip  = $demo_security::params::centos_ip,
+  $demo_user  = $demo_security::params::demo_user,
+  $demo_group = $demo_security::params::demo_group,
+  $kali_ip    = $demo_security::params::kali_ip
+) inherits demo_security::params {
 
+  if ($demo_user == undef) {
+  	fail("Unable to setup demo")
+  }
 
 }

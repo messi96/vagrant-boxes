@@ -43,11 +43,4 @@ class oracle_xe::install inherits oracle_xe {
     provider => 'rpm'
   }
 
-  if ( $swapsize_mb < 2560 ) {
-    class { 'swap_file':
-      swapfile => '/var/swapfile.xe',
-      swapfilesize => '2560'
-    }
-  }
-
 }
