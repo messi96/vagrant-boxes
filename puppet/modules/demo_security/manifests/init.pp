@@ -42,8 +42,5 @@ class demo_security (
   $kali_ip    = $demo_security::params::kali_ip
 ) inherits demo_security::params {
 
-  if ($demo_user == undef) {
-  	fail("Unable to setup demo")
-  }
 
 }
