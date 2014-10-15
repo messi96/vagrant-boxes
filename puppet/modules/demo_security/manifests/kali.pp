@@ -35,7 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::kali {
+class demo_security::kali inherits demo_security {
 
   file { "/root/cve-2013-2251.rc":
     ensure => "file",
