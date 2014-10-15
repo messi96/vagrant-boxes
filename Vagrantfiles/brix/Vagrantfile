@@ -16,7 +16,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # CentOS
-  config.vm.define "centos" do |centos|
+  config.vm.define "centos", primary: true do |centos|
     centos.vm.box = "waratek/centos6-x86_64"
     centos.vm.hostname = "centos.brix.waratek.com"
 
