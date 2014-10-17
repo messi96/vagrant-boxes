@@ -23,7 +23,7 @@ network:serverbind:*:allow:trace
 network:connect:*:allow:trace
 network:accept:*:allow:trace
 #network:accept:*:deny:warn
-network:connect:www.google.com::deny:warn
+#network:connect:www.google.com::deny:warn
 
 # SQL injection mitigation
 sql:database:oracle:allow:warn
