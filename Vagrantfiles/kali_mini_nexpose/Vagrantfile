@@ -5,7 +5,11 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "kali-linux-amd64-mini_nexpose_virtualbox"
+  config.vm.box = "kali-linux-amd64-mini_nexpose"
+  config.vm.box_url = "http://rpm.waratek.lan/vagrant/kali-linux-amd64-mini_nexpose_virtualbox.box"
+  config.vm.box_download_checksum = "63d87bd085aa8b61fa26185bb192144f"
+  config.vm.box_download_checksum_type = "md5"
+
   config.vm.hostname = "kali.localdomain"
   config.vm.guest = "debian"
   config.ssh.username = "root"
