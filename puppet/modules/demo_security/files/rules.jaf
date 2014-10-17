@@ -15,6 +15,7 @@ file:exec:*:allow:warn
 
 file:read:/etc/:deny:warn
 file:read:/etc/hosts:allow:info
+#file:read:/etc/passwd:allow:warn
 
 # Example Network Rules
 network:bind:*:allow:trace
