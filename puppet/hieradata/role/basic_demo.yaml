@@ -21,5 +21,6 @@ tomcat::instances:
 waratek_java::package_name: java-1.6.0-waratek
 waratek_java::version: 2.6.5.GA.3-001
 waratek_java::users:
-  vagrant:
-    groups: waratek
+  - vagrant
+#  - user1
+#  - user2
