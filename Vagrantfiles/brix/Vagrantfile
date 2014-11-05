@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     centos.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
     
     centos.vm.provider "virtualbox" do |v|
-      v.name = "Waratek:CentOS"
+      v.name = "Waratek_CentOS"
       v.cpus = 2
       v.memory = 2048
     end
@@ -62,7 +62,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     kali.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
     
     kali.vm.provider "virtualbox" do |v|
-      v.name = "Waratek:Kali"
+      v.name = "Waratek_Kali"
       v.cpus = 2
       v.memory = 2048
     end
