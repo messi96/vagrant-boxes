@@ -87,7 +87,7 @@ class demo_security::tomcat inherits demo_security {
     owner       =>  "${demo_user}",
     group       =>  "${demo_group}",
     mode        =>  0644,
-    source      =>  "puppet:///modules/profiles/HelloWorld.jsp",
+    source      =>  "puppet:///modules/demo_security/HelloWorld.jsp",
   } ->
 
   tomcat::setenv::entry { 'JAVA_HOME':
