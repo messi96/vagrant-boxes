@@ -53,18 +53,6 @@ class demo_security::tomcat inherits demo_security {
     source_url    => "$source_url"
   } ->
 
-  # Waratek test application
-  tomcat::war { 'HeisenbergTestApp.war':,
-    catalina_base => "$catalina_base",
-    war_source    => 'http://download.waratek.com/test_app/HeisenbergTestApp.war'
-  } -> 
-
-  file { "$catalina_base/webapps/HeisenbergTestApp.war":
-    owner => "$demo_user",
-    group => "$demo_group",
-    mode  => "0644"
-  } ->
-
   # Struts blank application
   staging::deploy { 'struts-2.2.1.1-apps.zip':
     source  => 'https://archive.apache.org/dist/struts/examples/struts-2.2.1.1-apps.zip',

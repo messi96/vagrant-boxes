@@ -1,7 +1,6 @@
 ---
 classes:
   - demo_security::centos
-  - demo_security::heisenberg
   - demo_security::tomcat
   - oracle_xe
   - profiles::base
