@@ -37,9 +37,7 @@
 #
 class demo_security::tomcat inherits demo_security {
 
-  $catalina_base = hiera('tomcat::catalina_home')
-  $version       = hiera('tomcat::version')
-  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${version}/bin/apache-tomcat-${version}.tar.gz"
+  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${version}/bin/apache-tomcat-${tomcat_version}.tar.gz"
 
   class { '::tomcat':
     user         => "$demo_user",

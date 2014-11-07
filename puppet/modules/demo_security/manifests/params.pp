@@ -45,4 +45,6 @@ class demo_security::params {
   	$demo_group = $::vagrantuser
   }
 
+  $catalina_base  = hiera('tomcat::catalina_home')
+  $tomcat_version = hiera('tomcat::version')
 }
