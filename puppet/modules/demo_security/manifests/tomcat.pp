@@ -37,7 +37,7 @@
 #
 class demo_security::tomcat inherits demo_security {
 
-  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${version}/bin/apache-tomcat-${tomcat_version}.tar.gz"
+  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${tomcat_version}/bin/apache-tomcat-${tomcat_version}.tar.gz"
 
   class { '::tomcat':
     user         => "$demo_user",
