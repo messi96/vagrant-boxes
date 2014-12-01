@@ -4,7 +4,7 @@ class demo_security::spiracle inherits demo_security {
 
   tomcat::war { 'spiracle.war':,
     catalina_base => "$catalina_base",
-    war_source    => "https://github.com/waratek/spiracle/releases/download/${spiracle_version}/spiracle.war"
+    war_source    => "https://github.com/waratek/spiracle/releases/download/v${spiracle_version}/spiracle.war"
   } ->
 
   file { "${catalina_base}/webapps/spiracle.war":
