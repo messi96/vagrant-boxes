@@ -42,6 +42,7 @@ class demo_security (
   $demo_group     = $demo_security::params::demo_group,
   $kali_ip        = $demo_security::params::kali_ip,
   $tomcat_version = $demo_security::params::tomcat_version
+  $spiracle_version = $demo_security::params::spiracle_version,
 ) inherits demo_security::params {
 
 
