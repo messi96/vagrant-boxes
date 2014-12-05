@@ -1,6 +1,10 @@
 ---
 classes:
-  - base::redhat
   - epel
   - java
+packages:
+  - byobu
+  - git
+  - htop
+  - vim-enhanced
 java::package: java-1.6.0-openjdk-devel
