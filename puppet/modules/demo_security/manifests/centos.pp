@@ -60,12 +60,12 @@ class demo_security::centos inherits demo_security {
     source => "puppet:///modules/demo_security/restart.sh",
   }
 
-  file { "/home/${demo_user}/demo/rules.jaf":
+  file { "/home/${demo_user}/demo/jvc.rules":
     ensure => "file",
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0644,
-    source => "puppet:///modules/demo_security/rules.jaf",
+    source => "puppet:///modules/demo_security/jvc.rules",
   }
 
   if ($::vagrant == "true") {
