@@ -1,9 +1,12 @@
 ---
 classes:
-  - base
   - staging
   - sudo
   - sudo::configs
+packages:
+  - bc
+  - unzip
+  - wget
 staging::path: /tmp/staging
 sudo::purge: false
 sudo::config_file_replace: false

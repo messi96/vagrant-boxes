@@ -10,5 +10,6 @@ if ($osfamily == 'Debian') {
   Exec['apt-update'] -> Package <| |>
 }
 
+ensure_packages(hiera_array('packages'))
 hiera_include('classes')
 
