@@ -89,6 +89,7 @@ class demo_security::centos inherits demo_security {
   class  { '::demo_security::tomcat': }  ->
   class  { '::demo_security::struts2': } ->
   class  { '::demo_security::spiracle': } ->
+  class  { '::demo_security::webgoat': } ->
   anchor { 'demo_security::end': }
 
 }
