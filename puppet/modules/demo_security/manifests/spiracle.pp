@@ -28,7 +28,7 @@ class demo_security::spiracle inherits demo_security {
     group       => "${demo_group}",
   } ~> 
 
-  exec { 'setup-db':
+  exec { 'setup-spiracle-db':
     command     => "/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < ${catalina_base}/webapps/spiracle/conf/setupdb.sql",
     environment => [ 'ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe',
                      'ORACLE_SID=XE',
