@@ -85,6 +85,18 @@ class demo_security::centos inherits demo_security {
     }
   }
 
+  exec { 'disable-selinux':
+    command => '/usr/sbin/setenforce 0',
+    onlyif  => '/usr/bin/test `/usr/sbin/getenforce | /bin/grep Enforcing`'
+  }
+
+  augeas { 'disable-selinux':
+    context => '/files/etc/selinux/config',
+    changes => [
+      'set SELINUX permissive'
+    ],
+  }
+
   anchor { 'demo_security::begin': }     ->
   class  { '::demo_security::tomcat': }  ->
   class  { '::demo_security::struts2': } ->
