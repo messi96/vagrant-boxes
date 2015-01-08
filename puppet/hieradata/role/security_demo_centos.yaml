@@ -7,6 +7,10 @@ classes:
 #  - splunk_dashboard
   - sqlmap
   - waratek_java
+packages:
+  - httpd
+  - mod_security
+  - mod_security_crs
 demo_security::demo_user: vagrant
 demo_security::demo_group: vagrant
 spiracle::version: 1.0.2
