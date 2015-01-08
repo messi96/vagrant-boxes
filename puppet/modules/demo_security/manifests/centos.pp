@@ -90,6 +90,7 @@ class demo_security::centos inherits demo_security {
   class  { '::demo_security::struts2': } ->
   class  { '::demo_security::spiracle': } ->
   class  { '::demo_security::webgoat': } ->
+  class  { '::demo_security::jforum': } ->
   anchor { 'demo_security::end': }
 
 }
