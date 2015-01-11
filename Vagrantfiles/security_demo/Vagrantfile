@@ -22,9 +22,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     centos.vm.network "private_network", ip: "172.21.21.21"
     #centos.vm.network "public_network"
-    centos.vm.network "forwarded_port", guest: 8000, host: 8000
-    centos.vm.network "forwarded_port", guest: 8080, host: 8080
-    centos.vm.network "forwarded_port", guest: 9090, host: 9090
+    centos.vm.network "forwarded_port", guest: 6060, host: 6060 # Tomcat 6
+    centos.vm.network "forwarded_port", guest: 8000, host: 8000 # Splunk
+    centos.vm.network "forwarded_port", guest: 8080, host: 8080 # Tomcat 7
+    centos.vm.network "forwarded_port", guest: 9090, host: 9090 # httpd
 
     centos.vm.synced_folder "../../synced_folder", "/synced_folder"
     centos.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
