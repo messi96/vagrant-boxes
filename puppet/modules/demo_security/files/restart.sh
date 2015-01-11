@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export JAVA_HOME="/usr/lib/jvm/java-waratek/jre"
-export JVM_OPTS="-Xdaemon -Dcom.waratek.ssh.server=on"
+export JVM_OPTS="-Xmx512M -Xdaemon -Dcom.waratek.ssh.server=on"
 export JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1234 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.waratek.jmxhttp.jolokia"
 export PATH=$JAVA_HOME/bin:$PATH
 
