@@ -3,17 +3,17 @@ class demo_security::spiracle inherits demo_security {
   include '::oracle_xe'
 
   tomcat::war { 'spiracle.war':,
-    catalina_base => "$catalina_base",
+    catalina_base => "$tomcat7_home",
     war_source    => "https://github.com/waratek/spiracle/releases/download/v${spiracle_version}/spiracle.war"
   } ->
 
-  file { "${catalina_base}/webapps/spiracle.war":
+  file { "${tomcat7_home}/webapps/spiracle.war":
     owner       => "${demo_user}",
     group       => "${demo_group}",
     mode        => '0644'
   } ->
 
-  file { "${catalina_base}/webapps/spiracle":
+  file { "${tomcat7_home}/webapps/spiracle":
     ensure      => "directory",
     owner       => "${demo_user}",
     group       => "${demo_group}",
@@ -21,15 +21,15 @@ class demo_security::spiracle inherits demo_security {
   } ->
 
   exec { 'extract-spiracle-warfile':
-    command     => "/usr/bin/jar -xf ${catalina_base}/webapps/spiracle.war",
-    cwd         => "${catalina_base}/webapps/spiracle",
-    creates     => "${catalina_base}/webapps/spiracle/index.jsp",
+    command     => "/usr/bin/jar -xf ${tomcat7_home}/webapps/spiracle.war",
+    cwd         => "${tomcat7_home}/webapps/spiracle",
+    creates     => "${tomcat7_home}/webapps/spiracle/index.jsp",
     user        => "${demo_user}",
     group       => "${demo_group}",
   } ~> 
 
   exec { 'setup-spiracle-db':
-    command     => "/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < ${catalina_base}/webapps/spiracle/conf/setupdb.sql",
+    command     => "/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < ${tomcat7_home}/webapps/spiracle/conf/setupdb.sql",
     environment => [ 'ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe',
                      'ORACLE_SID=XE',
                      'NLS_LANG=ENGLISH_IRELAND.AL32UTF8',
@@ -38,7 +38,7 @@ class demo_security::spiracle inherits demo_security {
     require     => Service['oracle-xe']
   }
 
-  file { "${catalina_base}/webapps/spiracle/WEB-INF/lib/ojdbc6.jar":
+  file { "${tomcat7_home}/webapps/spiracle/WEB-INF/lib/ojdbc6.jar":
     ensure      => 'file',
     owner       => "${demo_user}",
     group       => "${demo_group}",

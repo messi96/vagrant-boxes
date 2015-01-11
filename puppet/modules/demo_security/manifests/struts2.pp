@@ -10,11 +10,11 @@ class demo_security::struts2 inherits demo_security {
   } ->
 
   tomcat::war { 'struts2-blank.war':,
-    catalina_base => "$catalina_base",
+    catalina_base => "$tomcat7_home",
     war_source    => '/tmp/struts-2.2.1.1/apps/struts2-blank.war'
   } ->
 
-  file { "${catalina_base}/webapps/struts2-blank":
+  file { "${tomcat7_home}/webapps/struts2-blank":
     ensure      =>  "directory",
     owner       =>  "${demo_user}",
     group       =>  "${demo_group}",
@@ -22,14 +22,14 @@ class demo_security::struts2 inherits demo_security {
   } ->
 
   exec { "extract-struts-warfile":
-    command     =>  "/usr/bin/jar -xf ${catalina_base}/webapps/struts2-blank.war",
-    cwd         =>  "${catalina_base}/webapps/struts2-blank",
-    creates     =>  "${catalina_base}/webapps/struts2-blank/index.html",
+    command     =>  "/usr/bin/jar -xf ${tomcat7_home}/webapps/struts2-blank.war",
+    cwd         =>  "${tomcat7_home}/webapps/struts2-blank",
+    creates     =>  "${tomcat7_home}/webapps/struts2-blank/index.html",
     user        =>  "${demo_user}",
     group       =>  "${demo_group}",
   } -> 
 
-  file { "${catalina_base}/webapps/struts2-blank/example/HelloWorld.jsp":
+  file { "${tomcat7_home}/webapps/struts2-blank/example/HelloWorld.jsp":
     ensure      =>  "present",
     owner       =>  "${demo_user}",
     group       =>  "${demo_group}",

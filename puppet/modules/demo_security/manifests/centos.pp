@@ -97,9 +97,17 @@ class demo_security::centos inherits demo_security {
     ],
   }
 
+  class { '::tomcat':
+    user         => "$demo_user",
+    group        => "$demo_group",
+    manage_user  => false,
+    manage_group => false
+  }
+
   anchor { 'demo_security::begin': }     ->
   class  { '::demo_security::httpd': }  ->
-  class  { '::demo_security::tomcat': }  ->
+  class  { '::demo_security::tomcat6': }  ->
+  class  { '::demo_security::tomcat7': }  ->
   class  { '::demo_security::struts2': } ->
   class  { '::demo_security::spiracle': } ->
   class  { '::demo_security::webgoat': } ->
