@@ -24,6 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #centos.vm.network "public_network"
     centos.vm.network "forwarded_port", guest: 8000, host: 8000
     centos.vm.network "forwarded_port", guest: 8080, host: 8080
+    centos.vm.network "forwarded_port", guest: 9090, host: 9090
 
     centos.vm.synced_folder "../../synced_folder", "/synced_folder"
     centos.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
