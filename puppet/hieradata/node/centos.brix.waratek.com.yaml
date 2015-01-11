@@ -3,4 +3,3 @@ classes:
   - splunk
   - splunk_dashboard
 splunk::install: server
-splunk::install_source: file:///synced_folder/splunk-6.1.3-220630-linux-2.6-x86_64.rpm

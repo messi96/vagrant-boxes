@@ -36,10 +36,13 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 class demo_security (
-  $centos_ip  = $demo_security::params::centos_ip,
-  $demo_user  = $demo_security::params::demo_user,
-  $demo_group = $demo_security::params::demo_group,
-  $kali_ip    = $demo_security::params::kali_ip
+  $catalina_base    = $demo_security::params::catalina_base,
+  $centos_ip        = $demo_security::params::centos_ip,
+  $demo_user        = $demo_security::params::demo_user,
+  $demo_group       = $demo_security::params::demo_group,
+  $kali_ip          = $demo_security::params::kali_ip,
+  $spiracle_version = $demo_security::params::spiracle_version,
+  $tomcat_version   = $demo_security::params::tomcat_version
 ) inherits demo_security::params {
 
 

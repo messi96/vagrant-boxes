@@ -34,6 +34,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
+    # AWS
+    centos.vm.provider "aws" do |aws,override|
+      override.vm.box = "waratek/aws-rhel6-PV"
+      aws.access_key_id = ENV['AWS_ACCESS_KEY']
+      aws.secret_access_key = ENV['AWS_SECRET_KEY']
+      aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+      aws.security_groups = ['default']
+      aws.region = ENV['AWS_REGION']
+      aws.instance_type = "m3.medium"
+      aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 }]
+      override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
+      override.ssh.username = "vagrant"
+
+      aws.user_data = File.read("../../scripts/cloud-init.sh")
+      aws.tags = {
+          'Name' => 'Waratek Security Demo',
+          'User' => ENV['USER']
+      }
+    end
+
     centos.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"

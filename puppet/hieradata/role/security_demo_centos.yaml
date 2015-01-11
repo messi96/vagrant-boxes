@@ -1,8 +1,6 @@
 ---
 classes:
   - demo_security::centos
-  - demo_security::heisenberg
-  - demo_security::tomcat
   - oracle_xe
   - profiles::base
 #  - splunk
@@ -11,11 +9,12 @@ classes:
   - waratek_java
 demo_security::demo_user: vagrant
 demo_security::demo_group: vagrant
+spiracle::version: 1.0.2
 splunk::install: server
-splunk::install_source: file:///synced_folder/splunk-6.1.3-220630-linux-2.6-x86_64.rpm
+splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.1/splunk/linux/splunk-6.2.1-245427-linux-2.6-x86_64.rpm
 tomcat::catalina_home: /opt/apache-tomcat
-tomcat::version: 7.0.55
-waratek_java::version: 2.8.0.CA.3-105
+tomcat::version: 7.0.57
+waratek_java::version: 2.8.5.CA.4-108
 #waratek_java::package_source: /synced_folder
 waratek_java::users:
   - vagrant
