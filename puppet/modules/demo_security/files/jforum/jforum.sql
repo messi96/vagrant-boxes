@@ -7,8 +7,8 @@ to jforum;
 
 CONNECT jforum/jforum;
 
-@/opt/apache-tomcat/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/oracle_drop_tables.sql;
-@/opt/apache-tomcat/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/oracle_db_struct.sql;
-@/opt/apache-tomcat/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/oracle_data_dump.sql;
+@/opt/apache-tomcat/tomcat7/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/oracle_drop_tables.sql;
+@/opt/apache-tomcat/tomcat7/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/oracle_db_struct.sql;
+@/opt/apache-tomcat/tomcat7/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/oracle_data_dump.sql;
 
 commit;

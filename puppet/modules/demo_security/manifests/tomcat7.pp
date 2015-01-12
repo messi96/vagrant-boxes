@@ -35,28 +35,33 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::tomcat inherits demo_security {
+class demo_security::tomcat7 inherits demo_security {
 
-  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${tomcat_version}/bin/apache-tomcat-${tomcat_version}.tar.gz"
+  $source_url    = "https://archive.apache.org/dist/tomcat/tomcat-7/v${tomcat7_version}/bin/apache-tomcat-${tomcat7_version}.tar.gz"
 
-  class { '::tomcat':
-    user         => "$demo_user",
-    group        => "$demo_group",
-    manage_user  => false,
-    manage_group => false
-  }
-
-  tomcat::instance { 'tomcat-demo':
-    catalina_base => "$catalina_base",
+  tomcat::instance { 'tomcat7':
+    catalina_base => "$tomcat7_home",
     source_url    => "$source_url"
   } ->
 
-  tomcat::setenv::entry { 'JAVA_HOME':
-    value      => "/usr/lib/jvm/java-waratek/jre\n",
+  file { "${tomcat7_home}/conf/tomcat-users.xml":
+    ensure => "file",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    mode   => 0644,
+    source => "puppet:///modules/demo_security/tomcat-users.xml",
+  } ->
+
+  tomcat::setenv::entry { 'tomcat7_JAVA_HOME':
+    param       => 'JAVA_HOME',
+    config_file => "${tomcat7_home}/bin/setenv.sh",
+    value       => "/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.6.0_43\n",
   }
 
-  tomcat::setenv::entry { 'CATALINA_OPTS':
-    value      => "--jvc=tomcat1\n",
+  tomcat::setenv::entry { 'tomcat7_CATALINA_OPTS':
+    param       => 'CATALINA_OPTS',
+    config_file => "${tomcat7_home}/bin/setenv.sh",
+    value       => "--jvc=tomcat7\n",
   }
 
 }

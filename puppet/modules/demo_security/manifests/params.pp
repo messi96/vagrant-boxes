@@ -45,8 +45,10 @@ class demo_security::params {
   	$demo_group = $::vagrantuser
   }
 
-  $catalina_base    = hiera('tomcat::catalina_home', undef)
-  $tomcat_version   = hiera('tomcat::version', undef)
+  $tomcat6_home     = hiera('tomcat::tomcat6_home', undef)
+  $tomcat6_version  = hiera('tomcat::tomcat6_version', undef)
+  $tomcat7_home     = hiera('tomcat::tomcat7_home', undef)
+  $tomcat7_version  = hiera('tomcat::tomcat7_version', undef)
   $spiracle_version = hiera('spiracle::version', undef)
 
 }
