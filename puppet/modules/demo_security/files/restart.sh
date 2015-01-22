@@ -23,6 +23,20 @@ echo "--------------------------------------------"
 
 echo "[*] Starting Tomcat 6"
 /opt/apache-tomcat/tomcat6/bin/startup.sh
+echo "--------------------------------------------"
+
+WAIT_TIME=0
+while [ ! -f /var/lib/javad/jvm-1/tomcat7/snapshot.xml ]
+do
+    echo "[*] Waiting for Tomcat7 JVC to come up"
+    (( WAIT_TIME += 1 ))
+    sleep 1
+
+    if [ $WAIT_TIME -ge 5 ]; then
+        echo "[*] Container startup failed"
+        exit 1
+    fi
+done
 
 echo "[*] Deploying jvc.rules file for Tomcat 7"
 cp jvc.rules /var/lib/javad/jvm-1/tomcat7
