@@ -26,6 +26,8 @@ curl -s http://localhost:7777/jolokia/exec/com.waratek:type=VirtualMachine/defin
 echo "--------------------------------------------"
 
 echo "[*] Starting Tomcat 6"
+export JAVA_HOME="/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.5.0_55"
+export CATALINA_OPTS="--jvc=tomcat6"
 /opt/apache-tomcat/tomcat6/bin/startup.sh
 echo "--------------------------------------------"
 
@@ -46,5 +48,7 @@ echo "[*] Deploying jvc.rules file for Tomcat 7"
 cp jvc.rules /var/lib/javad/jvm-1/tomcat7
 
 echo "[*] Starting Tomcat 7"
+export JAVA_HOME="/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.6.0_43"
+export CATALINA_OPTS="--jvc=tomcat7"
 /opt/apache-tomcat/tomcat7/bin/startup.sh
 
