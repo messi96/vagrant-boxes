@@ -52,16 +52,8 @@ class demo_security::tomcat7 inherits demo_security {
     source => "puppet:///modules/demo_security/tomcat-users.xml",
   } ->
 
-  tomcat::setenv::entry { 'tomcat7_JAVA_HOME':
-    param       => 'JAVA_HOME',
-    config_file => "${tomcat7_home}/bin/setenv.sh",
-    value       => "/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.6.0_43\n",
-  }
-
-  tomcat::setenv::entry { 'tomcat7_CATALINA_OPTS':
-    param       => 'CATALINA_OPTS',
-    config_file => "${tomcat7_home}/bin/setenv.sh",
-    value       => "--jvc=tomcat7\n",
+  file { "${tomcat7_home}/bin/setenv.sh":
+    ensure => "absent",
   }
 
 }
