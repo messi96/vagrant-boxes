@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JAVA_HOME="/usr/lib/jvm/java-waratek/jre"
+export WARATEK_HOME="/usr/lib/jvm/java-waratek/jre"
 export JVM_OPTS="-Xmx512M -Xdaemon -Dcom.waratek.ssh.server=on"
 export JMX_OPTS="-Dcom.sun.management.jmxremote \
 -Dcom.sun.management.jmxremote.port=1234 \
@@ -18,7 +18,7 @@ echo "[*] Cleaning up logs"
 rm -f /var/log/javad/jvm-1/rules.log
 
 echo "[*] Starting javad"
-$JAVA_HOME/bin/javad $JVM_OPTS $JMX_OPTS
+$WARATEK_HOME/bin/javad $JVM_OPTS $JMX_OPTS
 
 echo "[*] Defining empty JVC for Tomcat 7"
 curl -s http://localhost:7777/jolokia/exec/com.waratek:type=VirtualMachine/defineContainer/tomcat7/dummy/!/home!/vagrant | python -mjson.tool
