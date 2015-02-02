@@ -3,8 +3,8 @@ classes:
   - demo_security::centos
   - oracle_xe
   - profiles::base
-#  - splunk
-#  - splunk_dashboard
+  - splunk
+  - splunk_dashboard
   - sqlmap
   - waratek_java
 packages:
