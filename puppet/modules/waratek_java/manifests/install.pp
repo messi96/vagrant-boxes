@@ -50,6 +50,11 @@ class waratek_java::install inherits waratek_java {
     ensure   => $version,
     provider => 'rpm',
     source   => $real_package_source
+  } ~>
+
+  exec { 'alternatives-java':
+    command     => $alternatives_command,
+    refreshonly => true
   }
-  
+
 }

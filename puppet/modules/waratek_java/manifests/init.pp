@@ -57,6 +57,12 @@ class waratek_java (
   	$real_package_source = "$package_source/${package_name}-${version}.x86_64.rpm"
   }
 
+  case $package_name {
+    'java-1.6.0-waratek': { $alternatives_command = '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.6.0-waratek.x86_64/bin/java' }
+    'java-1.7.0-waratek': { $alternatives_command = '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.7.0-waratek.x86_64/bin/java' }
+    default:              { fail 'Invalid package name'}
+  }
+
   anchor { 'waratek_java::begin': }      ->
   class { '::waratek_java::libcgroup': } ->
   class { '::waratek_java::install': }   ->
