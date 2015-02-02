@@ -25,7 +25,7 @@ echo "[*] Defining empty JVC for Tomcat 7"
 curl -s http://localhost:7777/jolokia/exec/com.waratek:type=VirtualMachine/defineContainer/tomcat7/dummy/!/home!/vagrant | python -mjson.tool
 echo "--------------------------------------------"
 
-echo "[*] Starting Tomcat 6"
+echo "[*] Starting Tomcat 6 using jdk-1.5.0_55"
 export JAVA_HOME="/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.5.0_55"
 export CATALINA_OPTS="--jvc=tomcat6"
 /opt/apache-tomcat/tomcat6/bin/startup.sh
@@ -47,7 +47,7 @@ done
 echo "[*] Deploying jvc.rules file for Tomcat 7"
 cp jvc.rules /var/lib/javad/jvm-1/tomcat7
 
-echo "[*] Starting Tomcat 7"
+echo "[*] Starting Tomcat 7 using jdk-1.6.0_43"
 export JAVA_HOME="/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.6.0_43"
 export CATALINA_OPTS="--jvc=tomcat7"
 /opt/apache-tomcat/tomcat7/bin/startup.sh
