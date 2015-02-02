@@ -29,7 +29,7 @@ class demo_security::spiracle inherits demo_security {
   } ~> 
 
   exec { 'setup-spiracle-db':
-    command     => "/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < ${tomcat7_home}/webapps/spiracle/conf/setupdb.sql",
+    command     => "/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < ${tomcat7_home}/webapps/spiracle/conf/setupdb_oracle.sql",
     environment => [ 'ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe',
                      'ORACLE_SID=XE',
                      'NLS_LANG=ENGLISH_IRELAND.AL32UTF8',

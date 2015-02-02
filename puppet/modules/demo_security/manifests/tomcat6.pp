@@ -60,16 +60,8 @@ class demo_security::tomcat6 inherits demo_security {
     source => "puppet:///modules/demo_security/tomcat-users.xml",
   } ->
 
-  tomcat::setenv::entry { 'tomcat6_JAVA_HOME':
-    param       => 'JAVA_HOME',
-    config_file => "${tomcat6_home}/bin/setenv.sh",
-    value       => "/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.5.0_55\n",
-  }
-
-  tomcat::setenv::entry { 'tomcat6_CATALINA_OPTS':
-    param       => 'CATALINA_OPTS',
-    config_file => "${tomcat6_home}/bin/setenv.sh",
-    value       => "--jvc=tomcat6\n",
+  file { "${tomcat6_home}/bin/setenv.sh":
+    ensure => "absent",
   }
 
 }

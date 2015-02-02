@@ -3,8 +3,8 @@ classes:
   - demo_security::centos
   - oracle_xe
   - profiles::base
-#  - splunk
-#  - splunk_dashboard
+  - splunk
+  - splunk_dashboard
   - sqlmap
   - waratek_java
 packages:
@@ -13,14 +13,14 @@ packages:
   - mod_security_crs
 demo_security::demo_user: vagrant
 demo_security::demo_group: vagrant
-spiracle::version: 1.0.2
+spiracle::version: 1.1.0
 splunk::install: server
 splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.1/splunk/linux/splunk-6.2.1-245427-linux-2.6-x86_64.rpm
 tomcat::tomcat6_home: /opt/apache-tomcat/tomcat6
 tomcat::tomcat6_version: 6.0.43
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
 tomcat::tomcat7_version: 7.0.57
-waratek_java::version: 2.8.5.CA.4-108
+waratek_java::version: 2.9.0.GA.2-110
 #waratek_java::package_source: /synced_folder
 waratek_java::users:
   - vagrant

@@ -59,7 +59,7 @@ class waratek_java (
 
   case $package_name {
     'java-1.6.0-waratek': { $alternatives_command = '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.6.0-waratek.x86_64/bin/java' }
-    'java-1.7.0-waratek': { $alternatives_command = '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.7.0-waratek.x86_64/bin/java' }
+    'java-1.7.0-waratek': { $alternatives_command = '/usr/sbin/alternatives --set java /usr/lib/jvm/jre-1.7.0-waratek.x86_64/jvc/jdk-1.6.0_43/jre/bin/java' }
     default:              { fail 'Invalid package name'}
   }
 
