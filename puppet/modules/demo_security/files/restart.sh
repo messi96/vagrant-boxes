@@ -7,7 +7,6 @@ export JMX_OPTS="-Dcom.sun.management.jmxremote \
 -Dcom.sun.management.jmxremote.authenticate=false \
 -Dcom.sun.management.jmxremote.ssl=false \
 -Dcom.waratek.jmxhttp.jolokia"
-export PATH=$JAVA_HOME/bin:$PATH
 
 echo "[*] Killing existing JVMs"
 jvmkill --all
