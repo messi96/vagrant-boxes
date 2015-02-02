@@ -13,7 +13,7 @@ packages:
   - mod_security_crs
 demo_security::demo_user: vagrant
 demo_security::demo_group: vagrant
-spiracle::version: 1.0.2
+spiracle::version: 1.1.0
 splunk::install: server
 splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.1/splunk/linux/splunk-6.2.1-245427-linux-2.6-x86_64.rpm
 tomcat::tomcat6_home: /opt/apache-tomcat/tomcat6
