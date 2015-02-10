@@ -4,6 +4,7 @@ class splunk_dashboard {
     ensure   => present,
     provider => git,
     source   => 'https://github.com/prateepb/splunk-test-app.git',
+    user     => 'splunk',
     require  => Package['splunk'],
     notify   => Service['splunk']
   }
