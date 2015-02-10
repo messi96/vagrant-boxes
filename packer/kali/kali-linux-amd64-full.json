@@ -2,9 +2,9 @@
   "variables": {
     "vm_name": "kali-linux-amd64-full",
     "disk_size": 20480,
-    "iso_checksum": "325b03bf3e0d019a5764b0ebc1507d8cdf9f8f33",
+    "iso_checksum": "40a1fd1d4864e7fac70438a1bf2095c8c1a4e764",
     "iso_checksum_type": "sha1",
-    "iso_url": "http://cdimage.kali.org/kali-1.0.9/kali-linux-1.0.9-amd64.iso",
+    "iso_url": "http://cdimage.kali.org/kali-1.1.0/kali-linux-1.1.0-amd64.iso",
     "box_desc" : "Kali Linux 64 Bit"
   },
   "description": "{{user `box_desc`}}",
