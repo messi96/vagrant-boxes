@@ -14,7 +14,8 @@ class splunk_dashboard {
   	source => 'puppet:///modules/splunk_dashboard/inputs.conf',
   	owner  => 'splunk',
   	group  => 'splunk',
-  	mode   => '0644'
+  	mode   => '0644',
+    notify   => Service['splunk']
   }
   
 }
