@@ -7,6 +7,14 @@ class splunk_dashboard {
     user     => 'splunk',
     require  => Package['splunk'],
     notify   => Service['splunk']
+  } ->
+
+  file { '/opt/splunk/etc/apps/waratek/local/inputs.conf':
+  	ensure => present,
+  	source => 'puppet:///modules/splunk_dashboard/inputs.conf',
+  	owner  => 'splunk',
+  	group  => 'splunk',
+  	mode   => '0644'
   }
   
 }
