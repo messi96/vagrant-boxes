@@ -1,14 +1,20 @@
 class demo_security::webgoat inherits demo_security {
 
-  tomcat::war { 'WebGoat.war':,
-    catalina_base => "$tomcat7_home",
-    war_source    => "https://github.com/WebGoat/WebGoat/releases/download/v6.0.1/WebGoat-6.0.1.war"
+  file { '/tmp/webgoat':
+    ensure => 'directory'
+  } ->
+
+  staging::deploy { 'WebGoat-6.0.1-war-exec.jar':
+    source  => 'https://webgoat.atlassian.net/builds/browse/WEB-WGM/latestSuccessful/artifact/shared/WebGoat-Embedded-Tomcat/WebGoat-6.0.1-war-exec.jar',
+    target  => '/tmp/webgoat',
+    creates => '/tmp/webgoat/WebGoat.war'
   } ->
 
   file { "${tomcat7_home}/webapps/WebGoat.war":
     owner       => "${demo_user}",
     group       => "${demo_group}",
-    mode        => '0644'
+    mode        => '0644',
+    source      => '/tmp/webgoat/WebGoat.war'
   }
 
 }
