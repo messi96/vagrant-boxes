@@ -40,14 +40,16 @@ class demo_security::jforum inherits demo_security {
     source      => 'puppet:///modules/demo_security/jforum/logo.jpg',
   } ->
 
-  file { '/root/jforum.sql':
+  file { '/opt/apache-tomcat/tomcat7/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/jforum.sql':
     ensure      => 'file',
+    owner       => "${demo_user}",
+    group       => "${demo_group}",
     mode        => '0644',
     source      => 'puppet:///modules/demo_security/jforum/jforum.sql',
   } ~>
 
   exec { 'setup-jforum-db':
-    command     => "/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < /root/jforum.sql",
+    command     => "/u01/app/oracle/product/11.2.0/xe/bin/sqlplus SYS/testpass@//127.0.0.1:1521/XE AS SYSDBA < /opt/apache-tomcat/tomcat7/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/jforum.sql",
     environment => [ 'ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe',
                      'ORACLE_SID=XE',
                      'NLS_LANG=ENGLISH_IRELAND.AL32UTF8',
