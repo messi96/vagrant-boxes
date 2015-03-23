@@ -2,6 +2,9 @@
 classes:
   - base::kali
   - vagrant_base_box
+packages:
+  - metasploit
+  - postgresql
 sudo::configs:
   'vagrant':
     'content'   : "vagrant ALL=(ALL) NOPASSWD: ALL"
