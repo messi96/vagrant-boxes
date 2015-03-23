@@ -47,11 +47,13 @@ class base::kali {
   }
 
   service { 'postgresql':
-    enable    => true,
+    enable  => true,
+    require => Package["postgresql"]
   }
 
   service { 'metasploit':
-    enable => true
+    enable  => true,
+    require => Package["metasploit"]
   }
 
 }
