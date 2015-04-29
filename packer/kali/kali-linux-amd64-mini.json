@@ -42,6 +42,7 @@
         "<enter><wait>"
       ],
       "boot_wait": "10s",
+      "guest_additions_mode": "disable",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "http_directory": "http",
       "shutdown_command": "/sbin/shutdown -hP 0",
@@ -91,11 +92,6 @@
         "scripts/base.sh",
         "scripts/puppet.sh"
       ]
-    },
-    {
-      "type": "shell",
-      "script": "scripts/virtualbox.sh",
-      "only": ["virtualbox-iso"]
     },
     {
       "type": "shell",
