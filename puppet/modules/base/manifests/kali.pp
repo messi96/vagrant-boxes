@@ -37,13 +37,7 @@
 #
 class base::kali {
 
-  file { '/root/.msf4':
-    ensure => 'directory'
-  } ->
 
-  file { '/root/.msf4/database.yml':
-    ensure => 'link',
-    target => '/opt/metasploit/apps/pro/ui/config/database.yml'
   }
 
   service { 'postgresql':
