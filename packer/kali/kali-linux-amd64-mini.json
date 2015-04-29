@@ -2,8 +2,9 @@
   "variables": {
     "vm_name": "kali-linux-amd64-mini",
     "disk_size": 20480,
-    "iso_checksum_type": "none",
-    "iso_url": "{{env `HOME`}}/tmp/binary.hybrid.iso",
+    "iso_checksum": "5beac276f46542e7b764b0416575156c85b42f0c",
+    "iso_checksum_type": "sha1",
+    "iso_url": "http://cdimage.kali.org/kali-1.1.0a/kali-linux-1.1.0a-amd64-mini.iso",
     "box_desc" : "Kali Linux 64 Bit Mini"
   },
   "description": "{{user `box_desc`}}",
@@ -15,6 +16,7 @@
       "guest_os_type": "Debian_64",
       "vm_name": "{{user `vm_name`}}",
       "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
       "vboxmanage": [
@@ -54,6 +56,7 @@
       "guest_os_type": "debian7-64",
       "vm_name": "{{user `vm_name`}}",
       "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
       "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "disk_size": "{{user `disk_size`}}",
       "boot_command": [
