@@ -37,7 +37,20 @@
 #
 class base::kali {
 
+  file { '/root/.bashrc':
+    ensure => 'present',
+    source => '/etc/skel/.bashrc',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644'
+  }
 
+  file { '/root/.profile':
+    ensure => 'present',
+    source => '/etc/skel/.profile',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644'
   }
 
   service { 'postgresql':
