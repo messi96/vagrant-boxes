@@ -11,6 +11,7 @@ echo "[*] Upgrading"
 apt-get -y dist-upgrade
 
 # Enable gdm autologin
-echo "[*] Enabling gdm autlogin"
-sed -i.orig -r -e 's/^#\s+(AutomaticLogin.*)/\1/' /etc/gdm3/daemon.conf
-
+if [ -e /etc/gdm3/daemon.conf ]; then
+    echo "[*] Enabling gdm autlogin"
+    sed -i.orig -r -e 's/^#\s+(AutomaticLogin.*)/\1/' /etc/gdm3/daemon.conf
+fi
