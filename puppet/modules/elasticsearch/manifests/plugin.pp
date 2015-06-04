@@ -27,6 +27,18 @@
 #   Default value: None
 #   This variable is optional
 #
+# [*proxy_host*]
+#   Proxy host to use when installing the plugin
+#   Value type is string
+#   Default value: None
+#   This variable is optional
+#
+# [*proxy_port*]
+#   Proxy port to use when installing the plugin
+#   Value type is number
+#   Default value: None
+#   This variable is optional
+#
 # [*instances*]
 #   Specify all the instances related
 #   value type is string or array
@@ -52,7 +64,9 @@ define elasticsearch::plugin(
     $module_dir,
     $instances,
     $ensure      = 'present',
-    $url         = ''
+    $url         = undef,
+    $proxy_host  = undef,
+    $proxy_port  = undef,
 ) {
 
   include elasticsearch
@@ -62,7 +76,8 @@ define elasticsearch::plugin(
     cwd       => '/',
     user      => $elasticsearch::elasticsearch_user,
     tries     => 6,
-    try_sleep => 10
+    try_sleep => 10,
+    timeout   => 600,
   }
 
   $notify_service = $elasticsearch::restart_on_change ? {
@@ -76,23 +91,40 @@ define elasticsearch::plugin(
       fail("module_dir undefined for plugin ${name}")
   }
 
+  if ($proxy_host != undef and $proxy_port != undef) {
+    $proxy = " -DproxyPort=${proxy_port} -DproxyHost=${proxy_host}"
+  } else {
+    $proxy = '' # lint:ignore:empty_string_assignment
+  }
+
   if ($url != '') {
     validate_string($url)
-    $install_cmd = "${elasticsearch::plugintool} -install ${name} -url ${url}"
+    $install_cmd = "${elasticsearch::plugintool}${proxy} -install ${name} -url ${url}"
     $exec_rets = [0,1]
   } else {
-    $install_cmd = "${elasticsearch::plugintool} -install ${name}"
+    $install_cmd = "${elasticsearch::plugintool}${proxy} -install ${name}"
     $exec_rets = [0,]
   }
 
   case $ensure {
     'installed', 'present': {
+      $name_file_path = "${elasticsearch::plugindir}/${module_dir}/.name"
+      exec {"purge_plugin_${module_dir}_old":
+        command => "${elasticsearch::plugintool} --remove ${module_dir}",
+        onlyif  => "test -e ${elasticsearch::plugindir}/${module_dir} && test \"$(cat ${name_file_path})\" != '${name}'",
+        before  => Exec["install_plugin_${name}"],
+      }
       exec {"install_plugin_${name}":
-        command  => $install_cmd,
-        creates  => "${elasticsearch::plugindir}/${module_dir}",
-        returns  => $exec_rets,
-        notify   => $notify_service,
-        require  => File[$elasticsearch::plugindir]
+        command => $install_cmd,
+        creates => "${elasticsearch::plugindir}/${module_dir}",
+        returns => $exec_rets,
+        notify  => $notify_service,
+        require => File[$elasticsearch::plugindir],
+      }
+      file {$name_file_path:
+        ensure  => file,
+        content => $name,
+        require => Exec["install_plugin_${name}"],
       }
     }
     default: {
