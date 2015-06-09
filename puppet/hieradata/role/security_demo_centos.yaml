@@ -3,9 +3,6 @@ classes:
   - demo_security::centos
   - oracle_xe
   - profiles::base
-  - splunk
-  - splunk_dashboard
-  - sqlmap
   - waratek_java
 packages:
   - httpd
@@ -14,8 +11,6 @@ packages:
 demo_security::demo_user: vagrant
 demo_security::demo_group: vagrant
 spiracle::version: 1.1.1
-splunk::install: server
-splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.1/splunk/linux/splunk-6.2.1-245427-linux-2.6-x86_64.rpm
 tomcat::tomcat6_home: /opt/apache-tomcat/tomcat6
 tomcat::tomcat6_version: 6.0.43
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7

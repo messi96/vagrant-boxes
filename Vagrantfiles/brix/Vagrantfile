@@ -23,7 +23,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     centos.vm.network "private_network", ip: "172.21.21.21"
     centos.vm.network "public_network", ip: "10.1.2.101", :netmask => "255.255.0.0"
     centos.vm.network "forwarded_port", guest: 6060, host: 6060 # Tomcat 6
-    centos.vm.network "forwarded_port", guest: 8000, host: 8000 # Splunk
     centos.vm.network "forwarded_port", guest: 8080, host: 8080 # Tomcat 7
     centos.vm.network "forwarded_port", guest: 9090, host: 9090 # httpd
 
@@ -77,6 +76,36 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #puppet.options = "--verbose --debug"
       puppet.facter = {
         "role"        => "security_demo_kali"
+      }
+    end
+  end
+
+  # Monitor
+  config.vm.define "monitor" do |monitor|
+    monitor.vm.box = "waratek/centos6-x86_64"
+    monitor.vm.hostname = "monitor.brix.waratek.com"
+
+    monitor.vm.network "private_network", ip: "172.21.21.23"
+    monitor.vm.network "public_network", ip: "10.1.2.103", :netmask => "255.255.0.0"
+    monitor.vm.network "forwarded_port", guest: 8000, host: 8000 # Splunk
+
+    monitor.vm.synced_folder "../../synced_folder", "/synced_folder"
+    monitor.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+    
+    monitor.vm.provider "virtualbox" do |v|
+      v.name = "Waratek_monitor"
+      v.cpus = 2
+      v.memory = 2048
+    end
+
+    monitor.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "../../puppet/manifests"
+      puppet.manifest_file = "site.pp"
+      puppet.module_path = "../../puppet/modules"
+      puppet.hiera_config_path = "../../puppet/hiera.yaml"
+      #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "role"        => "security_demo_monitor"
       }
     end
   end
