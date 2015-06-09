@@ -1,9 +1,7 @@
-# = Define puppi::project::archive
+# == Define puppi::project::hg
 #
-# This is a puppi deployment project to be used for archives
-# like tarballs and zips
-#
-#
+# This is a shortcut define to build a puppi project for the deploy of
+# file from a mercurial repo.
 # It uses different "core" defines (puppi::project, puppi:deploy (many),
 # puppi::rollback (many)) to build a full featured template project for
 # automatic deployments.
@@ -13,14 +11,47 @@
 # == Variables:
 #
 # [*source*]
-#   The full URL of the main file to retrieve.
-#   Format should be in URI standard (http:// file:// ssh:// rsync://).
+#   The full URL of the mercurial repo to retrieve.
+#   Format should be in mercurial friendly standard (http:// ssh:// ..).
 #
 # [*deploy_root*]
 #   The destination directory where the retrieved file(s) are deployed.
 #
+# [*install_hg*]
+#   If the mercurial package has to be installed. Default true.
+#   Set to false if you install mercurial via other modules and have resource
+#   conflicts.
+#
+# [*tag*]
+#   (Optional) - A specific tag you may want to deploy. Default undefined
+#   You can override the default value via command-line with:
+#   puppi deploy myapp -o "tag=release"
+#
+# [*branch*]
+#   (Optional) - A specific branch you may want to deploy. Default: master
+#   You can override the default value via command-line with:
+#   puppi deploy myapp -o "branch=devel"
+#
+# [*commit*]
+#   (Optional) - A specific commit you may want to use. Default undefined
+#   You can override the default value via command-line with:
+#   puppi deploy myapp -o "commit=1061cb731bc75a1188b58b889b74ce1505ccb412"
+#
+# [*keep_hgdata*]
+#   (Optional) - Define if you want to keep mercurial metadata directory (.hg)
+#   in the deploy root. According to this value backup and rollback
+#   operations change (with keep_hgdata set to true no real backups are done
+#   and operations are made on the mercurial tree, if set to false, file are copied
+#   and the $backup_* options used. Default is true
+#
+# [*verbose*]
+#   (Optional) - If you want to see verbose mercurial output (file names) during
+#   the deploy. Default is true.
+#
 # [*user*]
 #   (Optional) - The user to be used for deploy operations.
+#   If different from root (default) it must have write permissions on
+#   the $deploy_root dir.
 #
 # [*predeploy_customcommand*]
 #   (Optional) -  Full path with arguments of an eventual custom command to
@@ -69,42 +100,35 @@
 #   (Optional) - The (space separated) email(s) to notify of deploy/rollback
 #   operations. If none is specified, no email is sent.
 #
-# [*clean_deploy*]
-#   (Optional, default false) - If during the deploy procedure, all the
-#   existing files that are not on the source have to be deleted.
-#   (When true, a --delete option is added to the rsync command)
-#   Do not set to true if source files are incremental.
-#
-# [*backup_enable*]
-#   (Optional, default true) - If the backup of files in the deploy dir
-#   is done (before deploy). If set to false, rollback is disabled.
-#
 # [*backup_rsync_options*]
 #   (Optional) - The extra options to pass to rsync for backup operations. Use
 #   it, for example, to exclude directories that you don't want to archive.
 #   IE: "--exclude .snapshot --exclude cache --exclude www/cache".
+#   This option is used when $keep_hgmeta is set to false
 #
 # [*backup_retention*]
 #   (Optional) - Number of backup archives to keep. (Default 5).
 #   Lower the default value if your backups are too large and may fill up the
 #   filesystem.
+#   This option is used when $keep_hgmeta is set to false
 #
 # [*run_checks*]
 #   (Optional) - If you want to run local puppi checks before and after the
 #   deploy procedure. Default: "true".
 #
-# [*always_deploy*]
-#   (Optional) - If you always deploy what has been downloaded. Default="yes",
-#   if set to "no" a checksum is made between the files previously downloaded
-#   and the new files. If they are the same the deploy is not done.
-#
 # [*auto_deploy*]
 #   (Optional) - If you want to automatically run this puppi deploy when
 #   Puppet runs. Default: 'false'
 #
-define puppi::project::archive (
+define puppi::project::hg (
   $source,
   $deploy_root,
+  $install_hg               = true,
+  $tag                      = 'undefined',
+  $branch                   = 'default',
+  $commit                   = 'undefined',
+  $keep_hgdata              = true,
+  $verbose                  = true,
   $user                     = 'root',
   $predeploy_customcommand  = '',
   $predeploy_user           = '',
@@ -117,12 +141,9 @@ define puppi::project::archive (
   $firewall_dst_port        = '0',
   $firewall_delay           = '1',
   $report_email             = '',
-  $clean_deploy             = false,
-  $backup_enable            = true,
   $backup_rsync_options     = '--exclude .snapshot',
   $backup_retention         = '5',
   $run_checks               = true,
-  $always_deploy            = true,
   $auto_deploy              = false,
   $enable                   = true ) {
 
@@ -140,31 +161,22 @@ define puppi::project::archive (
     default => $postdeploy_user,
   }
 
-  $real_always_deploy = any2bool($always_deploy) ? {
-    false   => 'no',
-    true    => 'yes',
-  }
-
-
+  $bool_install_hg = any2bool($install_hg)
+  $bool_keep_hgdata = any2bool($keep_hgdata)
+  $bool_verbose = any2bool($verbose)
   $bool_run_checks = any2bool($run_checks)
-  $bool_clean_deploy = any2bool($clean_deploy)
-  $bool_backup_enable = any2bool($backup_enable)
   $bool_auto_deploy = any2bool($auto_deploy)
 
-  $source_type = url_parse($source,filetype)
-
-  $real_source_type = $source_type ? {
-    '.tar'     => 'tar',
-    '.tar.gz'  => 'tarball',
-    '.gz'      => 'tarball',
-    '.tgz'     => 'tarball',
-    '.zip'     => 'zip',
+### INSTALL HG
+  if ($bool_install_hg == true) {
+    if ! defined(Package['mercurial']) { package { 'mercurial': ensure => installed } }
   }
 
 ### CREATE PROJECT
     puppi::project { $name:
       enable => $enable ,
     }
+
 
 ### DEPLOY SEQUENCE
   if ($bool_run_checks == true) {
@@ -178,24 +190,6 @@ define puppi::project::archive (
     }
   }
 
-    # Here source file is retrieved
-    puppi::deploy { "${name}-Retrieve_Archive":
-      priority  => '20' ,
-      command   => 'get_file.sh' ,
-      arguments => "-s ${source} -t ${real_source_type} -a ${real_always_deploy}" ,
-      user      => 'root' ,
-      project   => $name ,
-      enable    => $enable ,
-    }
-
-    puppi::deploy { "${name}-PreDeploy_Archive":
-      priority => '25' ,
-      command  => 'predeploy.sh' ,
-      user     => 'root' ,
-      project  => $name ,
-      enable   => $enable ,
-    }
-
   if ($firewall_src_ip != '') {
     puppi::deploy { "${name}-Load_Balancer_Block":
       priority  => '25' ,
@@ -207,8 +201,8 @@ define puppi::project::archive (
     }
   }
 
-  if ($bool_backup_enable == true) {
-    puppi::deploy { "${name}-Backup_existing_Files":
+  if ($bool_keep_hgdata == true) {
+    puppi::deploy { "${name}-Backup_existing_data":
       priority  => '30' ,
       command   => 'archive.sh' ,
       arguments => "-b ${deploy_root} -o '${backup_rsync_options}' -n ${backup_retention}" ,
@@ -241,11 +235,11 @@ define puppi::project::archive (
   }
 
     # Here is done the deploy on $deploy_root
-    puppi::deploy { "${name}-Deploy":
+    puppi::deploy { "${name}-Deploy_Files":
       priority  => '40' ,
-      command   => 'deploy_files.sh' ,
-      arguments => "-d ${deploy_root} -c ${bool_clean_deploy}",
-      user      => $user ,
+      command   => 'hg.sh' ,
+      arguments => "-a deploy -s ${source} -d ${deploy_root} -u ${user} -t ${tag} -b ${branch} -c ${commit} -v ${bool_verbose} -k ${bool_keep_hgdata}" ,
+      user      => 'root' ,
       project   => $name ,
       enable    => $enable ,
     }
@@ -297,40 +291,40 @@ define puppi::project::archive (
 
 ### ROLLBACK PROCEDURE
 
-  if ($bool_backup_enable == true) {
-    if ($firewall_src_ip != '') {
-      puppi::rollback { "${name}-Load_Balancer_Block":
-        priority  => '25' ,
-        command   => 'firewall.sh' ,
-        arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
-        user      => 'root',
-        project   => $name ,
-        enable    => $enable ,
-      }
+  if ($firewall_src_ip != '') {
+    puppi::rollback { "${name}-Load_Balancer_Block":
+      priority  => '25' ,
+      command   => 'firewall.sh' ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} on ${firewall_delay}" ,
+      user      => 'root',
+      project   => $name ,
+      enable    => $enable ,
     }
+  }
 
-    if ($disable_services != '') {
-      puppi::rollback { "${name}-Disable_extra_services":
-        priority  => '37' ,
-        command   => 'service.sh' ,
-        arguments => "stop ${disable_services}" ,
-        user      => 'root',
-        project   => $name ,
-        enable    => $enable ,
-      }
+  if ($disable_services != '') {
+    puppi::rollback { "${name}-Disable_extra_services":
+      priority  => '37' ,
+      command   => 'service.sh' ,
+      arguments => "stop ${disable_services}" ,
+      user      => 'root',
+      project   => $name ,
+      enable    => $enable ,
     }
+  }
 
-    if ($predeploy_customcommand != '') {
-      puppi::rollback { "${name}-Run_Custom_PreDeploy_Script":
-        priority  => $predeploy_priority ,
-        command   => 'execute.sh' ,
-        arguments => $predeploy_customcommand ,
-        user      => $predeploy_real_user ,
-        project   => $name ,
-        enable    => $enable ,
-      }
+  if ($predeploy_customcommand != '') {
+    puppi::rollback { "${name}-Run_Custom_PreDeploy_Script":
+      priority  => $predeploy_priority ,
+      command   => 'execute.sh' ,
+      arguments => $predeploy_customcommand ,
+      user      => $predeploy_real_user ,
+      project   => $name ,
+      enable    => $enable ,
     }
+  }
 
+  if ($bool_keep_hgdata == true) {
     puppi::rollback { "${name}-Recover_Files_To_Deploy":
       priority  => '40' ,
       command   => 'archive.sh' ,
@@ -339,51 +333,63 @@ define puppi::project::archive (
       project   => $name ,
       enable    => $enable ,
     }
+  }
 
-    if ($postdeploy_customcommand != '') {
-      puppi::rollback { "${name}-Run_Custom_PostDeploy_Script":
-        priority  => $postdeploy_priority ,
-        command   => 'execute.sh' ,
-        arguments => $postdeploy_customcommand ,
-        user      => $postdeploy_real_user ,
-        project   => $name ,
-        enable    => $enable ,
-      }
-    }
-
-    if ($disable_services != '') {
-      puppi::rollback { "${name}-Enable_extra_services":
-        priority  => '44' ,
-        command   => 'service.sh' ,
-        arguments => "start ${disable_services}" ,
-        user      => 'root',
-        project   => $name ,
-        enable    => $enable ,
-      }
-    }
-
-    if ($firewall_src_ip != '') {
-      puppi::rollback { "${name}-Load_Balancer_Unblock":
-        priority  => '46' ,
-        command   => 'firewall.sh' ,
-        arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
-        user      => 'root',
-        project   => $name ,
-        enable    => $enable ,
-      }
-    }
-
-    if ($bool_run_checks == true) {
-      puppi::rollback { "${name}-Run_POST-Checks":
-        priority  => '80' ,
-        command   => 'check_project.sh' ,
-        arguments => $name ,
-        user      => 'root' ,
-        project   => $name ,
-        enable    => $enable ,
-      }
+  if ($bool_keep_hgdata != true) {
+    puppi::rollback { "${name}-Rollback_Files":
+      priority  => '40' ,
+      command   => 'hg.sh' ,
+      arguments => "-a rollback -s ${source} -d ${deploy_root} -t ${tag} -b ${branch} -c ${commit} -v ${bool_verbose} -k ${bool_keep_hgdata}" ,
+      user      => $user ,
+      project   => $name ,
+      enable    => $enable ,
     }
   }
+
+  if ($postdeploy_customcommand != '') {
+    puppi::rollback { "${name}-Run_Custom_PostDeploy_Script":
+      priority  => $postdeploy_priority ,
+      command   => 'execute.sh' ,
+      arguments => $postdeploy_customcommand ,
+      user      => $postdeploy_real_user ,
+      project   => $name ,
+      enable    => $enable ,
+    }
+  }
+
+  if ($disable_services != '') {
+    puppi::rollback { "${name}-Enable_extra_services":
+      priority  => '44' ,
+      command   => 'service.sh' ,
+      arguments => "start ${disable_services}" ,
+      user      => 'root',
+      project   => $name ,
+      enable    => $enable ,
+    }
+  }
+
+  if ($firewall_src_ip != '') {
+    puppi::rollback { "${name}-Load_Balancer_Unblock":
+      priority  => '46' ,
+      command   => 'firewall.sh' ,
+      arguments => "${firewall_src_ip} ${firewall_dst_port} off 0" ,
+      user      => 'root',
+      project   => $name ,
+      enable    => $enable ,
+    }
+  }
+
+  if ($bool_run_checks == true) {
+    puppi::rollback { "${name}-Run_POST-Checks":
+      priority  => '80' ,
+      command   => 'check_project.sh' ,
+      arguments => $name ,
+      user      => 'root' ,
+      project   => $name ,
+      enable    => $enable ,
+    }
+  }
+
 
 ### REPORTING
 

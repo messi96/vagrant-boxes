@@ -1,5 +1,5 @@
 #!/bin/bash
-# git.sh - Made for Puppi
+# hg.sh - Made for Puppi
 
 # All variables are exported
 set -a 
@@ -9,22 +9,21 @@ set -a
 
 # Show help
 showhelp () {
-    echo "This script performs the git operations required by puppi::project::git"
+    echo "This script performs the hg operations required by puppi::project::hg"
     echo "It integrates and uses variables provided by other core Puppi scripts"
     echo "It has the following options:"
     echo "-a <action> (Optional) What action to perform. Available options: deploy (default), rollback"
     echo "-s <source> (Required) Git source repo to use"
     echo "-d <destination> (Required) Directory where files are deployed"
     echo "-u <user> (Optional) User that performs the deploy operations. Default root"
-    echo "-gs <git_subdir> (Optional) If only a specific subdir of the gitrepo has to be copied to the install destination"
     echo "-t <tag> (Optional) Tag to deploy"
     echo "-b <branch> (Optional) Branch to deploy"
     echo "-c <commit> (Optional) Commit to deploy"
     echo "-v <true|false> (Optional) If verbose"
-    echo "-k <true|false> (Optional) If .git dir is kept on deploy_root"
+    echo "-k <true|false> (Optional) If .hg dir is kept on deploy_root"
     echo 
     echo "Examples:"
-    echo "git.sh -a deploy -s $source -d $deploy_root -u $user -gs $git_subdir -t $tag -b $branch -c $commit -v $bool_verbose -k $bool_keep_gitdata"
+    echo "hg.sh -a deploy -s $source -d $deploy_root -u $user -t $tag -b $branch -c $commit -v $bool_verbose -k $bool_keep_hgdata"
 }
 
 verbose="true"
@@ -63,18 +62,11 @@ while [ $# -gt 0 ]; do
         deploy_user=$2
       fi
       shift 2 ;;
-    -gs)
-      if [ $git_subdir ] ; then
-        git_subdir=$git_subdir
-      else
-        git_subdir=$2
-      fi
-      shift 2 ;;
     -t)
-      if [ $git_tag ] ; then
-        git_tag=$git_tag
+      if [ $hg_tag ] ; then
+        hg_tag=$hg_tag
       else
-        git_tag=$2
+        hg_tag=$2
       fi
       shift 2 ;;
     -b)
@@ -99,10 +91,10 @@ while [ $# -gt 0 ]; do
       fi
       shift 2 ;;
     -k)
-      if [ $keep_gitdata ] ; then
-        keep_gitdata=$keep_gitdata
+      if [ $keep_hgdata ] ; then
+        keep_hgdata=$keep_hgdata
       else
-        keep_gitdata=$2
+        keep_hgdata=$2
       fi
       shift 2 ;;
     *)
@@ -112,54 +104,45 @@ while [ $# -gt 0 ]; do
 done
 
 if [ "x$verbose" == "xtrue" ] ; then
-  verbosity=""
+  verbosity="-v"
 else
-  verbosity="--quiet"
+  verbosity=""
 fi
 
 cd /
 
-gitsubdir=""
-gitdir=$deploy_root
-if [ "x$keep_gitdata" != "xtrue" ] ; then
-  if [ ! -d $archivedir/$project-git ] ; then
-    mkdir $archivedir/$project-git
-    chown -R $deploy_user:$deploy_user $archivedir/$project-git
+hgdir=$deploy_root
+if [ "x$keep_hgdata" != "xtrue" ] ; then
+  if [ ! -d $archivedir/$project-hg ] ; then
+    mkdir $archivedir/$project-hg
+    chown -R $deploy_user:$deploy_user $archivedir/$project-hg
   fi
-  gitdir=$archivedir/$project-git/gitrepo
-fi
-if [ "x$git_subdir" != "xundefined" ] ; then
-  if [ ! -d $archivedir/$project-git ] ; then
-    mkdir $archivedir/$project-git
-    chown -R $deploy_user:$deploy_user $archivedir/$project-git
-  fi
-  gitdir=$archivedir/$project-git
-  gitsubdir="$git_subdir/"
+  hgdir=$archivedir/$project-hg/hgrepo
 fi
 
 do_install () {
-  if [ -d $gitdir/.git ] ; then
-    cd $gitdir
-    git pull $verbosity origin $branch
-    git checkout $verbosity $branch
+  if [ -d $hgdir/.hg ] ; then
+    cd $hgdir
+    hg pull $verbosity origin $branch
+    hg update $verbosity $branch
     if [ "x$?" != "x0" ] ; then
-      git checkout -b $verbosity $branch
+      hg update $verbosity $branch
     fi
   else
-    git clone $verbosity --branch $branch --recursive $source $gitdir
-    cd $gitdir
+    hg clone $verbosity --branch $branch $source $hgdir
+    cd $hgdir
   fi
 
-  if [ "x$git_tag" != "xundefined" ] ; then
-    git checkout $verbosity $git_tag
+  if [ "x$hg_tag" != "xundefined" ] ; then
+    hg update $verbosity $hg_tag
   fi
 
   if [ "x$commit" != "xundefined" ] ; then
-    git checkout $verbosity $commit
+    hg update $verbosity $commit
   fi
 
-  if [ "x$gitdir" == "x$archivedir/$project-git/gitrepo" ] ; then
-    rsync -a --exclude=".git" $gitdir/$gitsubdir $deploy_root/
+  if [ "x$hgdir" == "x$archivedir/$project-hg" ] ; then
+    rsync -a --exclude=".hg" $hgdir/$hgsubdir $deploy_root/
   fi
 
 }
