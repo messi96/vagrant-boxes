@@ -1,5 +1,6 @@
 ---
 classes:
+  - demo_security::monitor
   - splunk
   - splunk_dashboard
 splunk::install: server
