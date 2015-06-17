@@ -15,27 +15,55 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
   end
 
-  # CentOS
-  config.vm.define "centos", primary: true do |centos|
-    centos.vm.box = "waratek/centos6-x86_64"
-    centos.vm.hostname = "centos.brix.waratek.com"
+  # demo1
+  config.vm.define "demo1", primary: true do |demo1|
+    demo1.vm.box = "waratek/centos6-x86_64"
+    demo1.vm.hostname = "demo1.example.com"
 
-    centos.vm.network "private_network", ip: "172.21.21.21"
-    centos.vm.network "public_network", ip: "10.1.2.101", :netmask => "255.255.0.0"
-    centos.vm.network "forwarded_port", guest: 6060, host: 6060 # Tomcat 6
-    centos.vm.network "forwarded_port", guest: 8080, host: 8080 # Tomcat 7
-    centos.vm.network "forwarded_port", guest: 9090, host: 9090 # httpd
+    demo1.vm.network "private_network", ip: "172.21.21.21"
+    demo1.vm.network "public_network", ip: "10.1.2.101", :netmask => "255.255.0.0"
 
-    centos.vm.synced_folder "../../synced_folder", "/synced_folder"
-    centos.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+    demo1.vm.synced_folder "../../synced_folder", "/synced_folder"
+    demo1.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
     
-    centos.vm.provider "virtualbox" do |v|
-      v.name = "Waratek_CentOS"
+    demo1.vm.provider "virtualbox" do |v|
+      v.name = "Waratek_demo1"
       v.cpus = 2
       v.memory = 2048
     end
 
-    centos.vm.provision "puppet" do |puppet|
+    demo1.vm.provision "puppet" do |puppet|
+      puppet.manifests_path = "../../puppet/manifests"
+      puppet.manifest_file = "site.pp"
+      puppet.module_path = "../../puppet/modules"
+      puppet.hiera_config_path = "../../puppet/hiera.yaml"
+      #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "role"        => "security_demo_centos",
+        "vagrant"     => "true",
+        "vagrantuser" => "vagrant",
+      }
+    end
+  end
+
+  # demo2
+  config.vm.define "demo2" do |demo2|
+    demo2.vm.box = "waratek/centos6-x86_64"
+    demo2.vm.hostname = "demo2.example.com"
+
+    demo2.vm.network "private_network", ip: "172.21.21.22"
+    demo2.vm.network "public_network", ip: "10.1.2.102", :netmask => "255.255.0.0"
+
+    demo2.vm.synced_folder "../../synced_folder", "/synced_folder"
+    demo2.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+    
+    demo2.vm.provider "virtualbox" do |v|
+      v.name = "Waratek_demo2"
+      v.cpus = 2
+      v.memory = 2048
+    end
+
+    demo2.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
@@ -53,11 +81,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "kali" do |kali|
     kali.vm.box = "waratek/kali-mini"
     kali.vm.guest = "debian"
-    kali.vm.hostname = "kali.brix.waratek.com"
+    kali.vm.hostname = "kali.example.com"
     kali.ssh.username = "root"
 
-    kali.vm.network "private_network", ip: "172.21.21.22"
-    kali.vm.network "public_network", ip: "10.1.2.102", :netmask => "255.255.0.0"
+    kali.vm.network "private_network", ip: "172.21.21.30"
+    kali.vm.network "public_network", ip: "10.1.2.130", :netmask => "255.255.0.0"
 
     kali.vm.synced_folder "../../synced_folder", "/synced_folder"
     kali.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
@@ -83,11 +111,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Monitor
   config.vm.define "monitor" do |monitor|
     monitor.vm.box = "waratek/centos6-x86_64"
-    monitor.vm.hostname = "monitor.brix.waratek.com"
+    monitor.vm.hostname = "monitor.example.com"
 
-    monitor.vm.network "private_network", ip: "172.21.21.23"
-    monitor.vm.network "public_network", ip: "10.1.2.103", :netmask => "255.255.0.0"
-    monitor.vm.network "forwarded_port", guest: 8000, host: 8000 # Splunk
+    monitor.vm.network "private_network", ip: "172.21.21.40"
+    monitor.vm.network "public_network", ip: "10.1.2.140", :netmask => "255.255.0.0"
 
     monitor.vm.synced_folder "../../synced_folder", "/synced_folder"
     monitor.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
