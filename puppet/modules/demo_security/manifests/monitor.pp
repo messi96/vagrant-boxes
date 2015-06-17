@@ -37,6 +37,24 @@
 #
 class demo_security::monitor inherits demo_security {
 
+  vcsrepo { '/opt/splunk/etc/apps/waratek':
+    ensure   => present,
+    provider => git,
+    source   => 'https://github.com/prateepb/splunk-test-app.git',
+    user     => 'splunk',
+    require  => Package['splunk'],
+    notify   => Service['splunk']
+  } ->
+
+  file { '/opt/splunk/etc/apps/waratek/local/inputs.conf':
+  	ensure => present,
+  	source => 'puppet:///modules/demo_security/splunk/inputs.conf',
+  	owner  => 'splunk',
+  	group  => 'splunk',
+  	mode   => '0644',
+    notify   => Service['splunk']
+  }
+
   service { 'iptables':
     ensure => false,
     enable => false

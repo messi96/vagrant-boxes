@@ -2,6 +2,5 @@
 classes:
   - demo_security::monitor
   - splunk
-  - splunk_dashboard
 splunk::install: server
 splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/splunk/linux/splunk-6.2.3-264376-linux-2.6-x86_64.rpm
