@@ -117,6 +117,7 @@ class demo_security::centos inherits demo_security {
   class  { '::demo_security::spiracle': } ->
   class  { '::demo_security::webgoat': } ->
   class  { '::demo_security::jforum': } ->
+  class  { '::demo_security::splunk_inputs': } ->
   anchor { 'demo_security::end': }
 
 }
