@@ -38,7 +38,7 @@
 class demo_security::params {
 
   $demo1_ip   = '172.21.21.21'
-  $demo1_ip   = '172.21.21.22'
+  $demo2_ip   = '172.21.21.22'
   $kali_ip    = '172.21.21.30'
   $monitor_ip = '172.21.21.40'
 
