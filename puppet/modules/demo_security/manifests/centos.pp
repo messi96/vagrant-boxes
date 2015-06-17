@@ -78,16 +78,16 @@ class demo_security::centos inherits demo_security {
       ip           => "$monitor_ip",
       host_aliases => 'monitor.example.com'
     }
+  }
 
-    service { 'iptables':
-      ensure => false,
-      enable => false
-    }
+  service { 'iptables':
+    ensure => false,
+    enable => false
+  }
 
-    service { 'ip6tables':
-      ensure => false,
-      enable => false
-    }
+  service { 'ip6tables':
+    ensure => false,
+    enable => false
   }
 
   exec { 'disable-selinux':
