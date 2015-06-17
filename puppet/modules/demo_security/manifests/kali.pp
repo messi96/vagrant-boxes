@@ -43,9 +43,14 @@ class demo_security::kali inherits demo_security {
     source => "puppet:///modules/demo_security/cve-2013-2251.rc",
   }
 
-  host { 'centos':
-    ip           => "$centos_ip",
-    host_aliases => 'centos.localdomain'
+  host { 'demo1':
+    ip           => "$demo1_ip",
+    host_aliases => 'demo1.example.com'
+  }
+
+  host { 'demo2':
+    ip           => "$demo2_ip",
+    host_aliases => 'demo2.example.com'
   }
 
 }

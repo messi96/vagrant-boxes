@@ -37,8 +37,10 @@
 #
 class demo_security::params {
 
-  $centos_ip = '172.21.21.21'
-  $kali_ip   = '172.21.21.22'
+  $demo1_ip   = '172.21.21.21'
+  $demo1_ip   = '172.21.21.22'
+  $kali_ip    = '172.21.21.30'
+  $monitor_ip = '172.21.21.40'
 
   if ($demo_user == undef) and ($::vagrantuser) {
   	$demo_user  = $::vagrantuser

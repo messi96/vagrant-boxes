@@ -71,7 +71,12 @@ class demo_security::centos inherits demo_security {
   if ($::vagrant == "true") {
     host { 'kali':
       ip           => "$kali_ip",
-      host_aliases => 'kali.localdomain'
+      host_aliases => 'kali.example.com'
+    }
+
+    host { 'monitor':
+      ip           => "$monitor_ip",
+      host_aliases => 'monitor.example.com'
     }
 
     service { 'iptables':
