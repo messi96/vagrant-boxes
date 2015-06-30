@@ -5,6 +5,7 @@ classes:
   - sudo::configs
 packages:
   - bc
+  - curl
   - unzip
   - wget
 staging::path: /tmp/staging
