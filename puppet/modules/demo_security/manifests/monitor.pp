@@ -55,6 +55,14 @@ class demo_security::monitor inherits demo_security {
     notify   => Service['splunk']
   }
 
+  $config_hash = {
+    'JAVA_HOME' => '/usr/lib/jvm/java-1.7.0'
+  }
+
+  elasticsearch::instance { 'es-01':
+    init_defaults => $config_hash
+  }
+
   service { 'iptables':
     ensure => false,
     enable => false

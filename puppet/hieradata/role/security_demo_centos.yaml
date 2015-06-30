@@ -1,7 +1,6 @@
 ---
 classes:
   - demo_security::centos
-  - elasticsearch
   - logstash
   - oracle_xe
   - profiles::base
@@ -13,9 +12,6 @@ packages:
   - mod_security_crs
 demo_security::demo_user: vagrant
 demo_security::demo_group: vagrant
-elasticsearch::manage_repo: true
-elasticsearch::repo_version: '1.5'
-elasticsearch::status: enabled
 logstash::init_defaults:
   JAVACMD: '/usr/lib/jvm/java-1.7.0/bin/java'
   PATH: '/usr/lib/jvm/java-1.7.0/bin:$PATH'
