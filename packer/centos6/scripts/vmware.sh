@@ -15,3 +15,8 @@ rm $TOOLS_ISO
 
 cd /tmp/vmware-tools-distrib
 ./vmware-install.pl --default
+
+# Don't upgrade the kernel files after this point.
+yum versionlock kernel kernel-devel kernel-doc kernel-firmware kernel-headers
+
+yum -y remove gcc kernel-devel
