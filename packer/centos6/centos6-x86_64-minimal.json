@@ -76,16 +76,6 @@
       ]
     },
     {
-      "type": "shell",
-      "script": "scripts/virtualbox.sh",
-      "only": ["virtualbox-iso"]
-    },
-    {
-      "type": "shell",
-      "script": "scripts/vmware.sh",
-      "only": ["vmware-iso"]
-    },
-    {
       "type": "puppet-masterless",
         "manifest_file": "../../puppet/manifests/site.pp",
         "module_paths": ["../../puppet/modules"],
@@ -94,6 +84,16 @@
           {
             "packer": "vagrant"
           }
+    },
+    {
+      "type": "shell",
+      "script": "scripts/virtualbox.sh",
+      "only": ["virtualbox-iso"]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/vmware.sh",
+      "only": ["vmware-iso"]
     },
     {
       "type": "shell",
