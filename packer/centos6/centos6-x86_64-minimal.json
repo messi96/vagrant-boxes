@@ -34,6 +34,7 @@
       "shutdown_command": "/sbin/shutdown -hP 0",
       "ssh_password": "vagrant",
       "ssh_port": 22,
+      "ssh_pty": "true",
       "ssh_username": "root",
       "ssh_wait_timeout": "10000s"
     },
@@ -58,6 +59,7 @@
       "shutdown_command": "/sbin/shutdown -hP 0",
       "ssh_password": "vagrant",
       "ssh_port": 22,
+      "ssh_pty": "true",
       "ssh_username": "root",
       "ssh_wait_timeout": "10000s"
     }
