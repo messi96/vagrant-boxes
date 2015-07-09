@@ -1,6 +1,4 @@
 ---
-classes:
-  - epel
 packages:
   - byobu
   - bzip2
