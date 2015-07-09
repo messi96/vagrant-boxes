@@ -2,9 +2,9 @@
   "variables": {
     "vm_name": "centos6-x86_64",
     "disk_size": "20480",
-    "iso_checksum": "f21a71e8e31df73297bdd1ccd4a64a36831284bd",
+    "iso_checksum": "4ed6c56d365bd3ab12cd88b8a480f4a62e7c66d2",
     "iso_checksum_type": "sha1",
-    "iso_url": "http://ftp.heanet.ie/pub/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-minimal.iso",
+    "iso_url": "http://ftp.heanet.ie/pub/centos/6.6/isos/x86_64/CentOS-6.6-x86_64-minimal.iso",
     "box_desc" : "Centos Minimal"
   },
   "description": "{{user `box_desc`}}",
