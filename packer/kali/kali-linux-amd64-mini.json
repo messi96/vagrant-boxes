@@ -1,7 +1,7 @@
 {
   "variables": {
     "vm_name": "kali-linux-amd64-mini",
-    "disk_size": 20480,
+    "disk_size": "20480",
     "iso_checksum": "5beac276f46542e7b764b0416575156c85b42f0c",
     "iso_checksum_type": "sha1",
     "iso_url": "http://cdimage.kali.org/kali-1.1.0a/kali-linux-1.1.0a-amd64-mini.iso",
