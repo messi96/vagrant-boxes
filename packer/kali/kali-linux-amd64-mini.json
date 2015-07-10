@@ -5,7 +5,8 @@
     "iso_checksum": "5beac276f46542e7b764b0416575156c85b42f0c",
     "iso_checksum_type": "sha1",
     "iso_url": "http://cdimage.kali.org/kali-1.1.0a/kali-linux-1.1.0a-amd64-mini.iso",
-    "box_desc" : "Kali Linux 64 Bit Mini"
+    "box_desc" : "Kali Linux 64 Bit Mini",
+    "build_date": "{{isotime \"20060102\"}}"
   },
   "description": "{{user `box_desc`}}",
   "builders": [
@@ -117,7 +118,7 @@
   ],
   "post-processors": [  {
     "type": "vagrant",
-    "output" : "{{user `vm_name`}}_{{.Provider}}.box",
+    "output" : "{{user `vm_name`}}_{{.Provider}}_{{user `build_date`}}.box",
     "keep_input_artifact": false
   }
   ]
