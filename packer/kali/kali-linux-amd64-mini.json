@@ -63,7 +63,7 @@
       "disk_size": "{{user `disk_size`}}",
       "boot_command": [
         "<esc><wait>",
-        "install auto url=http://172.16.43.1:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "install auto url=http://172.16.205.1:{{ .HTTPPort }}/preseed.cfg <wait>",
         "locale=en_IE.UTF-8 kbd-chooser/method=us <wait>",
         "netcfg/get_hostname=kali-mini netcfg/get_domain=vagrantup.com debconf/frontend=noninteractive console-setup/ask_detect=false <wait>", 
   "console-keymaps-at/keymap=us keymap=us <wait>",
