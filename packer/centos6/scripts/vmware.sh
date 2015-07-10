@@ -16,6 +16,9 @@ rm $TOOLS_ISO
 cd /tmp/vmware-tools-distrib
 ./vmware-install.pl --default
 
+echo "answer ENABLE_VMBLOCK no" >> /etc/vmware-tools/locations
+echo "answer VMBLOCK_CONFED no" >> /etc/vmware-tools/locations
+
 # Don't upgrade the kernel files after this point.
 yum versionlock kernel kernel-devel kernel-doc kernel-firmware kernel-headers
 
