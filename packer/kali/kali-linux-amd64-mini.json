@@ -71,8 +71,6 @@
         "<enter><wait>"
       ],
       "boot_wait": "10s",
-      "tools_upload_flavor": "linux",
-      "tools_upload_path": "/root/vmware-tools.iso",
       "http_directory": "http",
       "shutdown_command": "/sbin/shutdown -hP 0",
       "ssh_password": "vagrant",
