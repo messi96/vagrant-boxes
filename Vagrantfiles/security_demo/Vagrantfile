@@ -36,6 +36,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
+    demo1.vm.provider "vmware_fusion" do |v|
+      v.vmx["memsize"] = "2048"
+      v.vmx["numvcpus"] = "2"
+    end
+
     # AWS
     demo1.vm.provider "aws" do |aws,override|
       override.vm.box = "waratek/aws-rhel6-PV"
@@ -88,6 +93,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
+    demo2.vm.provider "vmware_fusion" do |v|
+      v.vmx["memsize"] = "2048"
+      v.vmx["numvcpus"] = "2"
+    end
+
     demo2.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
@@ -123,6 +133,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
+    kali.vm.provider "vmware_fusion" do |v|
+      v.vmx["memsize"] = "2048"
+      v.vmx["numvcpus"] = "2"
+    end
+
     kali.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
@@ -152,6 +167,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.name = "Waratek_monitor"
       v.cpus = 2
       v.memory = 2048
+    end
+
+    monitor.vm.provider "vmware_fusion" do |v|
+      v.vmx["memsize"] = "2048"
+      v.vmx["numvcpus"] = "2"
     end
 
     monitor.vm.provision "puppet" do |puppet|
