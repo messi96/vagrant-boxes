@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # demo1
   config.vm.define "demo1", primary: true do |demo1|
     demo1.vm.box = "waratek/centos6-x86_64"
+    demo1.vm.box_version = "~> 1.0"
     demo1.vm.hostname = "demo1.example.com"
 
     demo1.vm.network "private_network", ip: "172.21.21.21"
@@ -72,6 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # demo2
   config.vm.define "demo2", autostart: false  do |demo2|
     demo2.vm.box = "waratek/centos6-x86_64"
+    demo2.vm.box_version = "~> 1.0"
     demo2.vm.hostname = "demo2.example.com"
 
     demo2.vm.network "private_network", ip: "172.21.21.22"
@@ -103,6 +105,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Kali
   config.vm.define "kali", autostart: false do |kali|
     kali.vm.box = "waratek/kali-mini"
+    kali.vm.box_version = "~> 1.0"
     kali.vm.guest = "debian"
     kali.vm.hostname = "kali.example.com"
     kali.ssh.username = "root"
@@ -135,6 +138,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Monitor
   config.vm.define "monitor", autostart: false  do |monitor|
     monitor.vm.box = "waratek/centos6-x86_64"
+    monitor.vm.box_version = "~> 1.0"
     monitor.vm.hostname = "monitor.example.com"
 
     monitor.vm.network "private_network", ip: "172.21.21.40"
