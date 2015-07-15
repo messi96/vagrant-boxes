@@ -1,11 +1,12 @@
 {
   "variables": {
     "vm_name": "centos6-x86_64",
-    "disk_size": 20480,
-    "iso_checksum": "f21a71e8e31df73297bdd1ccd4a64a36831284bd",
+    "disk_size": "20480",
+    "iso_checksum": "4ed6c56d365bd3ab12cd88b8a480f4a62e7c66d2",
     "iso_checksum_type": "sha1",
-    "iso_url": "http://ftp.heanet.ie/pub/centos/6.5/isos/x86_64/CentOS-6.5-x86_64-minimal.iso",
-    "box_desc" : "Centos Minimal"
+    "iso_url": "http://ftp.heanet.ie/pub/centos/6.6/isos/x86_64/CentOS-6.6-x86_64-minimal.iso",
+    "box_desc" : "Centos Minimal",
+    "build_date": "{{isotime \"20060102\"}}"
   },
   "description": "{{user `box_desc`}}",
   "builders": [
@@ -34,6 +35,7 @@
       "shutdown_command": "/sbin/shutdown -hP 0",
       "ssh_password": "vagrant",
       "ssh_port": 22,
+      "ssh_pty": "true",
       "ssh_username": "root",
       "ssh_wait_timeout": "10000s"
     },
@@ -48,7 +50,7 @@
       "disk_size": "{{user `disk_size`}}",
       "boot_command": [
         "<tab><wait>",
-        " ks=http://172.16.43.1:{{ .HTTPPort }}/ks-minimal.cfg",
+        " ks=http://172.16.205.1:{{ .HTTPPort }}/ks-minimal.cfg",
         "<enter><wait>"
       ],
       "boot_wait": "10s",
@@ -58,6 +60,7 @@
       "shutdown_command": "/sbin/shutdown -hP 0",
       "ssh_password": "vagrant",
       "ssh_port": 22,
+      "ssh_pty": "true",
       "ssh_username": "root",
       "ssh_wait_timeout": "10000s"
     }
@@ -76,16 +79,6 @@
       ]
     },
     {
-      "type": "shell",
-      "script": "scripts/virtualbox.sh",
-      "only": ["virtualbox-iso"]
-    },
-    {
-      "type": "shell",
-      "script": "scripts/vmware.sh",
-      "only": ["vmware-iso"]
-    },
-    {
       "type": "puppet-masterless",
         "manifest_file": "../../puppet/manifests/site.pp",
         "module_paths": ["../../puppet/modules"],
@@ -97,6 +90,16 @@
     },
     {
       "type": "shell",
+      "script": "scripts/virtualbox.sh",
+      "only": ["virtualbox-iso"]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/vmware.sh",
+      "only": ["vmware-iso"]
+    },
+    {
+      "type": "shell",
       "scripts": [
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
@@ -105,7 +108,7 @@
   ],
   "post-processors": [  {
     "type": "vagrant",
-    "output" : "{{user `vm_name`}}_{{.Provider}}.box",
+    "output" : "{{user `vm_name`}}_{{.Provider}}_{{user `build_date`}}.box",
     "keep_input_artifact": false
   }
   ]

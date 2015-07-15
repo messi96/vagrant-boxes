@@ -26,7 +26,7 @@ echo "--------------------------------------------"
 
 echo "[*] Starting Tomcat 6 using jdk-1.5.0_55"
 export JAVA_HOME="/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.5.0_55"
-export CATALINA_OPTS="--jvc=tomcat6"
+export CATALINA_OPTS="--jvc=tomcat6 --async"
 /opt/apache-tomcat/tomcat6/bin/startup.sh
 echo "--------------------------------------------"
 
@@ -48,6 +48,6 @@ cp jvc.rules /var/lib/javad/jvm-1/tomcat7
 
 echo "[*] Starting Tomcat 7 using jdk-1.6.0_43"
 export JAVA_HOME="/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.6.0_43"
-export CATALINA_OPTS="--jvc=tomcat7"
+export CATALINA_OPTS="--jvc=tomcat7 --async"
 /opt/apache-tomcat/tomcat7/bin/startup.sh
 

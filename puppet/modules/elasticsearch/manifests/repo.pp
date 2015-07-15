@@ -58,7 +58,7 @@ class elasticsearch::repo {
       exec { 'elasticsearch_suse_import_gpg':
         command => 'rpmkeys --import http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
         unless  => 'test $(rpm -qa gpg-pubkey | grep -i "D88E42B4" | wc -l) -eq 1 ',
-        notify  => [ Zypprepo['elasticsearch'] ]
+        notify  => [ Zypprepo['elasticsearch'] ],
       }
 
       zypprepo { 'elasticsearch':
@@ -68,11 +68,39 @@ class elasticsearch::repo {
         name        => 'elasticsearch',
         gpgcheck    => 1,
         gpgkey      => 'http://packages.elasticsearch.org/GPG-KEY-elasticsearch',
-        type        => 'yum'
+        type        => 'yum',
       }
     }
     default: {
       fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
     }
   }
+
+  # Package pinning
+  if ($elasticsearch::package_pin == true and $elasticsearch::version != false) {
+    case $::osfamily {
+      'Debian': {
+        if !defined(Class['apt']) {
+          class { 'apt': }
+        }
+
+        apt::pin { $elasticsearch::package_name:
+          ensure   => 'present',
+          packages => $elasticsearch::package_name,
+          version  => $elasticsearch::version,
+          priority => 1000,
+        }
+      }
+      'RedHat', 'Linux': {
+
+        yum::versionlock { "0:elasticsearch-${elasticsearch::version}.noarch":
+          ensure => 'present',
+        }
+      }
+      default: {
+        fail("Unable to pin package for OSfamily \"${::osfamily}\"")
+      }
+    }
+  }
+
 }

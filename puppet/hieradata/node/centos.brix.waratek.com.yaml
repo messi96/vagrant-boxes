@@ -1,5 +1,0 @@
----
-classes:
-  - splunk
-  - splunk_dashboard
-splunk::install: server

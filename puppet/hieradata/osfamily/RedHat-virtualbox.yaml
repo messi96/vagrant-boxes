@@ -1,0 +1,5 @@
+---
+packages:
+  - bzip2
+  - yum-plugin-versionlock
+  - yum-utils

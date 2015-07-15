@@ -6,7 +6,7 @@ fi
 
 # VirtualBox Additions
 
-yum -y install --setopt=tsflags=nodocs gcc make kernel-devel perl bzip2
+yum -y install --setopt=tsflags=nodocs gcc make kernel-devel
 
 # Installing the virtualbox guest additions
 VBOX_VERSION=$(cat /root/.vbox_version)

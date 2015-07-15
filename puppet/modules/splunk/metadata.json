@@ -1,6 +1,6 @@
 {
   "name": "example42-splunk",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "author": "Alessandro Franceschi",
   "summary": "Puppet module for splunk",
   "license": "Apache2",
@@ -14,19 +14,6 @@
   "checksums": {
   },
   "dependencies": [
-    {
-      "name": "example42/puppi",
-      "version_requirement": ">=2.0.0"
-    },
-    {
-      "name": "example42/firewall",
-      "version_requirement": ">=2.0.0"
-    },
-    {
-      "name": "example42/monitor",
-      "version_requirement": ">=2.0.0"
-    },
-    {"name":"puppetlabs/stdlib","version_requirement":">=2.0.0"},
     {"name":"example42/puppi","version_requirement":">=2.0.0"}
   ]
 }

@@ -71,18 +71,23 @@ class demo_security::centos inherits demo_security {
   if ($::vagrant == "true") {
     host { 'kali':
       ip           => "$kali_ip",
-      host_aliases => 'kali.localdomain'
+      host_aliases => 'kali.example.com'
     }
 
-    service { 'iptables':
-      ensure => false,
-      enable => false
+    host { 'monitor':
+      ip           => "$monitor_ip",
+      host_aliases => 'monitor.example.com'
     }
+  }
 
-    service { 'ip6tables':
-      ensure => false,
-      enable => false
-    }
+  service { 'iptables':
+    ensure => false,
+    enable => false
+  }
+
+  service { 'ip6tables':
+    ensure => false,
+    enable => false
   }
 
   exec { 'disable-selinux':
@@ -112,6 +117,8 @@ class demo_security::centos inherits demo_security {
   class  { '::demo_security::spiracle': } ->
   class  { '::demo_security::webgoat': } ->
   class  { '::demo_security::jforum': } ->
+  class  { '::demo_security::splunk_inputs': } ->
+  class  { '::demo_security::logstash_config': } ->
   anchor { 'demo_security::end': }
 
 }
