@@ -7,7 +7,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "centos6-desktop-x86_64"
   config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/waratek-vagrant-boxes/centos6-desktop-x86_64_virtualbox_20150716.box"
-  config.vm.box_download_checksum = "d4bb98d65a0d85fecedd856d19d94554"
+  config.vm.box_download_checksum = "181246dd981f7639d31275f274594bf6"
   config.vm.box_download_checksum_type = "md5"
   config.vm.hostname = "localhost.localdomain"
 
