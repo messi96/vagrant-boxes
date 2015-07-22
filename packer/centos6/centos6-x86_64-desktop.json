@@ -1,0 +1,115 @@
+{
+  "variables": {
+    "vm_name": "centos6-desktop-x86_64",
+    "disk_size": "20480",
+    "iso_checksum": "08be09fd7276822bd3468af8f96198279ffc41f0",
+    "iso_checksum_type": "sha1",
+    "iso_url": "http://ftp.heanet.ie/pub/centos/6.6/isos/x86_64/CentOS-6.6-x86_64-bin-DVD1.iso",
+    "box_desc" : "Centos Desktop",
+    "build_date": "{{isotime \"20060102\"}}"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "headless": "false",
+      "type": "virtualbox-iso",
+      "virtualbox_version_file": ".vbox_version",
+      "guest_os_type": "RedHat_64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "512"],
+        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+      ],
+      "boot_command": [
+        "<tab><wait>",
+        " ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks-desktop.cfg",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_pty": "true",
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    },
+    {
+      "headless": "false",
+      "type": "vmware-iso",
+      "guest_os_type": "rhel6-64",
+      "vm_name": "{{user `vm_name`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "disk_size": "{{user `disk_size`}}",
+      "boot_command": [
+        "<tab><wait>",
+        " ks=http://172.16.205.1:{{ .HTTPPort }}/ks-desktop.cfg",
+        "<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "tools_upload_flavor": "linux",
+      "tools_upload_path": "/root/vmware-tools.iso",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_pty": "true",
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
+      "pause_before": "10s"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh"
+      ]
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "hiera_config_path": "../../puppet/hiera.yaml",
+        "facter":
+          {
+            "packer": "vagrant"
+          }
+    },
+    {
+      "type": "shell",
+      "script": "scripts/virtualbox.sh",
+      "only": ["virtualbox-iso"]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/vmware.sh",
+      "only": ["vmware-iso"]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+  "post-processors": [  {
+    "type": "vagrant",
+    "output" : "{{user `vm_name`}}_{{.Provider}}_{{user `build_date`}}.box",
+    "keep_input_artifact": false
+  }
+  ]
+}
