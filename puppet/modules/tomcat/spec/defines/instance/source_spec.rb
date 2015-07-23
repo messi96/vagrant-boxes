@@ -10,7 +10,8 @@ describe 'tomcat::instance::source', :type => :define do
   context 'private class fails' do
     let :facts do
       {
-        :osfamily => 'Debian'
+        :osfamily           => 'Debian',
+        :caller_module_name => 'Test'
       }
     end
     let :params do
@@ -22,7 +23,7 @@ describe 'tomcat::instance::source', :type => :define do
     end
     it do
       expect {
-        is_expected.to compile
+        catalogue
       }.to raise_error(Puppet::Error, /Use of private class/)
     end
   end

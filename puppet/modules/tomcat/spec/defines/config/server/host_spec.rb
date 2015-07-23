@@ -32,16 +32,18 @@ describe 'tomcat::config::server::host', :type => :define do
   context 'set all the things' do
     let :params do
       {
-        :app_base => 'webapps2',
-        :catalina_base => '/opt/apache-tomcat/test',
-        :host_ensure => 'true',
-        :host_name => 'test.example.com',
-        :parent_service => 'Catalina2',
+        :app_base              => 'webapps2',
+        :catalina_base         => '/opt/apache-tomcat/test',
+        :host_ensure           => 'true',
+        :host_name             => 'test.example.com',
+        :parent_service        => 'Catalina2',
+        :server_config         => '/opt/apache-tomcat/server.xml',
         :additional_attributes => {
           'autoDeploy' => 'false',
           'unpackWARs' => 'false',
+          'spaces'     => 'foo bar',
         },
-        :attributes_to_remove => [
+        :attributes_to_remove  => [
           'foo',
           'bar',
           'baz',
@@ -50,12 +52,13 @@ describe 'tomcat::config::server::host', :type => :define do
     end
     it { is_expected.to contain_augeas('/opt/apache-tomcat/test-Catalina2-host-test.example.com').with(
       'lens' => 'Xml.lns',
-      'incl' => '/opt/apache-tomcat/test/conf/server.xml',
+      'incl' => '/opt/apache-tomcat/server.xml',
       'changes' => [
         'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/name test.example.com',
         'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/appBase webapps2',
-        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/autoDeploy false',
-        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/unpackWARs false',
+        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/autoDeploy \'false\'',
+        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/unpackWARs \'false\'',
+        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/spaces \'foo bar\'',
         'rm Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/foo',
         'rm Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/bar',
         'rm Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'test.example.com\']/#attribute/baz',
@@ -82,7 +85,7 @@ describe 'tomcat::config::server::host', :type => :define do
     context 'no app_base' do
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /\$app_base must be specified/)
       end
     end
@@ -94,7 +97,7 @@ describe 'tomcat::config::server::host', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /is not a Hash/)
       end
     end
@@ -106,7 +109,7 @@ describe 'tomcat::config::server::host', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /does not match/)
       end
     end
@@ -119,7 +122,7 @@ describe 'tomcat::config::server::host', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /configurations require Augeas/)
       end
     end

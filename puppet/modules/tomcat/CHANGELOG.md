@@ -1,3 +1,58 @@
+## 2015-07-16 - Supported Release 1.3.1
+### Summary
+This release fixes metadata because it supports puppet 4.
+
+##2015-06-09 - Supported Release 1.3.0
+###Summary
+
+This is a feature release, with a couple of bugfixes and readme changes.
+
+####Features
+- Update additional_attributes to support values with spaces
+- Documentation changes
+- Add a manifest for Context Containers in Tomcat configuration
+- Manage User and Roles in Realms
+- New manifests for context.xml configuration
+- Added manifest for managing Realm elements in server.xml
+- Ordering of setenv entries
+- Adds parameter for enabling Tomcat service on boot
+- Add ability to specify server_config location
+- Allow configuration of location of server.xml
+
+####Bugfixes
+- Make sure setenv entries have export
+- Test improvements
+- version pinning for acceptance tests
+
+##2014-11-11 - Supported Release 1.2.0
+###Summary
+
+This is primarily a feature release, with a couple of bugfixes for tests and metadata.
+
+####Features
+- Add `install_from_source` parameter to class `tomcat`
+- Add `purge_connectors` parameter to class `tomcat` and define `tomcat::server::connector`
+
+####Bugfixes
+- Fix dependencies to remove missing dependency warnings with the PMT
+- Use `curl -k` in the tests
+
+##2014-10-28 - Supported Release 1.1.0
+###Summary
+
+This release includes documentation and test updates, strict variable support, metadata bugs, and added support for multiple connectors with the same protocol.
+
+###Features
+- Strict variable support
+- Support multiple connectors with the same protocol
+- Update tests to not break when tomcat releases happen
+- Update README based on QA feedback
+
+###Bugfixes
+- Update stdlib requirement to 4.2.0
+- Fix illegal version range in metadata.json
+- Fix typo in README
+
 ##2014-09-04 - Supported Release 1.0.1
 ###Summary
 

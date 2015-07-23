@@ -39,6 +39,7 @@ define tomcat::config::server::engine (
   $parent_service                    = 'Catalina',
   $start_stop_threads                = undef,
   $start_stop_threads_ensure         = 'present',
+  $server_config                     = undef,
 ) {
   if versioncmp($::augeasversion, '1.0.0') < 0 {
     fail('Server configurations require Augeas >= 1.0.0')
@@ -64,28 +65,45 @@ define tomcat::config::server::engine (
     $_background_processor_delay = "rm ${base_path}/#attribute/backgroundProcessorDelay"
   } elsif $background_processor_delay {
     $_background_processor_delay = "set ${base_path}/#attribute/backgroundProcessorDelay ${background_processor_delay}"
+  } else {
+    $_background_processor_delay = undef
   }
+
   if $class_name_ensure =~ /^(absent|false)$/ {
     $_class_name = "rm ${base_path}/#attribute/className"
   } elsif $class_name {
     $_class_name = "set ${base_path}/#attribute/className ${class_name}"
+  } else {
+    $_class_name = undef
   }
+
   if $jvm_route_ensure =~ /^(absent|false)$/ {
     $_jvm_route = "rm ${base_path}/#attribute/jvmRoute"
   } elsif $jvm_route {
     $_jvm_route = "set ${base_path}/#attribute/jvmRoute ${jvm_route}"
+  } else {
+    $_jvm_route = undef
   }
+
   if $start_stop_threads_ensure =~ /^(absent|false)$/ {
     $_start_stop_threads = "rm ${base_path}/#attribute/startStopThreads"
   } elsif $start_stop_threads {
     $_start_stop_threads = "set ${base_path}/#attribute/startStopThreads ${start_stop_threads}"
+  } else {
+    $_start_stop_threads = undef
+  }
+
+  if $server_config {
+    $_server_config = $server_config
+  } else {
+    $_server_config = "${catalina_base}/conf/server.xml"
   }
 
   $changes = delete_undef_values([$_name_change, $_default_host, $_background_processor_delay, $_class_name, $_jvm_route, $_start_stop_threads])
 
   augeas { "${catalina_base}-${parent_service}-engine":
     lens    => 'Xml.lns',
-    incl    => "${catalina_base}/conf/server.xml",
+    incl    => $_server_config,
     changes => $changes,
   }
 }
