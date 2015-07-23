@@ -6,9 +6,12 @@ describe 'swap_file class', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfa
     context 'ensure => present' do
       it 'should work with no errors' do
         pp = <<-EOS
-        class { 'swap_file': }
+        swap_file::files { 'default':
+          ensure   => present,
+        }
         EOS
 
+        # Run it twice and test for idempotency
         apply_manifest(pp, :catch_failures => true)
         apply_manifest(pp, :catch_changes  => true)
       end
@@ -23,9 +26,9 @@ describe 'swap_file class', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfa
     context 'custom parameters' do
       it 'should work with no errors' do
         pp = <<-EOS
-        class { 'swap_file':
+        swap_file::files { 'tmp file swap':
+          ensure   => present,
           swapfile => '/tmp/swapfile',
-          swapfilesize => '5 MB',
         }
         EOS
 
@@ -34,11 +37,36 @@ describe 'swap_file class', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfa
       end
       it 'should contain the given swapfile' do
         shell('/sbin/swapon -s | grep /tmp/swapfile', :acceptable_exit_codes => [0])
-        shell('/sbin/swapon -s | grep 5116', :acceptable_exit_codes => [0])
       end
       it 'should contain the default fstab setting' do
         shell('cat /etc/fstab | grep /tmp/swapfile', :acceptable_exit_codes => [0])
         shell('cat /etc/fstab | grep defaults', :acceptable_exit_codes => [0])
+      end
+    end
+    context 'multiple swap_file::files' do
+      it 'should work with no errors' do
+        pp = <<-EOS
+        swap_file::files { 'tmp file swap 1':
+          ensure   => present,
+          swapfile => '/tmp/swapfile1',
+        }
+
+        swap_file::files { 'tmp file swap 2':
+          ensure   => present,
+          swapfile => '/tmp/swapfile2',
+        }
+        EOS
+
+        apply_manifest(pp, :catch_failures => true)
+        apply_manifest(pp, :catch_changes  => true)
+      end
+      it 'should contain the given swapfiles' do
+        shell('/sbin/swapon -s | grep /tmp/swapfile1', :acceptable_exit_codes => [0])
+        shell('/sbin/swapon -s | grep /tmp/swapfile2', :acceptable_exit_codes => [0])
+      end
+      it 'should contain the default fstab setting' do
+        shell('cat /etc/fstab | grep /tmp/swapfile1', :acceptable_exit_codes => [0])
+        shell('cat /etc/fstab | grep /tmp/swapfile2', :acceptable_exit_codes => [0])
       end
     end
   end
