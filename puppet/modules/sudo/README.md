@@ -1,4 +1,5 @@
 # puppet-sudo [![Build Status](https://secure.travis-ci.org/saz/puppet-sudo.png)](http://travis-ci.org/saz/puppet-sudo)
+https://github.com/saz/puppet-sudo
 
 Manage sudo configuration via Puppet
 
@@ -22,7 +23,7 @@ If this is not what you're expecting, set `purge` and/or `config_file_replace` t
 #### Purge sudoers.d directory, but leave sudoers file as it is
 ```puppet
     class { 'sudo':
-      config_file_replace => true,
+      config_file_replace => false,
     }
 ```
 
@@ -141,6 +142,18 @@ sudo::configs:
         'ensure'    : 'absent'
 ```
 
+##### Set a custom name for the sudoers file
+
+In some edge cases, the automatically generated sudoers file name is insufficient. For example, when an application generates a sudoers file with a fixed file name, using this class with the purge option enabled will always delete the custom file and adding it manually will generate a file with the right content, but the wrong name. To solve this, you can use the ```sudo_file_name``` option to manually set the desired file name. 
+
+```puppet
+sudo::conf { "foreman-proxy":
+	ensure          => "present",
+	source          => "puppet:///modules/sudo/foreman-proxy",
+	sudo_file_name  => "foreman-proxy",
+}
+```
+
 ### sudo::conf / sudo::configs notes
 * You can pass template() through content parameter.
 * One of content or source must be set.
@@ -154,6 +167,7 @@ sudo::configs:
 | package_ensure      | string  | present     | latest, absent, or a specific package version |
 | package_source      | string  | OS specific | Set package source _(for unsupported platforms)_ |
 | purge               | boolean | true        | Purge unmanaged files from config_dir |
+| purge_ignore        | string  | undef       | Files excluded from purging in config_dir |
 | config_file         | string  | OS specific | Set config_file _(for unsupported platforms)_ |
 | config_file_replace | boolean | true        | Replace config file with module config file |
 | config_dir          | string  | OS specific | Set config_dir _(for unsupported platforms)_ |
@@ -168,4 +182,4 @@ sudo::configs:
 | content         | string | undef       | content of configuration snippet |
 | source          | string | undef       | source of configuration snippet |
 | sudo_config_dir | string | OS Specific | configuration snippet directory _(for unsupported platforms)_ |
-
+| sudo_file_name  | string | undef		 | custom file name for sudo file in sudoers directory |
