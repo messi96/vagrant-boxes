@@ -94,7 +94,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     kali.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
     
     kali.vm.provider "virtualbox" do |v|
-      v.name = "Waratek_Kali"
+      v.name = "Waratek_kali"
       v.cpus = 2
       v.memory = 2048
     end
