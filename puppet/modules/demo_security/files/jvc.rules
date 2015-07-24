@@ -3,13 +3,13 @@ VERSION 1.0
 # Demonstration jvc.rules file
 
 # File Rules
-#file:read:/opt/apache-tomcat:allow:off
-#file:read:/dev/random:allow:off
-#file:read:/dev/urandom:allow:off
-#file:read:/usr/lib/jvm:allow:off
+file:read:/opt/apache-tomcat:allow:off
+file:read:/dev/random:allow:off
+file:read:/dev/urandom:allow:off
+file:read:/usr/lib/jvm:allow:off
 
-file:read:*:allow:trace
-file:write:*:allow:trace
+file:read:*:allow:info
+file:write:*:allow:info
 file:exec:*:allow:warn
 #file:exec:*:deny:warn
 
@@ -18,10 +18,10 @@ file:read:/etc/hosts:allow:info
 #file:read:/etc/passwd:allow:warn
 
 # Example Network Rules
-network:bind:*:allow:trace
-network:serverbind:*:allow:trace
-network:connect:*:allow:trace
-network:accept:*:allow:trace
+network:bind:*:allow:info
+network:serverbind:*:allow:info
+network:connect:*:allow:info
+network:accept:*:allow:info
 #network:accept:*:deny:warn
 #network:connect:www.google.com::deny:warn
 
@@ -40,7 +40,7 @@ classlink:class:sun.reflect.*:allow:off
 
 # Reflection
 #reflect:class:org.apache.*:allow:off
-reflect:class:*:allow:trace
+#reflect:class:*:allow:info
 
 # Virtual patch rule for Apache Struts2 vulnerability
 #reflect:class:com.opensymphony.xwork2.ognl.SecurityMemberAccess:method:setAllowStaticMethodAccess(Z)V:deny:warn
