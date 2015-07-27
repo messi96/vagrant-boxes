@@ -37,8 +37,8 @@ classlink:class:sun.reflect.*:allow:off
 #reflect:class:org.apache.*:allow:off
 
 # Throwable
-throwable:class:javax.crypto.*:allow:trace
-#throwable:class:java.security.*:allow:info
+throwable:throw:javax.crypto.*:allow:trace
+#throwable:throw:java.security.*:allow:info
 
 # Virtual patch rule for Apache Struts2 vulnerability
 #reflect:class:com.opensymphony.xwork2.ognl.SecurityMemberAccess:method:setAllowStaticMethodAccess(Z)V:deny:warn
