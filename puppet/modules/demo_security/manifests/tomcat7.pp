@@ -49,7 +49,7 @@ class demo_security::tomcat7 inherits demo_security {
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0644,
-    source => "puppet:///modules/demo_security/tomcat-users.xml",
+    source => "puppet:///modules/demo_security/demo/tomcat/tomcat-users.xml",
   } ->
 
   file { "${tomcat7_home}/bin/setenv.sh":

@@ -57,11 +57,12 @@ class vagrant_base_box::users inherits vagrant_base_box {
     mode   => '0700'
   } ->
 
-  ssh_authorized_key { 'vagrant_insecure_public_key':
-    ensure => 'present',
-    key    => "$vagrant_insecure_public_key",
-    type   => 'ssh-rsa',
-    user   => 'vagrant'
+  file { '/home/vagrant/.ssh/authorized_keys':
+    ensure  => 'present',
+    content => "$vagrant_insecure_public_key",
+    owner   => 'vagrant',
+    group   => 'vagrant',
+    mode    => '0600'
   }
 
   if ($create_root_key) {
@@ -72,12 +73,14 @@ class vagrant_base_box::users inherits vagrant_base_box {
       mode   => '0700'
     } ->
 
-    ssh_authorized_key { 'vagrant_insecure_public_key-root':
-      ensure => 'present',
-      key    => "$vagrant_insecure_public_key",
-      type   => 'ssh-rsa',
-      user   => 'root'
-    }    
+    file { '/root/.ssh/authorized_keys':
+      ensure  => 'present',
+      content => "$vagrant_insecure_public_key",
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600'
+    }
+
   }
 
 }

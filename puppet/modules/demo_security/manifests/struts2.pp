@@ -34,7 +34,7 @@ class demo_security::struts2 inherits demo_security {
     owner       =>  "${demo_user}",
     group       =>  "${demo_group}",
     mode        =>  0644,
-    source      =>  "puppet:///modules/demo_security/HelloWorld.jsp",
+    source      =>  "puppet:///modules/demo_security/demo/tomcat/HelloWorld.jsp",
   }
 
 }

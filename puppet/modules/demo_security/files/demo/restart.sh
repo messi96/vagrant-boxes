@@ -24,12 +24,6 @@ echo "[*] Defining empty JVC for Tomcat 7"
 curl -s http://localhost:7777/jolokia/exec/com.waratek:type=VirtualMachine/defineContainer/tomcat7/dummy/!/home!/vagrant | python -mjson.tool
 echo "--------------------------------------------"
 
-echo "[*] Starting Tomcat 6 using jdk-1.5.0_55"
-export JAVA_HOME="/usr/lib/jvm/java-waratek/jre/jvc/jdk-1.5.0_55"
-export CATALINA_OPTS="--jvc=tomcat6 --async"
-/opt/apache-tomcat/tomcat6/bin/startup.sh
-echo "--------------------------------------------"
-
 WAIT_TIME=0
 while [ ! -f /var/lib/javad/jvm-1/tomcat7/snapshot.xml ]
 do

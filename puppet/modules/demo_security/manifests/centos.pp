@@ -49,7 +49,7 @@ class demo_security::centos inherits demo_security {
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0755,
-    source => "puppet:///modules/demo_security/reload_rules.sh",
+    source => "puppet:///modules/demo_security/demo/reload_rules.sh",
   }
 
   file { "/home/${demo_user}/demo/restart.sh":
@@ -57,7 +57,7 @@ class demo_security::centos inherits demo_security {
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0755,
-    source => "puppet:///modules/demo_security/restart.sh",
+    source => "puppet:///modules/demo_security/demo/restart.sh",
   }
 
   file { "/home/${demo_user}/demo/jvc.rules":
@@ -65,7 +65,7 @@ class demo_security::centos inherits demo_security {
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0644,
-    source => "puppet:///modules/demo_security/jvc.rules",
+    source => "puppet:///modules/demo_security/demo/jvc.rules",
   }
 
   if ($::vagrant == "true") {
