@@ -40,7 +40,7 @@ class demo_security::kali inherits demo_security {
   file { "/root/cve-2013-2251.rc":
     ensure => "file",
     mode   => 0644,
-    source => "puppet:///modules/demo_security/cve-2013-2251.rc",
+    source => "puppet:///modules/demo_security/kali/cve-2013-2251.rc",
   }
 
   host { 'demo1':
