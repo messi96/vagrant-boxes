@@ -61,7 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       }
     end
 
-    demo1.vm.provision "puppet" do |puppet|
+    demo1.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
@@ -98,7 +98,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.vmx["numvcpus"] = "2"
     end
 
-    demo2.vm.provision "puppet" do |puppet|
+    demo2.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
@@ -138,7 +138,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.vmx["numvcpus"] = "2"
     end
 
-    kali.vm.provision "puppet" do |puppet|
+    kali.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
@@ -174,7 +174,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.vmx["numvcpus"] = "2"
     end
 
-    monitor.vm.provision "puppet" do |puppet|
+    monitor.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"

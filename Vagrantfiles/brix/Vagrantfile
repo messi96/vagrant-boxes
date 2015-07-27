@@ -33,7 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
-    demo1.vm.provision "puppet" do |puppet|
+    demo1.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
@@ -65,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
-    demo2.vm.provision "puppet" do |puppet|
+    demo2.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
@@ -99,7 +99,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
-    kali.vm.provision "puppet" do |puppet|
+    kali.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
@@ -129,7 +129,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.memory = 2048
     end
 
-    monitor.vm.provision "puppet" do |puppet|
+    monitor.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
       puppet.module_path = "../../puppet/modules"
