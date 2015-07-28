@@ -83,10 +83,6 @@
         "manifest_file": "../../puppet/manifests/site.pp",
         "module_paths": ["../../puppet/modules"],
         "hiera_config_path": "../../puppet/hiera.yaml",
-        "facter":
-          {
-            "packer": "vagrant"
-          }
     },
     {
       "type": "shell",
