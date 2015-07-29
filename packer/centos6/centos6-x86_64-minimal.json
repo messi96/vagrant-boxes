@@ -105,7 +105,7 @@
   "post-processors": [  {
     "type": "vagrant",
     "output" : "{{user `vm_name`}}_{{.Provider}}_{{user `build_date`}}.box",
-    "keep_input_artifact": false
+    "keep_input_artifact": true
   }
   ]
 }
