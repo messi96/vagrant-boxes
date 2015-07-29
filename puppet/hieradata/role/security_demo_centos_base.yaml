@@ -17,6 +17,7 @@ logstash::init_defaults:
 logstash::manage_repo: true
 logstash::repo_version: '1.5'
 logstash::status: enabled
+staging::path: /var/cache/staging
 tomcat::tomcat6_home: /opt/apache-tomcat/tomcat6
 tomcat::tomcat6_version: 6.0.43
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7

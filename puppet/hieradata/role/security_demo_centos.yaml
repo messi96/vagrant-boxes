@@ -23,6 +23,7 @@ splunk::forward_server:
   - monitor.example.com:9997
 splunk::install: forwarder
 splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/universalforwarder/linux/splunkforwarder-6.2.3-264376-linux-2.6-x86_64.rpm
+staging::path: /var/cache/staging
 tomcat::tomcat6_home: /opt/apache-tomcat/tomcat6
 tomcat::tomcat6_version: 6.0.44
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
