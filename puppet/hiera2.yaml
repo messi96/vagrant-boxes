@@ -4,9 +4,10 @@
 :yaml:
   :datadir: %{::puppet_dir}/hieradata
 :hierarchy:
-  - "packer/%{::packer}"
+  - "packer/%{::packer_builder_type}"
   - "node/%{::fqdn}"
   - "osfamily/%{::osfamily}"
+  - "osfamily/%{::osfamily}-%{::virtual}"
   - "role/%{::role}"
   - "virtual/%{::virtual}"
   - common

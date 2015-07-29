@@ -1,0 +1,26 @@
+---
+classes:
+  - demo_security::centos
+  - logstash
+  - oracle_xe
+  - profiles::base
+  - waratek_java
+packages:
+  - httpd
+  - mod_security
+  - mod_security_crs
+demo_security::demo_user: vagrant
+demo_security::demo_group: vagrant
+logstash::init_defaults:
+  JAVACMD: '/usr/lib/jvm/java-1.7.0/bin/java'
+  PATH: '/usr/lib/jvm/java-1.7.0/bin:$PATH'
+logstash::manage_repo: true
+logstash::repo_version: '1.5'
+logstash::status: enabled
+tomcat::tomcat6_home: /opt/apache-tomcat/tomcat6
+tomcat::tomcat6_version: 6.0.43
+tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
+tomcat::tomcat7_version: 7.0.57
+waratek_java::version: 2.9.0.GA.4-113
+waratek_java::users:
+  - vagrant
