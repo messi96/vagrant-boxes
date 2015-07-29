@@ -7,7 +7,7 @@
   "description": "{{user `box_desc`}}",
   "builders": [
     {
-      "source_path": "output-virtualbox-iso/centos6-x86_64.ovf",
+      "source_path": "output-virtualbox-iso/centos6-x86_64-mini.ovf",
       "headless": "false",
       "type": "virtualbox-ovf",
       "vm_name": "{{user `vm_name`}}",
@@ -26,6 +26,7 @@
       "ssh_wait_timeout": "10000s"
     },
     {
+      "source_path": "output-vmware-iso/centos6-x86_64-mini.vmx",
       "headless": "false",
       "type": "vmware-vmx",
       "vm_name": "{{user `vm_name`}}",
