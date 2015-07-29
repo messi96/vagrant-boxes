@@ -8,6 +8,6 @@ packages:
   - curl
   - unzip
   - wget
-staging::path: /tmp/staging
+staging::path: /var/cache/staging
 sudo::purge: false
 sudo::config_file_replace: false
