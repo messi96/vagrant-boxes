@@ -1,6 +1,6 @@
 {
   "variables": {
-    "vm_name": "centos6-desktop-x86_64",
+    "vm_name": "centos6-x86_64-desktop",
     "disk_size": "20480",
     "iso_checksum": "08be09fd7276822bd3468af8f96198279ffc41f0",
     "iso_checksum_type": "sha1",
