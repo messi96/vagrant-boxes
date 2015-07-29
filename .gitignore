@@ -8,6 +8,7 @@ synced_folder/**
 *.box.md5
 *.iso
 output-virtualbox-iso
+output-vmware-iso
 packer_cache
 .project
 *.vhd
