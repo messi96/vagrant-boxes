@@ -6,7 +6,9 @@ describe 'tomcat::instance', :type => :define do
   end
   let :default_facts do
     {
-      :osfamily => 'Debian'
+      :osfamily         => 'Debian',
+      :staging_http_get => 'curl',
+      :path             => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     }
   end
   let :title do
@@ -85,7 +87,7 @@ describe 'tomcat::instance', :type => :define do
     context "no source specified" do
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /\$source_url must be specified/)
       end
     end
@@ -97,7 +99,7 @@ describe 'tomcat::instance', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /\$package_name must be specified/)
       end
     end
@@ -109,7 +111,7 @@ describe 'tomcat::instance', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /is not a boolean/)
       end
     end
@@ -121,7 +123,7 @@ describe 'tomcat::instance', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /is not a boolean/)
       end
     end

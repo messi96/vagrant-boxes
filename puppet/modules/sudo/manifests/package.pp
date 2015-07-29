@@ -30,7 +30,7 @@
 # Copyright 2013 Toni Schmidbauer
 #
 class sudo::package(
-  $package,
+  $package = '',
   $package_ensure = present,
   $package_source = '',
   $package_admin_file = '',
@@ -44,6 +44,7 @@ class sudo::package(
         package_ensure => $package_ensure,
       }
     }
+    openbsd: {}
     solaris: {
       class { 'sudo::package::solaris':
         package            => $package,

@@ -25,6 +25,20 @@ describe 'tomcat', :type => :class do
     }
   end
 
+  context "not installing from source" do
+    let :facts do
+      {
+        :osfamily => 'Debian'
+      }
+    end
+    let :params do
+      {
+        :install_from_source => false,
+      }
+    end
+    it { is_expected.not_to contain_file("/opt/apache-tomcat") }
+  end
+
   context "not managing user/group" do
     let :facts do
       {
@@ -54,7 +68,7 @@ describe 'tomcat', :type => :class do
     end
     it do
       expect {
-        is_expected.to compile
+        catalogue
       }.to raise_error(Puppet::Error, /is not a boolean/)
     end
   end
@@ -67,7 +81,7 @@ describe 'tomcat', :type => :class do
     end
     it do
       expect {
-       is_expected.to compile
+       catalogue
       }.to raise_error(Puppet::Error, /Unsupported osfamily/)
     end
   end
@@ -79,7 +93,7 @@ describe 'tomcat', :type => :class do
     end
     it do
       expect {
-       is_expected.to compile
+       catalogue
       }.to raise_error(Puppet::Error, /Unsupported osfamily/)
     end
   end
@@ -91,7 +105,7 @@ describe 'tomcat', :type => :class do
     end
     it do
       expect {
-       is_expected.to compile
+       catalogue
       }.to raise_error(Puppet::Error, /Unsupported osfamily/)
     end
   end

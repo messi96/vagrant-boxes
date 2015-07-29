@@ -33,6 +33,8 @@ define staging::extract (
       $folder       = staging_parse($name, 'basename')
     }
     $creates_path = "${target}/${folder}"
+  } else {
+    $creates_path = undef
   }
 
   if scope_defaults('Exec','path') {
@@ -65,7 +67,7 @@ define staging::extract (
       warning('strip is only supported with GNU tar, ignoring the parameter')
       $strip_opt = ''
     } else {
-      $strip_opt = " --strip=$strip"
+      $strip_opt = " --strip=${strip}"
     }
   } else {
     $strip_opt = ''

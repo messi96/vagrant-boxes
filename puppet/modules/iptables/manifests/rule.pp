@@ -51,13 +51,14 @@ define iptables::rule (
   $rule           = '',
   $enable         = true,
   $enable_v6      = false,
-  $debug          = false ) {
+  $debug          = false,
+  $to_destination = '' ) {
 
   include iptables
 
   # IPv6 enabled rules prerequisites IPv6 enabled iptables also
   # TODO: To enable this feature, we first have to unchain the circular dependency firewall -> iptables
-  #if ($enable_v6) and (!$iptables::enable_v6) {
+  #if ($enable_v6) and (!$::iptables::enable_v6) {
   #  fail('For IPv6 enabled rules, IPv6 for iptables has also to be enabled.')
   #}
 
@@ -65,11 +66,11 @@ define iptables::rule (
   $true_order = $order ? {
     ''    => $table ? {
       'filter' => $chain ? {
-         'INPUT'        => '15',
-         'OUTPUT'       => '25',
-         'FORWARD'      => '35',
-         'PREROUTING'   => '45',
-         'POSTROUTING'  => '55',
+        'INPUT'        => '15',
+        'OUTPUT'       => '25',
+        'FORWARD'      => '35',
+        'PREROUTING'   => '45',
+        'POSTROUTING'  => '55',
       },
       'nat'    => '50',
       'mangle' => '70',
@@ -79,71 +80,44 @@ define iptables::rule (
 
   # We build the rule if not explicitely set
   $true_protocol = $protocol ? {
-    ''    => '',
+    ''      => '',
     default => "-p ${protocol}",
   }
 
   $true_port = $port ? {
-    ''    => '',
+    ''      => '',
     default => "--dport ${port}",
   }
 
   $true_in_interface = $in_interface ? {
-    ''    => '',
+    ''      => '',
     default => "-i ${in_interface}",
   }
 
   $true_out_interface = $out_interface ? {
-    ''    => '',
+    ''      => '',
     default => "-o ${out_interface}",
   }
 
   $true_source = $source ? {
-    ''    => '',
+    ''      => '',
     default => "-s ${source}",
   }
 
   $true_destination = $destination ? {
-    ''    => '',
+    ''      => '',
     default => "-d ${destination}",
   }
 
   $ensure = bool2ensure($enable)
 
-  $array_source = is_array($source) ? {
-    false     => $source ? {
-      ''      => [],
-      default => [$source],
-    },
-    default   => $source,
-  }
-
-  $array_destination = is_array($destination) ? {
-    false     => $destination ? {
-      ''      => [],
-      default => [$destination],
-    },
-    default   => $destination,
-  }
-
-  $array_source_v6 = is_array($source_v6) ? {
-    false     => $source_v6 ? {
-      ''      => [],
-      default => [$source_v6],
-    },
-    default   => $source_v6,
-  }
-
-  $array_destination_v6 = is_array($destination_v6) ? {
-    false     => $destination_v6 ? {
-      ''      => '',
-      default => [$destination_v6],
-    },
-    default   => $destination_v6,
-  }
+  $array_source = any2array($source)
+  $array_destination = any2array($destination)
+  $array_source_v6 = any2array($source_v6)
+  $array_destination_v6 = any2array($destination_v6)
 
   if $debug {
-    iptables::debug{ "debug params $name":
+    iptables::debug{ "debug params ${name}":
       true_port            => $true_port,
       true_protocol        => $true_protocol,
       array_source_v6      => $array_source_v6,
@@ -153,21 +127,25 @@ define iptables::rule (
     }
   }
 
-  concat::fragment{ "iptables_rule_$name":
-    target  => $iptables::config_file,
+  if $target == 'DNAT' and $to_destination == '' {
+    fail('DNAT: option "to_destination" must be specified')
+  }
+
+  concat::fragment{ "iptables_rule_${name}":
+    ensure  => $ensure,
+    target  => $::iptables::config_file,
     content => template('iptables/concat/rule.erb'),
     order   => $true_order,
-    ensure  => $ensure,
-    notify  => Service['iptables'],
+    notify  => $::iptables::manage_service_autorestart,
   }
 
   if $enable_v6 {
-    concat::fragment{ "iptables_rule_v6_$name":
-      target  => $iptables::config_file_v6,
+    concat::fragment{ "iptables_rule_v6_${name}":
+      ensure  => $ensure,
+      target  => $::iptables::config_file_v6,
       content => template('iptables/concat/rule_v6.erb'),
       order   => $true_order,
-      ensure  => $ensure,
-      notify  => Service['iptables'],
+      notify  => $::iptables::manage_service_autorestart,
     }
   }
 }

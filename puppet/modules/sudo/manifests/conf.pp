@@ -42,7 +42,8 @@ define sudo::conf(
   $priority        = 10,
   $content         = undef,
   $source          = undef,
-  $sudo_config_dir = undef
+  $sudo_config_dir = undef,
+  $sudo_file_name  = undef
   ) {
 
   include sudo
@@ -59,13 +60,34 @@ define sudo::conf(
   # sudo skip file name that contain a "."
   $dname = regsubst($name, '\.', '-', 'G')
 
+  if size("x${priority}") == 2 {
+    $priority_real = "0${priority}"
+  } else {
+    $priority_real = $priority
+  }
+
   # build current file name with path
-  $cur_file = "${sudo_config_dir_real}${priority}_${dname}"
+  if $sudo_file_name != undef {
+    $cur_file = "${sudo_config_dir_real}${sudo_file_name}"
+  } else {
+    $cur_file = "${sudo_config_dir_real}${priority_real}_${dname}"
+  }
 
   Class['sudo'] -> Sudo::Conf[$name]
 
+  if $::osfamily == 'RedHat' {
+    if (versioncmp($::sudoversion, '1.7.2p1') < 0) {
+      warning("Found sudo with version ${::sudoversion}, but at least version 1.7.2p1 is required!")
+    }
+  }
+
   if $content != undef {
-    $content_real = "${content}\n"
+    if is_array($content) {
+      $lines = join($content, "\n")
+      $content_real = "${lines}\n"
+    } else {
+      $content_real = "${content}\n"
+    }
   } else {
     $content_real = undef
   }
@@ -76,7 +98,7 @@ define sudo::conf(
     $notify_real = undef
   }
 
-  file { "${priority}_${dname}":
+  file { "${priority_real}_${dname}":
     ensure  => $ensure,
     path    => $cur_file,
     owner   => 'root',
@@ -88,7 +110,7 @@ define sudo::conf(
   }
 
   exec {"sudo-syntax-check for file ${cur_file}":
-    command     => "visudo -c || ( rm -f '${cur_file}' && exit 1)",
+    command     => "visudo -c -f ${cur_file} || ( rm -f '${cur_file}' && exit 1)",
     refreshonly => true,
     path        => [
       '/bin',
@@ -99,7 +121,4 @@ define sudo::conf(
       '/usr/local/sbin'
     ],
   }
-
-  File["${priority}_${dname}"] ->
-  Exec["sudo-syntax-check for file ${cur_file}"]
 }

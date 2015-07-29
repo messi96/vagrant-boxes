@@ -19,10 +19,11 @@ describe 'tomcat::config::server::service', :type => :define do
         :catalina_base     => '/opt/apache-tomcat/test',
         :class_name        => 'foo',
         :class_name_ensure => 'true',
+        :server_config     => '/opt/apache-tomcat/server.xml',
       }
       it { is_expected.to contain_augeas('server-/opt/apache-tomcat/test-service-Catalina').with(
         'lens'    => 'Xml.lns',
-        'incl'    => '/opt/apache-tomcat/test/conf/server.xml',
+        'incl'    => '/opt/apache-tomcat/server.xml',
         'changes' => [
           'set Server/Service[#attribute/name=\'Catalina\']/#attribute/name Catalina',
           'set Server/Service[#attribute/name=\'Catalina\']/#attribute/className foo',
@@ -81,7 +82,7 @@ describe 'tomcat::config::server::service', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /does not match/)
       end
     end
@@ -93,7 +94,7 @@ describe 'tomcat::config::server::service', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /does not match/)
       end
     end
@@ -106,7 +107,7 @@ describe 'tomcat::config::server::service', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /configurations require Augeas/)
       end
     end
