@@ -5,6 +5,9 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
+  # Workaround for https://github.com/mitchellh/vagrant/issues/5219
+  config.ssh.insert_key = false
+
   config.vm.box = "centos6-desktop-x86_64"
   config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/waratek-vagrant-boxes/centos6-desktop-x86_64_virtualbox_20150716.box"
   config.vm.box_download_checksum = "181246dd981f7639d31275f274594bf6"
