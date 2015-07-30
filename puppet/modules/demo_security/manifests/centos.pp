@@ -68,7 +68,7 @@ class demo_security::centos inherits demo_security {
     source => "puppet:///modules/demo_security/demo/jvc.rules",
   }
 
-  if ($::vagrant == "true") {
+  if ($::virtual == "virtualbox") or ($::virtual == "vmware") {
     host { 'kali':
       ip           => "$kali_ip",
       host_aliases => 'kali.example.com'
