@@ -17,6 +17,6 @@ fi
 
 # Install EPEL repo
 echo "Installing EPEL rpm..."
-rpm -i $RPM_URL
+rpm -i $RPM_URL >/dev/null 2>&1
 
 echo "EPEL repo installed!"
