@@ -20,8 +20,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # demo1
   config.vm.define "demo1", primary: true do |demo1|
-    demo1.vm.box = "waratek/centos6-x86_64"
-    demo1.vm.box_version = "~> 1.0"
+    demo1.vm.box = "waratek/security_demo"
+    demo1.vm.box_url = "https://s3-eu-west-1.amazonaws.com/waratek-vagrant-boxes/waratek_security_demo.json"
     demo1.vm.hostname = "demo1.example.com"
 
     demo1.vm.network "private_network", ip: "172.21.21.21"
@@ -52,8 +52,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # demo2
   config.vm.define "demo2" do |demo2|
-    demo2.vm.box = "waratek/centos6-x86_64"
-    demo2.vm.box_version = "~> 1.0"
+    demo2.vm.box = "waratek/security_demo"
+    demo2.vm.box_url = "https://s3-eu-west-1.amazonaws.com/waratek-vagrant-boxes/waratek_security_demo.json"
     demo2.vm.hostname = "demo2.example.com"
 
     demo2.vm.network "private_network", ip: "172.21.21.22"
