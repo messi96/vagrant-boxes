@@ -116,7 +116,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Monitor
   config.vm.define "monitor" do |monitor|
-    monitor.vm.box = "waratek/centos6-x86_64"
+    monitor.vm.box = "waratek/centos6-x86_64-mini"
     monitor.vm.box_version = "~> 1.0"
     monitor.vm.hostname = "monitor.example.com"
 
