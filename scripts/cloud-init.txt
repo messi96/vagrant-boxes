@@ -1,0 +1,16 @@
+#cloud-config
+manage_etc_hosts: true
+
+runcmd:
+- [ sed, -i.orig, '/Defaults\s*requiretty/d', /etc/sudoers ]
+- /usr/sbin/useradd -m vagrant
+- mkdir /home/vagrant/.ssh
+- [ curl, "http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key", -o, "/home/vagrant/.ssh/authorized_keys" ]
+- chown -R vagrant:vagrant /home/vagrant/.ssh
+- chmod 700 /home/vagrant/.ssh
+- /sbin/restorecon /home/vagrant/.ssh/authorized_keys
+- [ sh, -c, "echo 'vagrant ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/vagrant" ]
+- [ sh, -c, "echo >> /etc/ssh/sshd_config" ]
+- [ sh, -c, "echo >> /etc/ssh/sshd_config" ]
+- [ sh, -c, "echo 'UseDNS no' >> /etc/ssh/sshd_config" ]
+

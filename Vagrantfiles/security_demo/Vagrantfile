@@ -58,7 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
       override.ssh.username = "vagrant"
 
-      aws.user_data = File.read("../../scripts/cloud-init.sh")
+      aws.user_data = File.read("../../scripts/cloud-init.txt") + "hostname: demo1\nfqdn: demo1.example.com"
       aws.tags = {
           'Name' => 'Waratek Security Demo',
           'User' => ENV['USER']
