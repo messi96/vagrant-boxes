@@ -1,6 +1,13 @@
 #cloud-config
 manage_etc_hosts: true
 
+mounts:
+  - [ ephemeral0, none, swap, sw, 0, 0 ]
+   
+bootcmd:
+  - mkswap /dev/xvdb
+  - swapon /dev/xvdb
+
 runcmd:
 - [ sed, -i.orig, '/Defaults\s*requiretty/d', /etc/sudoers ]
 - /usr/sbin/useradd -m vagrant

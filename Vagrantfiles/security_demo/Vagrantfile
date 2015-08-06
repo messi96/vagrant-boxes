@@ -54,7 +54,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       aws.security_groups = ['default']
       aws.region = ENV['AWS_REGION']
       aws.instance_type = "m3.medium"
-      aws.block_device_mapping = [{ 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 }]
+      aws.block_device_mapping = [
+        { 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 },
+        { 'DeviceName' => '/dev/sdb', 'VirtualName' => 'ephemeral0' }
+      ]
       override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
       override.ssh.username = "vagrant"
 
