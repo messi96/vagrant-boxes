@@ -8,6 +8,7 @@
   - "node/%{::fqdn}"
   - "osfamily/%{::osfamily}"
   - "osfamily/%{::osfamily}-%{::virtual}"
+  - "operatingsystemmajrelease/%{::operatingsystemmajrelease}"
   - "role/%{::role}"
   - "virtual/%{::virtual}"
   - common

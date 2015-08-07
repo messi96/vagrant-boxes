@@ -1,0 +1,5 @@
+---
+demo_security::demo_user: ec2-user
+demo_security::demo_group: ec2-user
+waratek_java::users:
+  - ec2-user
