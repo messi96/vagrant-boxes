@@ -54,7 +54,7 @@
         "hiera_config_path": "../../puppet/hiera.yaml",
         "facter":
           {
-            "role": "security_demo_centos_base"
+            "role": "security_demo_centos"
           }
     },
     {
