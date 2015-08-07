@@ -210,9 +210,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.module_path = "../../puppet/modules"
       puppet.hiera_config_path = "../../puppet/hiera.yaml"
       #puppet.options = "--verbose --debug"
-      puppet.facter = {
-        "role"        => "security_demo_monitor"
-      }
     end
   end
 
