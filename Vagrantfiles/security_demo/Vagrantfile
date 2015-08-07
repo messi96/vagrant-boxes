@@ -105,6 +105,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.vmx["numvcpus"] = "2"
     end
 
+    # AWS
+    demo2.vm.provider "aws" do |aws,override|
+      override.vm.box = "waratek/aws-rhel6-PV"
+      override.vm.box_version = ">= 0"
+      aws.access_key_id = ENV['AWS_ACCESS_KEY']
+      aws.secret_access_key = ENV['AWS_SECRET_KEY']
+      aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+      aws.security_groups = ENV['AWS_SECURITY_GROUP']
+      aws.region = ENV['AWS_REGION']
+      aws.instance_type = "m3.medium"
+      aws.block_device_mapping = [
+        { 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 },
+        { 'DeviceName' => '/dev/sdb', 'VirtualName' => 'ephemeral0' }
+      ]
+      override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
+      override.ssh.username = "ec2-user"
+
+      aws.user_data = File.read("../../scripts/cloud-init.txt") + "hostname: demo2\nfqdn: demo2.aws.example.com\n"
+      aws.tags = {
+          'Name' => 'Waratek - demo2'
+       }
+    end
+
+    config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
+    config.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
+
     demo2.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
       puppet.manifest_file = "site.pp"
@@ -203,6 +229,32 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.vmx["memsize"] = "2048"
       v.vmx["numvcpus"] = "2"
     end
+
+    # AWS
+    monitor.vm.provider "aws" do |aws,override|
+      override.vm.box = "waratek/aws-rhel6-PV"
+      override.vm.box_version = ">= 0"
+      aws.access_key_id = ENV['AWS_ACCESS_KEY']
+      aws.secret_access_key = ENV['AWS_SECRET_KEY']
+      aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
+      aws.security_groups = ENV['AWS_SECURITY_GROUP']
+      aws.region = ENV['AWS_REGION']
+      aws.instance_type = "m3.medium"
+      aws.block_device_mapping = [
+        { 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 },
+        { 'DeviceName' => '/dev/sdb', 'VirtualName' => 'ephemeral0' }
+      ]
+      override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
+      override.ssh.username = "ec2-user"
+
+      aws.user_data = File.read("../../scripts/cloud-init.txt") + "hostname: monitor\nfqdn: monitor.aws.example.com\n"
+      aws.tags = {
+          'Name' => 'Waratek - monitor'
+       }
+    end
+
+    config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
+    config.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
 
     monitor.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
