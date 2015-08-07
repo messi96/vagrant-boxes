@@ -67,8 +67,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
        }
     end
 
-    config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
-    config.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
+    demo1.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
+    demo1.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
 
     demo1.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
@@ -128,8 +128,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
        }
     end
 
-    config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
-    config.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
+    demo2.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
+    demo2.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
 
     demo2.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
@@ -253,8 +253,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
        }
     end
 
-    config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
-    config.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
+    monitor.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
+    monitor.vm.provision "shell", path: "../../scripts/epel-bootstrap.sh"
 
     monitor.vm.provision "puppet", run: "always" do |puppet|
       puppet.manifests_path = "../../puppet/manifests"
