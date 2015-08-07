@@ -63,14 +63,4 @@ class demo_security::monitor inherits demo_security {
     init_defaults => $config_hash
   }
 
-  service { 'iptables':
-    ensure => false,
-    enable => false
-  }
-
-  service { 'ip6tables':
-    ensure => false,
-    enable => false
-  }
-
 }

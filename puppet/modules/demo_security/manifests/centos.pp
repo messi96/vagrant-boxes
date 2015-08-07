@@ -68,40 +68,6 @@ class demo_security::centos inherits demo_security {
     source => "puppet:///modules/demo_security/demo/jvc.rules",
   }
 
-  if ($::virtual == "virtualbox") or ($::virtual == "vmware") {
-    host { 'kali':
-      ip           => "$kali_ip",
-      host_aliases => 'kali.example.com'
-    }
-
-    host { 'monitor':
-      ip           => "$monitor_ip",
-      host_aliases => 'monitor.example.com'
-    }
-  }
-
-  service { 'iptables':
-    ensure => false,
-    enable => false
-  }
-
-  service { 'ip6tables':
-    ensure => false,
-    enable => false
-  }
-
-  exec { 'disable-selinux':
-    command => '/usr/sbin/setenforce 0',
-    onlyif  => '/usr/bin/test `/usr/sbin/getenforce | /bin/grep Enforcing`'
-  }
-
-  augeas { 'disable-selinux':
-    context => '/files/etc/selinux/config',
-    changes => [
-      'set SELINUX permissive'
-    ],
-  }
-
   class { '::tomcat':
     user         => "$demo_user",
     group        => "$demo_group",
