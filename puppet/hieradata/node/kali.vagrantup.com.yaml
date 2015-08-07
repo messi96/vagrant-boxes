@@ -1,4 +1,2 @@
 ---
-classes:
-  - base::kali
 vagrant_base_box::create_root_key: true

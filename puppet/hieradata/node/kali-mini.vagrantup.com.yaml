@@ -1,6 +1,4 @@
 ---
-classes:
-  - base::kali
 packages:
   - metasploit
   - postgresql

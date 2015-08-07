@@ -43,4 +43,43 @@ class demo_security::kali inherits demo_security {
     source => "puppet:///modules/demo_security/kali/cve-2013-2251.rc",
   }
 
+  file { '/root/.bashrc':
+    ensure => 'present',
+    source => '/etc/skel/.bashrc',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644'
+  }
+
+  file { '/root/.profile':
+    ensure => 'present',
+    source => '/etc/skel/.profile',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644'
+  }
+
+  if ($::domain == "example.com") {
+    service { 'postgresql':
+      enable  => true,
+      running => true,
+      require => Package["postgresql"]
+    }
+
+    service { 'metasploit':
+      enable  => true,
+      running => true,
+      require => Package["metasploit"]
+    }
+  } else {
+    service { 'postgresql':
+      enable  => true,
+      require => Package["postgresql"]
+    }
+
+    service { 'metasploit':
+      enable  => true,
+      require => Package["metasploit"]
+    }
+  }
 }
