@@ -49,26 +49,24 @@ class demo_security (
   $tomcat7_version  = $demo_security::params::tomcat7_version
 ) inherits demo_security::params {
 
-  if ($::virtual == "virtualbox") or ($::virtual == "vmware") {
-    host { 'demo1':
-      ip           => "$demo1_ip",
-      host_aliases => 'demo1.example.com'
-    }
+  host { 'demo1':
+    ip           => "$demo1_ip",
+    host_aliases => "demo1.${::domain}"
+  }
 
-    host { 'demo2':
-      ip           => "$demo2_ip",
-      host_aliases => 'demo2.example.com'
-    }
+  host { 'demo2':
+    ip           => "$demo2_ip",
+    host_aliases => "demo2.${::domain}"
+  }
 
-    host { 'kali':
-      ip           => "$kali_ip",
-      host_aliases => 'kali.example.com'
-    }
+  host { 'kali':
+    ip           => "$kali_ip",
+    host_aliases => "kali.${::domain}"
+  }
 
-    host { 'monitor':
-      ip           => "$monitor_ip",
-      host_aliases => 'monitor.example.com'
-    }
+  host { 'monitor':
+    ip           => "$monitor_ip",
+    host_aliases => "monitor.${::domain}"
   }
 
   if ($::osfamily == "RedHat") {
