@@ -51,7 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       aws.access_key_id = ENV['AWS_ACCESS_KEY']
       aws.secret_access_key = ENV['AWS_SECRET_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
-      aws.security_groups = ['default']
+      aws.security_groups = ENV['AWS_SECURITY_GROUP']
       aws.region = ENV['AWS_REGION']
       aws.instance_type = "m3.medium"
       aws.block_device_mapping = [
@@ -59,13 +59,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         { 'DeviceName' => '/dev/sdb', 'VirtualName' => 'ephemeral0' }
       ]
       override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
-      override.ssh.username = "vagrant"
+      override.ssh.username = "ec2-user"
 
-      aws.user_data = File.read("../../scripts/cloud-init.txt") + "hostname: demo1\nfqdn: demo1.example.com"
+      aws.user_data = File.read("../../scripts/cloud-init.txt") + "hostname: demo1\nfqdn: demo1.aws.example.com\n"
       aws.tags = {
-          'Name' => 'Waratek Security Demo',
-          'User' => ENV['USER']
-      }
+          'Name' => 'Waratek - demo1'
+       }
     end
 
     config.vm.provision "shell", path: "../../scripts/puppet-bootstrap.sh"
@@ -79,8 +78,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #puppet.options = "--verbose --debug"
       puppet.facter = {
         "role"        => "security_demo_centos",
-        "vagrant"     => "true",
-        "vagrantuser" => "vagrant",
       }
     end
   end
@@ -116,8 +113,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #puppet.options = "--verbose --debug"
       puppet.facter = {
         "role"        => "security_demo_centos",
-        "vagrant"     => "true",
-        "vagrantuser" => "vagrant",
       }
     end
   end
