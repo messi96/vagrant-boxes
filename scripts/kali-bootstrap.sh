@@ -17,11 +17,11 @@ else
   cd /tmp
   wget -q --no-check-certificate https://apt.puppetlabs.com/puppetlabs-release-wheezy.deb
   dpkg -i puppetlabs-release-wheezy.deb
-  apt-get -y update
-  apt-get -y install puppet
+  apt-get -y -qq update
+  apt-get -y -qq install puppet
 fi
        
-apt-get -y update
-apt-get -y install locales-all
-apt-get -y install kali-archive-keyring kali-debtags kali-defaults kali-menu kali-root-login
+apt-get -y -qq update
+apt-get -y -qq install locales-all
+apt-get -y -qq install kali-archive-keyring kali-debtags kali-defaults kali-menu kali-root-login
 
