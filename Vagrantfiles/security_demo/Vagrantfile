@@ -77,7 +77,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.hiera_config_path = "../../puppet/hiera.yaml"
       #puppet.options = "--verbose --debug"
       puppet.facter = {
-        "role"        => "security_demo",
+        "packer_builder_type" => "",
+        "role"                => "security_demo"
       }
     end
   end
@@ -138,7 +139,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.hiera_config_path = "../../puppet/hiera.yaml"
       #puppet.options = "--verbose --debug"
       puppet.facter = {
-        "role"        => "security_demo",
+        "packer_builder_type" => "",
+        "role"                => "security_demo"
       }
     end
   end
@@ -201,7 +203,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.hiera_config_path = "../../puppet/hiera.yaml"
       #puppet.options = "--verbose --debug"
       puppet.facter = {
-        "role"        => "security_demo_kali"
+        "packer_builder_type" => "",
+        "role"                => "security_demo_kali"
       }
     end
   end
@@ -262,6 +265,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       puppet.module_path = "../../puppet/modules"
       puppet.hiera_config_path = "../../puppet/hiera.yaml"
       #puppet.options = "--verbose --debug"
+      puppet.facter = {
+        "packer_builder_type" => "",
+        "role"                => ""
+      }
     end
   end
 
