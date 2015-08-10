@@ -37,6 +37,16 @@
 #
 class demo_security::kali inherits demo_security {
 
+  if ($::ec2_local_ipv4 =~ /\d+/) {
+    host { 'kali.external':
+      ip => "$::ec2_local_ipv4"
+    }
+  } elsif ($::ipaddress_eth1 =~ /\d+/) {
+    host { 'kali.external':
+      ip => "$::ipaddress_eth1"
+    }
+  }
+
   file { "/root/cve-2013-2251.rc":
     ensure => "file",
     mode   => 0644,
