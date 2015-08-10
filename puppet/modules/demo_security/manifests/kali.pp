@@ -69,12 +69,13 @@ class demo_security::kali inherits demo_security {
     mode   => '0644'
   }
 
-  if ($::domain == "example.com") {
+  if ($::domain =~ /example.com/) {
     service { 'postgresql':
-      enable  => true,
-      ensure  => true,
-      require => Package["postgresql"]
-    }
+      enable    => true,
+      ensure    => true,
+      hasstatus => false,
+      require   => Package["postgresql"]
+    } ->
 
     service { 'metasploit':
       enable  => true,
