@@ -49,7 +49,7 @@ class demo_security::centos inherits demo_security {
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0755,
-    source => "puppet:///modules/demo_security/reload_rules.sh",
+    source => "puppet:///modules/demo_security/demo/reload_rules.sh",
   }
 
   file { "/home/${demo_user}/demo/restart.sh":
@@ -57,7 +57,7 @@ class demo_security::centos inherits demo_security {
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0755,
-    source => "puppet:///modules/demo_security/restart.sh",
+    source => "puppet:///modules/demo_security/demo/restart.sh",
   }
 
   file { "/home/${demo_user}/demo/jvc.rules":
@@ -65,41 +65,7 @@ class demo_security::centos inherits demo_security {
     owner  => "${demo_user}",
     group  => "${demo_group}",
     mode   => 0644,
-    source => "puppet:///modules/demo_security/jvc.rules",
-  }
-
-  if ($::vagrant == "true") {
-    host { 'kali':
-      ip           => "$kali_ip",
-      host_aliases => 'kali.example.com'
-    }
-
-    host { 'monitor':
-      ip           => "$monitor_ip",
-      host_aliases => 'monitor.example.com'
-    }
-  }
-
-  service { 'iptables':
-    ensure => false,
-    enable => false
-  }
-
-  service { 'ip6tables':
-    ensure => false,
-    enable => false
-  }
-
-  exec { 'disable-selinux':
-    command => '/usr/sbin/setenforce 0',
-    onlyif  => '/usr/bin/test `/usr/sbin/getenforce | /bin/grep Enforcing`'
-  }
-
-  augeas { 'disable-selinux':
-    context => '/files/etc/selinux/config',
-    changes => [
-      'set SELINUX permissive'
-    ],
+    source => "puppet:///modules/demo_security/demo/jvc.rules",
   }
 
   class { '::tomcat':

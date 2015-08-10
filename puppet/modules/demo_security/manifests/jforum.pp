@@ -13,7 +13,7 @@ class demo_security::jforum inherits demo_security {
     owner       => "${demo_user}",
     group       => "${demo_group}",
     mode        => '0644',
-    source      => 'puppet:///modules/demo_security/jforum/SystemGlobals.properties',
+    source      => 'puppet:///modules/demo_security/demo/tomcat/jforum/SystemGlobals.properties',
   } ->
 
   file { "${tomcat7_home}/webapps/jforum-2.1.9/WEB-INF/config/modulesMapping.properties":
@@ -21,7 +21,7 @@ class demo_security::jforum inherits demo_security {
     owner       => "${demo_user}",
     group       => "${demo_group}",
     mode        => '0644',
-    source      => 'puppet:///modules/demo_security/jforum/modulesMapping.properties',
+    source      => 'puppet:///modules/demo_security/demo/tomcat/jforum/modulesMapping.properties',
   } ->
 
   file { "${tomcat7_home}/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/oracle.properties":
@@ -29,7 +29,7 @@ class demo_security::jforum inherits demo_security {
     owner       => "${demo_user}",
     group       => "${demo_group}",
     mode        => '0644',
-    source      => 'puppet:///modules/demo_security/jforum/oracle.properties',
+    source      => 'puppet:///modules/demo_security/demo/tomcat/jforum/oracle.properties',
   } ->
 
   file { "${tomcat7_home}/webapps/jforum-2.1.9/templates/default/images/logo.jpg":
@@ -37,7 +37,7 @@ class demo_security::jforum inherits demo_security {
     owner       => "${demo_user}",
     group       => "${demo_group}",
     mode        => '0644',
-    source      => 'puppet:///modules/demo_security/jforum/logo.jpg',
+    source      => 'puppet:///modules/demo_security/demo/tomcat/jforum/logo.jpg',
   } ->
 
   file { '/opt/apache-tomcat/tomcat7/webapps/jforum-2.1.9/WEB-INF/config/database/oracle/jforum.sql':
@@ -45,7 +45,7 @@ class demo_security::jforum inherits demo_security {
     owner       => "${demo_user}",
     group       => "${demo_group}",
     mode        => '0644',
-    source      => 'puppet:///modules/demo_security/jforum/jforum.sql',
+    source      => 'puppet:///modules/demo_security/demo/tomcat/jforum/jforum.sql',
   } ~>
 
   exec { 'setup-jforum-db':

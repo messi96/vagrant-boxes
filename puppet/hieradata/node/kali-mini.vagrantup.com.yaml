@@ -1,12 +1,5 @@
 ---
-classes:
-  - base::kali
-  - vagrant_base_box
 packages:
   - metasploit
   - postgresql
-sudo::configs:
-  'vagrant':
-    'content'   : "vagrant ALL=(ALL) NOPASSWD: ALL"
-    'priority'  : 10
 vagrant_base_box::create_root_key: true

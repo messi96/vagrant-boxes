@@ -1,0 +1,51 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # Workaround for https://github.com/mitchellh/vagrant/issues/5219
+  config.ssh.insert_key = false
+
+  config.vm.box = "centos6-desktop-x86_64"
+  config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/waratek-vagrant-boxes/centos6-x86_64-desktop_virtualbox_20150804.box"
+  config.vm.box_download_checksum = "fdcc4a7524f15e14274934997e377575"
+  config.vm.box_download_checksum_type = "md5"
+  config.vm.hostname = "localhost.localdomain"
+
+  config.vm.synced_folder "../../synced_folder", "/synced_folder"
+  config.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
+
+  # VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Centos Desktop"
+    vb.gui = "true"
+    vb.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
+    vb.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
+    vb.customize ["modifyvm", :id, "--bioslogofadein", "off"]
+    vb.customize ["modifyvm", :id, "--bioslogofadeout", "off"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+  end
+
+  # VMware Fusion
+  config.vm.provider "vmware_fusion" do |vmf|
+    vmf.vmx["memsize"] = "1024"
+  end
+
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "../../puppet/manifests"
+    puppet.manifest_file = "site.pp"
+    puppet.module_path = "../../puppet/modules"
+    puppet.hiera_config_path = "../../puppet/hiera.yaml"
+    #puppet.options = "--verbose --debug"
+    puppet.facter = {
+      "vagrant"     => "true",
+      "vagrantuser" => "vagrant",
+    }
+  end
+
+end

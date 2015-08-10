@@ -17,7 +17,7 @@ describe 'tomcat::config::server::valve', :type => :define do
     it { is_expected.to contain_augeas('/opt/apache-tomcat-Catalina--valve-org.apache.catalina.AccessLog').with(
       'lens'    => 'Xml.lns',
       'incl'    => '/opt/apache-tomcat/conf/server.xml',
-      'changes' => 'set Server/Service[#attribute/name=\'Catalina\']/Engine/Valve[#attribute/className=\'org.apache.catalina.AccessLog\']/#attribute/className org.apache.catalina.AccessLog',
+      'changes' => ['set Server/Service[#attribute/name=\'Catalina\']/Engine/Valve[#attribute/className=\'org.apache.catalina.AccessLog\']/#attribute/className org.apache.catalina.AccessLog'],
     )
     }
   end
@@ -28,20 +28,23 @@ describe 'tomcat::config::server::valve', :type => :define do
         :class_name            => 'foo',
         :parent_host           => 'localhost',
         :parent_service        => 'Catalina2',
+        :server_config         => '/opt/apache-tomcat/server.xml',
         :additional_attributes => {
           'suffix'    => '.txt',
           'directory' => 'logs',
+          'spaces'    => 'foo bar',
         },
         :attributes_to_remove  => ['foo', 'bar']
       }
     end
     it { is_expected.to contain_augeas('/opt/apache-tomcat/test-Catalina2-localhost-valve-foo').with(
       'lens'    => 'Xml.lns',
-      'incl'    => '/opt/apache-tomcat/test/conf/server.xml',
+      'incl'    => '/opt/apache-tomcat/server.xml',
       'changes' => [
         'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/className foo',
-        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/suffix .txt',
-        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/directory logs',
+        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/suffix \'.txt\'',
+        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/directory \'logs\'',
+        'set Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/spaces \'foo bar\'',
         'rm Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/foo',
         'rm Server/Service[#attribute/name=\'Catalina2\']/Engine/Host[#attribute/name=\'localhost\']/Valve[#attribute/className=\'foo\']/#attribute/bar',
       ]
@@ -70,7 +73,7 @@ describe 'tomcat::config::server::valve', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /does not match/)
       end
     end
@@ -82,7 +85,7 @@ describe 'tomcat::config::server::valve', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /not a Hash/)
       end
     end
@@ -95,7 +98,7 @@ describe 'tomcat::config::server::valve', :type => :define do
       end
       it do
         expect {
-          is_expected.to compile
+          catalogue
         }.to raise_error(Puppet::Error, /configurations require Augeas/)
       end
     end

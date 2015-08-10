@@ -1,23 +1,43 @@
 #
 class mysql::server::service {
-
-  if $mysql::server::real_service_enabled {
-    $service_ensure = 'running'
-  } else {
-    $service_ensure = 'stopped'
-  }
+  $options = $mysql::server::options
 
   if $mysql::server::real_service_manage {
-    file { $mysql::params::log_error:
-      owner => 'mysql',
-      group => 'mysql',
+    if $mysql::server::real_service_enabled {
+      $service_ensure = 'running'
+    } else {
+      $service_ensure = 'stopped'
     }
-    service { 'mysqld':
-      ensure   => $service_ensure,
-      name     => $mysql::server::service_name,
-      enable   => $mysql::server::real_service_enabled,
-      provider => $mysql::server::service_provider,
+  } else {
+    $service_ensure = undef
+  }
+
+  if $mysql::server::override_options['mysqld'] and $mysql::server::override_options['mysqld']['user'] {
+    $mysqluser = $mysql::server::override_options['mysqld']['user']
+  } else {
+    $mysqluser = $options['mysqld']['user']
+  }
+
+  if $options['mysqld']['log-error'] {
+    file { $options['mysqld']['log-error']:
+      ensure => present,
+      owner  => $mysqluser,
+      group  => $::mysql::server::mysql_group,
     }
+  }
+
+  service { 'mysqld':
+    ensure   => $service_ensure,
+    name     => $mysql::server::service_name,
+    enable   => $mysql::server::real_service_enabled,
+    provider => $mysql::server::service_provider,
+    require  => Package['mysql-server'],
+  }
+
+  # only establish ordering between config file and service if
+  # we're managing the config file.
+  if $mysql::server::manage_config_file {
+    File['mysql-config-file'] -> Service['mysqld']
   }
 
 }

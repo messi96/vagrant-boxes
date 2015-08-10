@@ -37,20 +37,62 @@
 #
 class demo_security::kali inherits demo_security {
 
+  if ($::ec2_local_ipv4 =~ /\d+/) {
+    host { 'kali.external':
+      ip => "$::ec2_local_ipv4"
+    }
+  } elsif ($::ipaddress_eth1 =~ /\d+/) {
+    host { 'kali.external':
+      ip => "$::ipaddress_eth1"
+    }
+  }
+
   file { "/root/cve-2013-2251.rc":
     ensure => "file",
     mode   => 0644,
-    source => "puppet:///modules/demo_security/cve-2013-2251.rc",
+    owner  => "root",
+    group  => "root",
+    source => "puppet:///modules/demo_security/kali/cve-2013-2251.rc",
   }
 
-  host { 'demo1':
-    ip           => "$demo1_ip",
-    host_aliases => 'demo1.example.com'
+  file { '/root/.bashrc':
+    ensure => 'present',
+    source => '/etc/skel/.bashrc',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644'
   }
 
-  host { 'demo2':
-    ip           => "$demo2_ip",
-    host_aliases => 'demo2.example.com'
+  file { '/root/.profile':
+    ensure => 'present',
+    source => '/etc/skel/.profile',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644'
   }
 
+  if ($::domain =~ /example.com/) {
+    service { 'postgresql':
+      enable    => true,
+      ensure    => true,
+      hasstatus => false,
+      require   => Package["postgresql"]
+    } ->
+
+    service { 'metasploit':
+      enable  => true,
+      ensure  => true,
+      require => Package["metasploit"]
+    }
+  } else {
+    service { 'postgresql':
+      enable  => true,
+      require => Package["postgresql"]
+    }
+
+    service { 'metasploit':
+      enable  => true,
+      require => Package["metasploit"]
+    }
+  }
 }

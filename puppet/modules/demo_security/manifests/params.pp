@@ -37,10 +37,29 @@
 #
 class demo_security::params {
 
-  $demo1_ip   = '172.21.21.21'
-  $demo2_ip   = '172.21.21.22'
-  $kali_ip    = '172.21.21.30'
-  $monitor_ip = '172.21.21.40'
+  if ($::hostname == "demo1") {
+    $demo1_ip = '127.0.0.1'
+  } else {
+    $demo1_ip = '172.21.21.21'    
+  }
+
+  if ($::hostname == "demo2") {
+    $demo2_ip = '127.0.0.1'
+  } else {
+    $demo2_ip = '172.21.21.22'    
+  }
+
+  if ($::hostname == "kali") {
+    $kali_ip = '127.0.0.1'
+  } else {
+    $kali_ip = '172.21.21.30'    
+  }
+
+  if ($::hostname == "monitor") {
+    $monitor_ip = '127.0.0.1'
+  } else {
+    $monitor_ip = '172.21.21.40'    
+  }
 
   if ($demo_user == undef) and ($::vagrantuser) {
   	$demo_user  = $::vagrantuser

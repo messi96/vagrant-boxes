@@ -1,0 +1,16 @@
+#cloud-config
+manage_etc_hosts: true
+
+mounts:
+  - [ ephemeral0, none, swap, sw, 0, 0 ]
+   
+bootcmd:
+  - mkswap /dev/xvdb
+  - swapon /dev/xvdb
+
+runcmd:
+  - [ sed, -i.orig, '/Defaults\s*requiretty/d', /etc/sudoers ]
+  - [ sh, -c, "echo >> /etc/ssh/sshd_config" ]
+  - [ sh, -c, "echo >> /etc/ssh/sshd_config" ]
+  - [ sh, -c, "echo 'UseDNS no' >> /etc/ssh/sshd_config" ]
+

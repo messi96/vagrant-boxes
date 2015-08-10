@@ -10,8 +10,8 @@
 #   resource as necessary.
 #
 define staging::file (
-  $source,              #: the source file location, supports local files, puppet://, http://, https://, ftp://
-  $target      = undef, #: the target staging directory, if unspecified ${staging::path}/${caller_module_name}
+  $source,              #: the source file location, supports local files, puppet://, http://, https://, ftp://, s3://
+  $target      = undef, #: the target file location, if unspecified ${staging::path}/${subdir}/${name}
   $username    = undef, #: https or ftp username
   $certificate = undef, #: https certificate file
   $password    = undef, #: https or ftp user password or https certificate password
@@ -19,6 +19,8 @@ define staging::file (
   $timeout     = undef, #: the the time to wait for the file transfer to complete
   $curl_option = undef, #: options to pass to curl
   $wget_option = undef, #: options to pass to wget
+  $tries       = undef, #: amount of retries for the file transfer when non transient connection errors exist
+  $try_sleep   = undef, #: time to wait between retries for the file transfer
   $subdir      = $caller_module_name
 ) {
 
@@ -46,6 +48,8 @@ define staging::file (
     cwd         => $staging_dir,
     creates     => $target_file,
     timeout     => $timeout,
+    try_sleep   => $try_sleep,
+    tries       => $tries,
     logoutput   => on_failure,
   }
 
@@ -105,6 +109,12 @@ define staging::file (
       else               { $command = $ftp_get        }
       exec { $target_file:
         command     => $command,
+      }
+    }
+    /^s3:\/\//: {
+      $command = "aws s3 cp ${source} ${target_file}"
+      exec { $target_file:
+        command   => $command,
       }
     }
     default: {

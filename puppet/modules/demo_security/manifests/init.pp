@@ -36,10 +36,12 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 class demo_security (
-  $centos_ip        = $demo_security::params::centos_ip,
+  $demo1_ip         = $demo_security::params::demo1_ip,
+  $demo2_ip         = $demo_security::params::demo2_ip,
   $demo_group       = $demo_security::params::demo_group,
   $demo_user        = $demo_security::params::demo_user,
   $kali_ip          = $demo_security::params::kali_ip,
+  $monitor_ip       = $demo_security::params::monitor_ip,
   $spiracle_version = $demo_security::params::spiracle_version,
   $tomcat6_home     = $demo_security::params::tomcat6_home,
   $tomcat6_version  = $demo_security::params::tomcat6_version,
@@ -47,5 +49,48 @@ class demo_security (
   $tomcat7_version  = $demo_security::params::tomcat7_version
 ) inherits demo_security::params {
 
+  host { 'demo1':
+    ip           => "$demo1_ip",
+    host_aliases => "demo1.${::domain}"
+  }
+
+  host { 'demo2':
+    ip           => "$demo2_ip",
+    host_aliases => "demo2.${::domain}"
+  }
+
+  host { 'kali':
+    ip           => "$kali_ip",
+    host_aliases => "kali.${::domain}"
+  }
+
+  host { 'monitor':
+    ip           => "$monitor_ip",
+    host_aliases => "monitor.${::domain}"
+  }
+
+  if ($::osfamily == "RedHat") {
+    service { 'iptables':
+      ensure => false,
+      enable => false
+    }
+
+    service { 'ip6tables':
+      ensure => false,
+      enable => false
+    }
+
+    exec { 'disable-selinux':
+      command => '/usr/sbin/setenforce 0',
+      onlyif  => '/usr/bin/test `/usr/sbin/getenforce | /bin/grep Enforcing`'
+    }
+
+    augeas { 'disable-selinux':
+      context => '/files/etc/selinux/config',
+      changes => [
+        'set SELINUX permissive'
+      ],
+    }
+  }
 
 }

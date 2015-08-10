@@ -1,0 +1,17 @@
+{
+    "description": "Base box for Waratek Security Demos",
+    "name": "waratek/security_demo",
+    "versions": [
+        {
+            "providers": [
+                {
+                    "checksum": "fa9d6e3352fc13be9755bf4d194aa589", 
+                    "checksum_type": "md5", 
+                    "name": "virtualbox", 
+                    "url": "https://s3-eu-west-1.amazonaws.com/waratek-vagrant-boxes/centos6-x86_64-security_demo_virtualbox_20150804.box"
+                }
+            ], 
+            "version": "1.0.0"
+        }
+    ]
+}

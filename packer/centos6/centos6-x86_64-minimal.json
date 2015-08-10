@@ -1,6 +1,6 @@
 {
   "variables": {
-    "vm_name": "centos6-x86_64",
+    "vm_name": "centos6-x86_64-mini",
     "disk_size": "20480",
     "iso_checksum": "4ed6c56d365bd3ab12cd88b8a480f4a62e7c66d2",
     "iso_checksum_type": "sha1",
@@ -82,11 +82,7 @@
       "type": "puppet-masterless",
         "manifest_file": "../../puppet/manifests/site.pp",
         "module_paths": ["../../puppet/modules"],
-        "hiera_config_path": "../../puppet/hiera.yaml",
-        "facter":
-          {
-            "packer": "vagrant"
-          }
+        "hiera_config_path": "../../puppet/hiera.yaml"
     },
     {
       "type": "shell",
@@ -109,7 +105,7 @@
   "post-processors": [  {
     "type": "vagrant",
     "output" : "{{user `vm_name`}}_{{.Provider}}_{{user `build_date`}}.box",
-    "keep_input_artifact": false
+    "keep_input_artifact": true
   }
   ]
 }

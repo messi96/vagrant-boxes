@@ -49,13 +49,6 @@
 
 # Defaults specification
 
-#
-# Disable "ssh hostname sudo <cmd>", because it will show the password in clear. 
-#         You have to run "ssh -t hostname sudo <cmd>".
-#
-Defaults    requiretty
-
-#
 # Refuse to run if unable to disable echo on the tty. This setting should also be
 # changed in order to be able to use sudo without a tty. See requiretty above.
 #
@@ -80,7 +73,7 @@ Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY
 #
 # Defaults   env_keep += "HOME"
 
-Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
+Defaults    secure_path = /usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 ## Next comes the main part: which users can run what software on 
 ## which machines (the sudoers file can be shared between multiple

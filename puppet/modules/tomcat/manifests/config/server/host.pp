@@ -23,6 +23,7 @@ define tomcat::config::server::host (
   $parent_service        = 'Catalina',
   $additional_attributes = {},
   $attributes_to_remove  = [],
+  $server_config         = undef,
 ) {
   if versioncmp($::augeasversion, '1.0.0') < 0 {
     fail('Server configurations require Augeas >= 1.0.0')
@@ -39,6 +40,12 @@ define tomcat::config::server::host (
 
   $base_path = "Server/Service[#attribute/name='${parent_service}']/Engine/Host[#attribute/name='${_host_name}']"
 
+  if $server_config {
+    $_server_config = $server_config
+  } else {
+    $_server_config = "${catalina_base}/conf/server.xml"
+  }
+
   if $host_ensure =~ /^(absent|false)$/ {
     $changes = "rm ${base_path}"
   } else {
@@ -50,10 +57,15 @@ define tomcat::config::server::host (
     $_app_base = "set ${base_path}/#attribute/appBase ${app_base}"
 
     if ! empty($additional_attributes) {
-      $_additional_attributes = prefix(join_keys_to_values($additional_attributes, ' '), "set ${base_path}/#attribute/")
+      $_additional_attributes = suffix(prefix(join_keys_to_values($additional_attributes, " '"), "set ${base_path}/#attribute/"), "'")
+    } else {
+      $_additional_attributes = undef
     }
+
     if ! empty(any2array($attributes_to_remove)) {
       $_attributes_to_remove = prefix(any2array($attributes_to_remove), "rm ${base_path}/#attribute/")
+    } else {
+      $_attributes_to_remove = undef
     }
 
     $changes = delete_undef_values(flatten([$_host_name_change, $_app_base, $_additional_attributes, $_attributes_to_remove]))
@@ -61,7 +73,7 @@ define tomcat::config::server::host (
 
   augeas { "${catalina_base}-${parent_service}-host-${_host_name}":
     lens    => 'Xml.lns',
-    incl    => "${catalina_base}/conf/server.xml",
+    incl    => $_server_config,
     changes => $changes,
   }
 }

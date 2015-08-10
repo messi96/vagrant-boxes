@@ -7,7 +7,7 @@ class iptables::params  {
 
   ### Definition of some variables used in the module
   $osver = split($::operatingsystemrelease, '[.]')
-  $osver_maj = $osver[0]
+  $osver_maj = string2int($osver[0])
 
   $enable_v6 = false
 
@@ -47,6 +47,9 @@ class iptables::params  {
 # Define what to do with INPUT multicast packets
   $multicast_policy = 'accept'
 
+# Define use comment module
+  $comment = false
+
 ## MODULE INTERNAL VARIABLES
 # (Modify to adapt to unsupported OSes)
 
@@ -71,29 +74,39 @@ class iptables::params  {
 
   case $::operatingsystem {
     /(?i:Debian)/: {
-      if (($osver_maj =~ /^\d+$/) and ($osver_maj < 7)) {
+      if ($osver_maj < 7) {
         $config_file = '/etc/iptables/rules'
+        $service_hasrestart = false
       } else {
         $config_file = '/etc/iptables/rules.v4' # Introduced in iptables-persistent 0.5/wheezy
+        $service_hasrestart = true
       }
+      $config_file_v6 = '/etc/iptables/rules.v6' # Introduced in iptables-persistent 0.5/wheezy, noop before
     }
     /(?i:Ubuntu)/: {
-      if (($osver_maj =~ /^\d+$/) and ($osver_maj < 12)) {
+      if ($osver_maj < 12) {
         $config_file = '/etc/iptables/rules'
+        $service_hasrestart = false
       } else {
         $config_file = '/etc/iptables/rules.v4' # Introduced in iptables-persistent 0.5/Ubuntu 12.04
-        $config_file_v6 = '/etc/iptables/rules.v6' # Introduced in iptables-persistent 0.5/Ubuntu 12.04
+        $service_hasrestart = true
       }
+      $config_file_v6 = '/etc/iptables/rules.v6' # Introduced in iptables-persistent 0.5/Ubuntu 12.04, noop before
     }
     /(?i:Mint)/: {
-      if (($osver_maj =~ /^\d+$/) and ($osver_maj < 13)) {
+      if ($osver_maj < 13) {
         $config_file = '/etc/iptables/rules'
+        $service_hasrestart = false
       } else {
         $config_file = '/etc/iptables/rules.v4' # Introduced in iptables-persistent 0.5/Mint 13
+        $service_hasrestart = true
       }
+      $config_file_v6 = '/etc/iptables/rules.v6' # Introduced in iptables-persistent 0.5/Mint 13, noop before
     }
     default: {
       $config_file = '/etc/sysconfig/iptables'
+      $service_hasrestart = true
+      $config_file_v6 = '/etc/sysconfig/ip6tables'
     }
   }
 
@@ -112,6 +125,7 @@ class iptables::params  {
   $my_class = ''
   $source = ''
   $template = ''
+  $content = ''
   $service_autorestart = true
   $version = 'present'
   $absent = false
@@ -119,17 +133,20 @@ class iptables::params  {
   $disableboot = false
   $debug = false
   $audit_only = false
+  $options = {}
 
-  ## FILE SERVING SOURCE
-  case $::base_source {
-    '': {
-      $general_base_source = $::puppetversion ? {
-        /(^0.25)/ => 'puppet:///modules',
-        /(^0.)/   => "puppet://${servername}",
-        default   => 'puppet:///modules',
-      }
-    }
-    default: { $general_base_source = $::base_source }
-  }
+  $filter_header_template         = 'iptables/concat/filter_header'
+  $filter_input_header_template   = 'iptables/concat/filter_input_header'
+  $filter_input_footer_template   = 'iptables/concat/filter_input_footer'
+  $filter_output_header_template  = 'iptables/concat/filter_output_header'
+  $filter_output_footer_template  = 'iptables/concat/filter_output_footer'
+  $filter_forward_header_template = 'iptables/concat/filter_forward_header'
+  $filter_forward_footer_template = 'iptables/concat/filter_forward_footer'
+  $filter_footer_template         = 'iptables/concat/filter_footer'
+  $nat_header_template            = 'iptables/concat/nat_header'
+  $nat_footer_template            = 'iptables/concat/nat_footer'
+  $mangle_header_template         = 'iptables/concat/mangle_header'
+  $mangle_footer_template         = 'iptables/concat/mangle_footer'
+  $rules                          = {}
 
 }

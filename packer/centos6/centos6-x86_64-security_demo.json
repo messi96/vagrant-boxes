@@ -1,0 +1,74 @@
+{
+  "variables": {
+    "vm_name": "centos6-x86_64-security_demo",
+    "box_desc" : "Security Demo",
+    "build_date": "{{isotime \"20060102\"}}"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "source_path": "output-virtualbox-iso/centos6-x86_64-mini.ovf",
+      "headless": "false",
+      "type": "virtualbox-ovf",
+      "vm_name": "{{user `vm_name`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "512"],
+        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+      ],
+      "boot_wait": "10s",
+      "guest_additions_mode": "disable",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_pty": "true",
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    },
+    {
+      "source_path": "output-vmware-iso/centos6-x86_64-mini.vmx",
+      "headless": "false",
+      "type": "vmware-vmx",
+      "vm_name": "{{user `vm_name`}}",
+      "boot_wait": "10s",
+      "http_directory": "http",
+      "shutdown_command": "/sbin/shutdown -hP 0",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_pty": "true",
+      "ssh_username": "root",
+      "ssh_wait_timeout": "10000s"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
+      "pause_before": "10s"
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "hiera_config_path": "../../puppet/hiera.yaml",
+        "facter":
+          {
+            "role": "security_demo_centos"
+          }
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+  "post-processors": [  {
+    "type": "vagrant",
+    "output" : "{{user `vm_name`}}_{{.Provider}}_{{user `build_date`}}.box",
+    "keep_input_artifact": false
+  }
+  ]
+}

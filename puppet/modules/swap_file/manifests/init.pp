@@ -1,6 +1,8 @@
 # Class: swap_file
 #
-# This class manages swapspace on a node.
+# This class creates a swapspace on a node.
+#
+# Using this class is now deprecated, use the swap_file::files defined type
 #
 # == Parameters
 # [*ensure*]
@@ -8,15 +10,12 @@
 # [*swapfile*]
 #   Location of swapfile, defaults to /mnt
 # [*swapfilesize*]
-#   Size of the swapfile in MB. Defaults to $::memorysize fact on the node
-#
-# Actions:
-#   Creates and mounts a swapfile.
-#   Umounts and removes a swapfile.
-#
-# Requires:
-#   memorysizeinbytes fact - See:
-#   https://blog.kumina.nl/2011/03/facter-facts-for-memory-in-bytes/
+#   Size of the swapfile as a string (eg. 10 MB, 1.2 GB).
+#   Defaults to $::memorysize fact on the node
+# [*add_mount*]
+#   Add a mount to the swapfile so it persists on boot
+# [*options*]
+#   Mount options for the swapfile
 #
 # == Examples
 #
@@ -34,30 +33,36 @@
 # == Authors
 #    @petems - Peter Souter
 #    @Yggdrasil
+#
 class swap_file (
   $ensure        = 'present',
   $swapfile      = '/mnt/swap.1',
-  $swapfilesize  = to_bytes($::memorysize) / 1000000
+  $swapfilesize  = $::memorysize,
+  $add_mount     = true,
+  $options       = 'defaults'
 ) inherits swap_file::params {
+
+  # Parameter validation
+  validate_re($ensure, ['^absent$', '^present$'], "Invalid ensure: ${ensure} - (Must be 'present' or 'absent')")
+  validate_string($swapfile)
+  $swapfilesize_mb = to_bytes($swapfilesize) / 1000000
+  validate_bool($add_mount)
+
+  warning('Use of swap_file class is now deprecated')
+  warning('Use the swap_file::files defined type (Or downgrade the swap_file module to 1.0.1')
+
   if $ensure == 'present' {
-      exec { 'Create swap file':
-        command => "/bin/dd if=/dev/zero of=${swapfile} bs=1M count=${swapfilesize}",
-        creates => $swapfile,
-      }
-      exec { 'Attach swap file':
-        command => "/sbin/mkswap ${swapfile} && /sbin/swapon ${swapfile}",
-        require => Exec['Create swap file'],
-        unless  => "/sbin/swapon -s | grep ${swapfile}",
-      }
+    ::swap_file::files{ $swapfile:
+      ensure       => 'present',
+      swapfile     => $swapfile,
+      swapfilesize => $swapfilesize,
+      add_mount    => $add_mount,
+      options      => $options,
     }
+  }
   elsif $ensure == 'absent' {
-    exec { 'Detach swap file':
-      command => "/sbin/swapoff ${swapfile}",
-      onlyif  => "/sbin/swapon -s | grep ${swapfile}",
-    }
-    file { $swapfile:
-      ensure  => absent,
-      require => Exec['Detach swap file'],
+    ::swap_file::files{ $swapfile:
+      ensure        => 'absent',
     }
   }
 }

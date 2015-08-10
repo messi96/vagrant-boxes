@@ -1,0 +1,46 @@
+VERSION 1.0
+
+# Demonstration jvc.rules file
+
+# File Rules
+file:read:*:allow:info
+file:write:*:allow:info
+file:exec:*:allow:warn
+file:read:/dev/random:allow:off
+file:read:/dev/urandom:allow:off
+file:read:/etc/:deny:warn
+file:read:/etc/hosts:allow:info
+file:read:/opt/apache-tomcat:allow:off
+file:read:/usr/lib/jvm:allow:off
+
+# Example Network Rules
+network:accept:*:allow:info
+network:bind:*:allow:info
+network:connect:*:allow:info
+network:connect:www.google.com::deny:warn
+network:serverbind:*:allow:info
+
+# SQL injection mitigation
+sql:database:oracle:allow:trace
+
+# Static Linking
+#classlink:class:*:allow:info
+classlink:class:com.sun.*:allow:off
+classlink:class:java.*:allow:off
+classlink:class:javax.*:allow:off
+classlink:class:org.apache.*:allow:off
+classlink:class:org.xml.*:allow:off
+classlink:class:sun.reflect.*:allow:off
+
+# Reflection
+#reflect:class:*:allow:info
+#reflect:class:org.apache.*:allow:off
+
+# Throwable
+throwable:throw:javax.crypto.*:allow:trace
+#throwable:throw:java.security.*:allow:info
+
+# Virtual patch rule for Apache Struts2 vulnerability
+#reflect:class:com.opensymphony.xwork2.ognl.SecurityMemberAccess:method:setAllowStaticMethodAccess(Z)V:deny:warn
+
+# END
