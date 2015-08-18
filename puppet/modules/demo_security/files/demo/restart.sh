@@ -42,7 +42,7 @@ echo "[*] Deploying jvc.rules file for Tomcat 7"
 cp jvc.rules /var/lib/javad/jvm-1/tomcat7
 
 echo "[*] Starting Tomcat 7 using jdk-1.6.0_43"
-export JAVA_HOME="${WARATEK_HOME}/jre/jvc/jdk-1.6.0_43"
+export JAVA_HOME="${WARATEK_HOME}/jvc/jdk-1.6.0_43"
 export CATALINA_OPTS="--jvc=tomcat7 --async"
 /opt/apache-tomcat/tomcat7/bin/startup.sh
 
