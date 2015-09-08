@@ -3,6 +3,9 @@
 set -o nounset
 set -o errexit
 
+# Refresh dotfiles
+cp /etc/skel/.bashrc /etc/skel/.profile /root
+
 # Clean up
 echo "[*] Cleaning up apt"
 apt-get -y remove linux-headers-$(uname -r) build-essential
@@ -25,6 +28,8 @@ rm /lib/udev/rules.d/75-persistent-net-generator.rules
 
 echo "[*] Adding a 2 sec delay to the interface up, to make the dhclient happy"
 echo "pre-up sleep 2" >> /etc/network/interfaces
+
+rm -f /etc/sudoers.d/packer-vagrant
 
 # Cleanup puppet
 rm -rf /var/lib/puppet

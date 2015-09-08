@@ -2,9 +2,9 @@
   "variables": {
     "vm_name": "kali-linux-amd64-mini",
     "disk_size": "20480",
-    "iso_checksum": "5beac276f46542e7b764b0416575156c85b42f0c",
+    "iso_checksum": "5639928a1473b144d16d7ca3b9c71791925da23c",
     "iso_checksum_type": "sha1",
-    "iso_url": "http://cdimage.kali.org/kali-1.1.0a/kali-linux-1.1.0a-amd64-mini.iso",
+    "iso_url": "http://cdimage.kali.org/kali-2.0/kali-linux-mini-2.0-amd64.iso",
     "box_desc" : "Kali Linux 64 Bit Mini",
     "build_date": "{{isotime \"20060102\"}}"
   },
@@ -46,11 +46,11 @@
       "guest_additions_mode": "disable",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "http_directory": "http",
-      "shutdown_command": "/sbin/shutdown -hP 0",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -hP 0",
       "ssh_password": "vagrant",
       "ssh_port": 22,
       "ssh_pty": "true",
-      "ssh_username": "root",
+      "ssh_username": "vagrant",
       "ssh_wait_timeout": "10000s"
     },
     {
@@ -72,11 +72,11 @@
       ],
       "boot_wait": "10s",
       "http_directory": "http",
-      "shutdown_command": "/sbin/shutdown -hP 0",
+      "shutdown_command": "echo 'vagrant' | sudo -S /sbin/shutdown -hP 0",
       "ssh_password": "vagrant",
       "ssh_port": 22,
       "ssh_pty": "true",
-      "ssh_username": "root",
+      "ssh_username": "vagrant",
       "ssh_wait_timeout": "10000s"
     }
   ],
@@ -89,6 +89,7 @@
     },
     {
       "type": "shell",
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
       "scripts": [
         "scripts/base.sh",
         "scripts/puppet.sh"
@@ -96,6 +97,7 @@
     },
     {
       "type": "shell",
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
       "script": "scripts/vmware.sh",
       "only": ["vmware-iso"]
     },
@@ -103,11 +105,11 @@
       "type": "puppet-masterless",
         "manifest_file": "../../puppet/manifests/site.pp",
         "module_paths": ["../../puppet/modules"],
-        "hiera_config_path": "../../puppet/hiera.yaml",
-        "prevent_sudo": "true"
+        "hiera_config_path": "../../puppet/hiera.yaml"
     },
     {
       "type": "shell",
+      "execute_command": "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'",
       "scripts": [
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
