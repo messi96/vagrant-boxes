@@ -1,4 +1,6 @@
 ---
 packages:
+  - kali-desktop-gnome
+  - kali-linux
   - kali-linux-full
 vagrant_base_box::create_root_key: true
