@@ -8,7 +8,6 @@ cp /etc/skel/.bashrc /etc/skel/.profile /root
 
 # Clean up
 echo "[*] Cleaning up apt"
-apt-get -y remove linux-headers-$(uname -r) build-essential
 apt-get -y autoremove
 apt-get -y clean
 
