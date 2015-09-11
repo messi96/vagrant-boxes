@@ -149,7 +149,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Kali
   config.vm.define "kali", autostart: false do |kali|
     kali.vm.box = "waratek/kali-mini"
-    kali.vm.box_version = "~> 1.0"
+    kali.vm.box_version = "~> 2.0"
     kali.vm.guest = "debian"
     kali.vm.hostname = "kali.example.com"
     kali.ssh.username = "root"
