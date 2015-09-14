@@ -26,9 +26,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     demo1.vm.network "private_network", ip: "172.21.21.21"
     #demo1.vm.network "public_network"
-    demo1.vm.network "forwarded_port", guest: 6061, host: 6060 # Tomcat 6
-    demo1.vm.network "forwarded_port", guest: 8081, host: 8080 # Tomcat 7
-    demo1.vm.network "forwarded_port", guest: 9091, host: 9090 # httpd
+    demo1.vm.network "forwarded_port", guest: 6060, host: 6061 # Tomcat 6
+    demo1.vm.network "forwarded_port", guest: 8080, host: 8081 # Tomcat 7
+    demo1.vm.network "forwarded_port", guest: 9090, host: 9091 # httpd
 
     demo1.vm.synced_folder "../../synced_folder", "/synced_folder"
     demo1.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
@@ -91,9 +91,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     demo2.vm.network "private_network", ip: "172.21.21.22"
     #demo2.vm.network "public_network"
-    demo2.vm.network "forwarded_port", guest: 6062, host: 6060 # Tomcat 6
-    demo2.vm.network "forwarded_port", guest: 8082, host: 8080 # Tomcat 7
-    demo2.vm.network "forwarded_port", guest: 9092, host: 9090 # httpd
+    demo2.vm.network "forwarded_port", guest: 6060, host: 6062 # Tomcat 6
+    demo2.vm.network "forwarded_port", guest: 8080, host: 8082 # Tomcat 7
+    demo2.vm.network "forwarded_port", guest: 9090, host: 9092 # httpd
 
     demo2.vm.synced_folder "../../synced_folder", "/synced_folder"
     demo2.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
