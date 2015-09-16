@@ -26,9 +26,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     demo1.vm.network "private_network", ip: "172.21.21.21"
     #demo1.vm.network "public_network"
-    demo1.vm.network "forwarded_port", guest: 6060, host: 6060 # Tomcat 6
-    demo1.vm.network "forwarded_port", guest: 8080, host: 8080 # Tomcat 7
-    demo1.vm.network "forwarded_port", guest: 9090, host: 9090 # httpd
+    demo1.vm.network "forwarded_port", guest: 8080, host: 8081 # Tomcat 7
+    demo1.vm.network "forwarded_port", guest: 9090, host: 9091 # httpd
 
     demo1.vm.synced_folder "../../synced_folder", "/synced_folder"
     demo1.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
@@ -91,6 +90,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     demo2.vm.network "private_network", ip: "172.21.21.22"
     #demo2.vm.network "public_network"
+    demo2.vm.network "forwarded_port", guest: 8080, host: 8082 # Tomcat 7
+    demo2.vm.network "forwarded_port", guest: 9090, host: 9092 # httpd
 
     demo2.vm.synced_folder "../../synced_folder", "/synced_folder"
     demo2.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
@@ -148,14 +149,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Kali
   config.vm.define "kali", autostart: false do |kali|
     kali.vm.box = "waratek/kali-mini"
-    kali.vm.box_version = "~> 1.0"
+    kali.vm.box_version = "~> 2.0"
     kali.vm.guest = "debian"
     kali.vm.hostname = "kali.example.com"
     kali.ssh.username = "root"
 
     kali.vm.network "private_network", ip: "172.21.21.30"
     #kali.vm.network "public_network"
-    kali.vm.network "forwarded_port", guest: 3790, host: 3790
 
     kali.vm.synced_folder "../../synced_folder", "/synced_folder"
     kali.vm.synced_folder "../../puppet/hieradata", "/tmp/hieradata"
