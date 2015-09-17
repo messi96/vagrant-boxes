@@ -77,6 +77,7 @@ class demo_security::centos inherits demo_security {
 
   anchor { 'demo_security::begin': }     ->
   class  { '::demo_security::httpd': }  ->
+  class  { '::demo_security::oracle_xe': }  ->
   class  { '::demo_security::tomcat6': }  ->
   class  { '::demo_security::tomcat7': }  ->
   class  { '::demo_security::struts2': } ->

@@ -1,5 +1,5 @@
 ---
 packages:
-  - metasploit
+  - metasploit-framework
   - postgresql
 vagrant_base_box::create_root_key: true

@@ -35,40 +35,15 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::kali inherits demo_security {
+class demo_security::oracle_xe inherits demo_security {
 
-  if ($::ec2_local_ipv4 =~ /\d+/) {
-    host { 'kali.external':
-      ip => "$::ec2_local_ipv4"
+    # Hack to prevent Oracle XE binding to IPv6 interface
+
+    host { 'localhost-ipv6':
+        name   => 'localhost',
+        ensure => 'absent',
+        ip     => '::1',
+        notify => Service[oracle-xe]
     }
-  } elsif ($::ipaddress_eth1 =~ /\d+/) {
-    host { 'kali.external':
-      ip => "$::ipaddress_eth1"
-    }
-  }
-
-  file { "/root/cve-2013-2251.rc":
-    ensure => "file",
-    mode   => 0644,
-    owner  => "root",
-    group  => "root",
-    source => "puppet:///modules/demo_security/kali/cve-2013-2251.rc",
-  }
-
-  file { '/root/.bashrc':
-    ensure => 'present',
-    source => '/etc/skel/.bashrc',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644'
-  }
-
-  file { '/root/.profile':
-    ensure => 'present',
-    source => '/etc/skel/.profile',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644'
-  }
 
 }
