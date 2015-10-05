@@ -2,3 +2,5 @@
 classes:
   - demo_security::kali
   - profiles::base
+demo_security::demo1_ip: 172.21.21.21
+demo_security::demo2_ip: 172.21.21.22

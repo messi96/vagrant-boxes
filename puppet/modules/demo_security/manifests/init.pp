@@ -49,26 +49,6 @@ class demo_security (
   $tomcat7_version  = $demo_security::params::tomcat7_version
 ) inherits demo_security::params {
 
-  host { 'demo1':
-    ip           => "$demo1_ip",
-    host_aliases => "demo1.${::domain}"
-  }
-
-  host { 'demo2':
-    ip           => "$demo2_ip",
-    host_aliases => "demo2.${::domain}"
-  }
-
-  host { 'kali':
-    ip           => "$kali_ip",
-    host_aliases => "kali.${::domain}"
-  }
-
-  host { 'monitor':
-    ip           => "$monitor_ip",
-    host_aliases => "monitor.${::domain}"
-  }
-
   if ($::osfamily == "RedHat") {
     service { 'iptables':
       ensure => false,

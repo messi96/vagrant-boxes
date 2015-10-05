@@ -37,6 +37,22 @@
 #
 class demo_security::centos inherits demo_security {
 
+  host { 'demo1':
+    ip           => "$demo1_ip",
+  }
+
+  host { 'demo2':
+    ip           => "$demo2_ip",
+  }
+
+  host { 'kali':
+    ip           => "$kali_ip",
+  }
+
+  host { 'monitor':
+    ip           => "$monitor_ip",
+  }
+
   file { "/home/${demo_user}/demo":
     ensure => "directory",
     owner  => "${demo_user}",
