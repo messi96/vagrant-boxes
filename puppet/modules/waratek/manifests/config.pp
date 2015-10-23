@@ -40,9 +40,9 @@ class waratek::config inherits waratek {
   $waratek_users = hiera( 'waratek::users', {} )
   
   ensure_resource( 'user', $waratek_users, 
-  	{
-  	  'ensure'     => 'present',
-  	  'groups'     => 'waratek',
+    {
+      'ensure'     => 'present',
+      'groups'     => 'waratek',
       'managehome' => 'true',
     }
   )
