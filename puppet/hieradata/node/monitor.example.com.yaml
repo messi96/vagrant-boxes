@@ -3,8 +3,19 @@ classes:
   - demo_security::monitor
   - elasticsearch
   - splunk
+  - foreman
+  - foreman_proxy
+  - puppet
 elasticsearch::manage_repo: true
 elasticsearch::repo_version: '1.5'
 elasticsearch::status: enabled
+foreman::admin_password: password
+foreman::configure_epel_repo: false
+foreman::passenger_ruby: /usr/bin/ruby193-ruby
+foreman::passenger_ruby_package: ruby193-rubygem-passenger-native
+foreman::plugin_prefix: ruby193-rubygem-foreman
+foreman::ssl: true
+foreman_proxy::tftp: false
+puppet::server: true
 splunk::install: server
 splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/splunk/linux/splunk-6.2.3-264376-linux-2.6-x86_64.rpm
