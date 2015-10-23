@@ -41,6 +41,7 @@ class demo_security (
   $demo_group       = $demo_security::params::demo_group,
   $demo_user        = $demo_security::params::demo_user,
   $kali_ip          = $demo_security::params::kali_ip,
+  $kibana_version   = $demo_security::params::kibana_version,
   $monitor_ip       = $demo_security::params::monitor_ip,
   $spiracle_version = $demo_security::params::spiracle_version,
   $tomcat6_home     = $demo_security::params::tomcat6_home,
