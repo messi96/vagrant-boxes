@@ -15,6 +15,7 @@ foreman::passenger_ruby: /usr/bin/ruby193-ruby
 foreman::passenger_ruby_package: ruby193-rubygem-passenger-native
 foreman::plugin_prefix: ruby193-rubygem-foreman
 foreman::ssl: true
+foreman_proxy::manage_sudoersd: false
 foreman_proxy::tftp: false
 puppet::server: true
 splunk::install: server
