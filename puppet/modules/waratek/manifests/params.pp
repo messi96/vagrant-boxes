@@ -1,6 +1,6 @@
-# == Class: waratek_java
+# == Class: waratek
 #
-# Full description of class waratek_java here.
+# Full description of class waratek here.
 #
 # === Parameters
 #
@@ -23,7 +23,7 @@
 #
 # === Examples
 #
-#  class { waratek_java:
+#  class { waratek:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
@@ -35,7 +35,7 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class waratek_java::params {
+class waratek::params {
 
   $package_ensure = 'installed'
   $package_name   = 'java-1.7.0-waratek'

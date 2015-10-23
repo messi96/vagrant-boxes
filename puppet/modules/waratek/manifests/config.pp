@@ -1,6 +1,6 @@
-# == Class: waratek_java
+# == Class: waratek
 #
-# Full description of class waratek_java here.
+# Full description of class waratek here.
 #
 # === Parameters
 #
@@ -23,7 +23,7 @@
 #
 # === Examples
 #
-#  class { waratek_java:
+#  class { waratek:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
@@ -35,9 +35,9 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class waratek_java::config inherits waratek_java {
+class waratek::config inherits waratek {
 
-  $waratek_users = hiera( 'waratek_java::users', {} )
+  $waratek_users = hiera( 'waratek::users', {} )
   
   ensure_resource( 'user', $waratek_users, 
   	{

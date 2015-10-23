@@ -1,6 +1,6 @@
-# == Class: waratek_java
+# == Class: waratek
 #
-# Full description of class waratek_java here.
+# Full description of class waratek here.
 #
 # === Parameters
 #
@@ -23,7 +23,7 @@
 #
 # === Examples
 #
-#  class { waratek_java:
+#  class { waratek:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
@@ -35,14 +35,14 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class waratek_java (
-  $package_ensure  = $waratek_java::params::package_ensure,
-  $package_name    = $waratek_java::params::package_name,
-  $package_source  = $waratek_java::params::package_source,
-  $service_enable  = $waratek_java::params::service_enable,
-  $service_ensure  = $waratek_java::params::service_ensure,
-  $version         = $waratek_java::params::version,
-) inherits waratek_java::params {
+class waratek (
+  $package_ensure  = $waratek::params::package_ensure,
+  $package_name    = $waratek::params::package_name,
+  $package_source  = $waratek::params::package_source,
+  $service_enable  = $waratek::params::service_enable,
+  $service_ensure  = $waratek::params::service_ensure,
+  $version         = $waratek::params::version,
+) inherits waratek::params {
 
   validate_bool($service_enable)
   validate_bool($service_ensure)
@@ -63,11 +63,11 @@ class waratek_java (
     default:              { fail 'Invalid package name'}
   }
 
-  anchor { 'waratek_java::begin': }      ->
-  class { '::waratek_java::libcgroup': } ->
-  class { '::waratek_java::install': }   ->
-  class { '::waratek_java::config': }    ->
-  #class { '::waratek_java::service': } ->
-  anchor { 'waratek_java::end': }
+  anchor { 'waratek::begin': }      ->
+  class { '::waratek::libcgroup': } ->
+  class { '::waratek::install': }   ->
+  class { '::waratek::config': }    ->
+  #class { '::waratek::service': } ->
+  anchor { 'waratek::end': }
 
 }
