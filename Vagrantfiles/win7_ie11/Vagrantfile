@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "https://aka.ms/vagrant-win7-ie11"
+
+  config.vm.synced_folder "../../synced_folder", "/synced_folder"
+
+  # VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "Win7 IE11"
+    vb.gui = true
+    vb.customize ["modifyvm", :id, "--biosbootmenu", "disabled"]
+    vb.customize ["modifyvm", :id, "--bioslogodisplaytime", "0"]
+    vb.customize ["modifyvm", :id, "--bioslogofadein", "off"]
+    vb.customize ["modifyvm", :id, "--bioslogofadeout", "off"]
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+  end
+end
