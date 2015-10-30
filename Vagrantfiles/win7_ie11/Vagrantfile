@@ -2,7 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "https://aka.ms/vagrant-win7-ie11"
+
+  config.vm.box = "win7-ie11"
+  config.vm.box_url = "https://aka.ms/vagrant-win7-ie11"
 
   config.vm.synced_folder "../../synced_folder", "/synced_folder"
 
