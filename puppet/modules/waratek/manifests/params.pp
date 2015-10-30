@@ -37,6 +37,7 @@
 #
 class waratek::params {
 
+  $install_format = 'tgz'
   $package_ensure = 'installed'
   $package_name   = 'java-1.7.0-waratek'
   $package_source = undef

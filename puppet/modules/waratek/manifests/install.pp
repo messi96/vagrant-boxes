@@ -37,24 +37,42 @@
 #
 class waratek::install inherits waratek {
 
-  package { 'acl':
-    ensure  => 'installed'
-  } ->
+  if ($install_format == "tgz") {
+    package { 'acl':
+      ensure  => 'installed'
+    } ->
 
-  exec { 'import-gpg-key':
-    command => '/bin/rpm --import http://download.waratek.com/keys/107183FC.txt?src=vagrant',
-    unless  => '/bin/rpm -q gpg-pubkey-107183fc'
-  } ->
+    staging::deploy { "waratek_release_${version}_package.tar.gz":
+      source => "$tgz_source",
+      target => '/tmp/'
+    } ->
 
-  package { "$package_name":
-    ensure   => $version,
-    provider => 'rpm',
-    source   => $real_package_source
-  } ~>
+    exec { 'waratek_package_install':
+      command => "/tmp/waratek_release_${version}_package/tools/autoinstall.sh -s -a",
+      creates => "/usr/lib/jvm/java-1.7.0-waratek-${version}.x86_64"
+    }
+  }
 
-  exec { 'alternatives-java':
-    command     => $alternatives_command,
-    refreshonly => true
+  if ($install_format == "rpm") {
+    package { 'acl':
+      ensure  => 'installed'
+    } ->
+
+    exec { 'import-gpg-key':
+      command => '/bin/rpm --import http://download.waratek.com/keys/107183FC.txt?src=vagrant',
+      unless  => '/bin/rpm -q gpg-pubkey-107183fc'
+    } ->
+
+    package { "$package_name":
+      ensure   => $package_ensure,
+      provider => 'rpm',
+      source   => $real_package_source
+    } ~>
+
+    exec { 'alternatives-java':
+      command     => $alternatives_command,
+      refreshonly => true
+    }
   }
 
 }

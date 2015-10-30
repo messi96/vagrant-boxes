@@ -36,6 +36,7 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 class waratek (
+  $install_format  = $waratek::params::install_format,
   $package_ensure  = $waratek::params::package_ensure,
   $package_name    = $waratek::params::package_name,
   $package_source  = $waratek::params::package_source,
@@ -49,6 +50,10 @@ class waratek (
 
   if ( ( ! $package_source ) and ( ! $version ) ) {
   	fail('No version or package source specified')
+  }
+  
+  if ($install_format == 'tgz') {
+    $tgz_source = "https://download.waratek.com/tgz/rhel/waratek_release_${version}_package.tar.gz"
   }
 
   if ( ! $package_source ) {
