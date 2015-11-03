@@ -14,6 +14,7 @@ file:read:/tmp:allow:info
 file:read:/usr/lib/jvm:allow:off
 
 file:write:*:deny:warn
+file:write:/opt/apache-tomcat/tomcat7/conf/Catalina:allow:info
 file:write:/opt/apache-tomcat/tomcat7/conf/Catalina/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/logs/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/work/*:allow:info
