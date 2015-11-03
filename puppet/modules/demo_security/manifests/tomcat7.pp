@@ -53,7 +53,11 @@ class demo_security::tomcat7 inherits demo_security {
   } ->
 
   file { "${tomcat7_home}/bin/setenv.sh":
-    ensure => "absent",
+    ensure => "file",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    mode   => 0755,
+    source => "puppet:///modules/demo_security/demo/tomcat/setenv.sh",
   }
 
 }
