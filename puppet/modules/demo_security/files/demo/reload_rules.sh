@@ -1,7 +1,13 @@
 #!/bin/bash
 
-cp jvc.rules /var/lib/javad/jvm-1/tomcat7
-
 echo "[*] Reloading Security Rules"
-curl -s http://localhost:7777/jolokia/exec/com.waratek:type=tomcat7,name=VirtualContainer/loadSecurityRules | python -mjson.tool
+RESPONSE=`curl -s http://localhost:7777/jolokia/exec/com.waratek:type=VirtualContainer,jvcName=jvc-1/loadSecurityRules| python -mjson.tool`
+STATUS=`echo "$RESPONSE" | grep status`
 
+echo "$RESPONSE"
+
+if [[ "$STATUS" =~ "200" ]]; then
+    exit 0
+else
+    exit 1
+fi

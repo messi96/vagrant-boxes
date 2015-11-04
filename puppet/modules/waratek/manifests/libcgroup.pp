@@ -1,6 +1,6 @@
-# == Class: waratek_java
+# == Class: waratek
 #
-# Full description of class waratek_java here.
+# Full description of class waratek here.
 #
 # === Parameters
 #
@@ -23,7 +23,7 @@
 #
 # === Examples
 #
-#  class { waratek_java:
+#  class { waratek:
 #    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
 #  }
 #
@@ -35,26 +35,19 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class waratek_java::install inherits waratek_java {
+class waratek::libcgroup inherits waratek {
 
-  package { 'acl':
-    ensure  => 'installed'
+  package { 'libcgroup':
+    ensure    => 'installed',
+    name      => $::operatingsystem ? {
+      'SLES'  => 'libcgroup1',
+      default => 'libcgroup'
+    }
   } ->
 
-  exec { 'import-gpg-key':
-    command => '/bin/rpm --import http://download.waratek.com/keys/107183FC.txt?src=vagrant',
-    unless  => '/bin/rpm -q gpg-pubkey-107183fc'
-  } ->
-
-  package { "$package_name":
-    ensure   => $version,
-    provider => 'rpm',
-    source   => $real_package_source
-  } ~>
-
-  exec { 'alternatives-java':
-    command     => $alternatives_command,
-    refreshonly => true
+  service { 'cgconfig':
+    ensure  => 'running',
+    enable  => 'true'
   }
 
 }

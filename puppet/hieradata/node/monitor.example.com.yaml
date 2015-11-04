@@ -6,6 +6,7 @@ classes:
   - foreman
   - foreman_proxy
   - puppet
+demo_security::kibana_version: 4.1.2
 elasticsearch::manage_repo: true
 elasticsearch::repo_version: '1.5'
 elasticsearch::status: enabled
