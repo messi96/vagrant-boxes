@@ -26,6 +26,7 @@ network:accept:*:*:allow:info
 network:bind:*:*:allow:info
 network:connect:*:*:allow:info
 network:connect:*:80:allow:warn
+# www.example.com
 network:connect:93.184.216.34:*:deny:warn
 network:serverbind:*:*:allow:info
 
