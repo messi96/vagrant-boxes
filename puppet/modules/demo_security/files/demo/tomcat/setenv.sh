@@ -13,3 +13,11 @@ export WARATEK_OPTS="-Dcom.waratek.jvm.name=tomcat7 \
 
 export CATALINA_OPTS="-Xmx512M $WARATEK_OPTS $JMX_OPTS"
 
+# WebGoat will write a UserDatabase file to the directory
+# specified by the user.dir system property
+#
+# Changing directory to Tomcat's temp dir will allow us
+# to configure a consistent write rule to this dir
+
+cd $CATALINA_HOME/temp
+

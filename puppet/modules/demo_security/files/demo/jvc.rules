@@ -17,6 +17,7 @@ file:write:*:deny:warn
 file:write:/opt/apache-tomcat/tomcat7/conf/Catalina:allow:info
 file:write:/opt/apache-tomcat/tomcat7/conf/Catalina/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/logs/*:allow:info
+file:write:/opt/apache-tomcat/tomcat7/temp/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/work/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/webapps/*:allow:info
 
