@@ -8,7 +8,7 @@ class demo_security::splunk_inputs inherits demo_security {
     }
 
     splunk::input::monitor { "waratek_rules_user":
-      path       => "/home/*/demo/log/rules.log ",
+      path       => "/home/*/demo/log/rules.log",
       sourcetype => "waratek_security"
     }
 
