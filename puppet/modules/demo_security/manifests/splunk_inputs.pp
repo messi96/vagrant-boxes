@@ -2,8 +2,13 @@ class demo_security::splunk_inputs inherits demo_security {
 
   if defined(Class['splunk']) {
 
-    splunk::input::monitor { "waratek_rules":
-      path       => "/var/log/javad/jvm-1/rules.log",
+    splunk::input::monitor { "waratek_rules_system":
+      path       => "/var/log/javad/*/rules.log",
+      sourcetype => "waratek_security"
+    }
+
+    splunk::input::monitor { "waratek_rules_user":
+      path       => "/home/*/demo/log/rules.log ",
       sourcetype => "waratek_security"
     }
 
