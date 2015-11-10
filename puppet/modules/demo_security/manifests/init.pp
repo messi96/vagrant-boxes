@@ -41,6 +41,7 @@ class demo_security (
   $demo_group       = $demo_security::params::demo_group,
   $demo_user        = $demo_security::params::demo_user,
   $kali_ip          = $demo_security::params::kali_ip,
+  $kibana_version   = $demo_security::params::kibana_version,
   $monitor_ip       = $demo_security::params::monitor_ip,
   $spiracle_version = $demo_security::params::spiracle_version,
   $tomcat6_home     = $demo_security::params::tomcat6_home,
@@ -48,26 +49,6 @@ class demo_security (
   $tomcat7_home     = $demo_security::params::tomcat7_home,
   $tomcat7_version  = $demo_security::params::tomcat7_version
 ) inherits demo_security::params {
-
-  host { 'demo1':
-    ip           => "$demo1_ip",
-    host_aliases => "demo1.${::domain}"
-  }
-
-  host { 'demo2':
-    ip           => "$demo2_ip",
-    host_aliases => "demo2.${::domain}"
-  }
-
-  host { 'kali':
-    ip           => "$kali_ip",
-    host_aliases => "kali.${::domain}"
-  }
-
-  host { 'monitor':
-    ip           => "$monitor_ip",
-    host_aliases => "monitor.${::domain}"
-  }
 
   if ($::osfamily == "RedHat") {
     service { 'iptables':

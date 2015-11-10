@@ -6,9 +6,6 @@ splunk::forward_server:
   - monitor.aws.example.com:9997
 splunk::install: forwarder
 splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/universalforwarder/linux/splunkforwarder-6.2.3-264376-linux-2.6-x86_64.rpm
-demo_security::demo1_ip: 192.0.2.21
-demo_security::kali_ip: 192.0.2.30
-demo_security::monitor_ip: 192.0.2.40
 demo_security::demo_user: ec2-user
 demo_security::demo_group: ec2-user
 waratek_java::users:

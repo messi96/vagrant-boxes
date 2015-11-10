@@ -37,13 +37,21 @@
 #
 class demo_security::kali inherits demo_security {
 
+  host { 'demo1':
+    ip           => "$demo1_ip",
+  }
+
+  host { 'demo2':
+    ip           => "$demo2_ip",
+  }
+
   if ($::ec2_local_ipv4 =~ /\d+/) {
     host { 'kali.external':
       ip => "$::ec2_local_ipv4"
     }
-  } elsif ($::ipaddress_eth1 =~ /\d+/) {
+  } else {
     host { 'kali.external':
-      ip => "$::ipaddress_eth1"
+      ip => "$kali_ip"
     }
   }
 

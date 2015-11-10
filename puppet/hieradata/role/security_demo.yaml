@@ -4,11 +4,15 @@ classes:
   - logstash
   - oracle_xe
   - profiles::base
-  - waratek_java
+  - waratek
 packages:
   - httpd
   - mod_security
   - mod_security_crs
+demo_security::demo1_ip: 172.21.21.21
+demo_security::demo2_ip: 172.21.21.22
+demo_security::kali_ip: 172.21.21.30
+demo_security::monitor_ip: 172.21.21.40
 demo_security::demo_user: vagrant
 demo_security::demo_group: vagrant
 logstash::init_defaults:
@@ -18,10 +22,8 @@ logstash::manage_repo: true
 logstash::repo_version: '1.5'
 logstash::status: enabled
 staging::path: /var/cache/staging
-tomcat::tomcat6_home: /opt/apache-tomcat/tomcat6
-tomcat::tomcat6_version: 6.0.44
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
 tomcat::tomcat7_version: 7.0.63
-waratek_java::version: 2.9.0.GA.4-113
-waratek_java::users:
+waratek::version: 4.0.1-122
+waratek::users:
   - vagrant

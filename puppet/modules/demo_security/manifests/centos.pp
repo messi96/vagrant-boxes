@@ -37,6 +37,22 @@
 #
 class demo_security::centos inherits demo_security {
 
+  host { 'demo1':
+    ip           => "$demo1_ip",
+  }
+
+  host { 'demo2':
+    ip           => "$demo2_ip",
+  }
+
+  host { 'kali':
+    ip           => "$kali_ip",
+  }
+
+  host { 'monitor':
+    ip           => "$monitor_ip",
+  }
+
   file { "/home/${demo_user}/demo":
     ensure => "directory",
     owner  => "${demo_user}",
@@ -53,11 +69,7 @@ class demo_security::centos inherits demo_security {
   }
 
   file { "/home/${demo_user}/demo/restart.sh":
-    ensure => "file",
-    owner  => "${demo_user}",
-    group  => "${demo_group}",
-    mode   => 0755,
-    source => "puppet:///modules/demo_security/demo/restart.sh",
+    ensure => "absent",
   }
 
   file { "/home/${demo_user}/demo/jvc.rules":
@@ -67,6 +79,36 @@ class demo_security::centos inherits demo_security {
     mode   => 0644,
     source => "puppet:///modules/demo_security/demo/jvc.rules",
   }
+
+  file { "/home/${demo_user}/demo/tomcat7":
+    ensure => "link",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    target => "/opt/apache-tomcat/tomcat7"
+  }
+
+  file { "/home/${demo_user}/demo/startup.sh":
+    ensure => "link",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    target => "/opt/apache-tomcat/tomcat7/bin/startup.sh"
+  }
+
+  file { "/home/${demo_user}/demo/shutdown.sh":
+    ensure => "link",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    target => "/opt/apache-tomcat/tomcat7/bin/shutdown.sh"
+  }
+
+  file { "/home/${demo_user}/demo/logProps.xml":
+    ensure  => "file",
+    owner   => "${demo_user}",
+    group   => "${demo_group}",
+    mode    => 0644,
+    content => template('demo_security/logProps.xml.erb')
+  }
+
 
   class { '::tomcat':
     user         => "$demo_user",
@@ -78,7 +120,6 @@ class demo_security::centos inherits demo_security {
   anchor { 'demo_security::begin': }     ->
   class  { '::demo_security::httpd': }  ->
   class  { '::demo_security::oracle_xe': }  ->
-  class  { '::demo_security::tomcat6': }  ->
   class  { '::demo_security::tomcat7': }  ->
   class  { '::demo_security::struts2': } ->
   class  { '::demo_security::spiracle': } ->
