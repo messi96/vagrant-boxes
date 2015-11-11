@@ -1,8 +1,8 @@
 ---
 classes:
- - demo_security::monitor
- - elasticsearch
- - splunk
+  - demo_security::monitor
+  - elasticsearch
+  - splunk
 elasticsearch::manage_repo: true
 elasticsearch::repo_version: '1.5'
 elasticsearch::status: enabled
