@@ -21,6 +21,7 @@ logstash::init_defaults:
 logstash::manage_repo: true
 logstash::repo_version: '1.5'
 logstash::status: enabled
+spiracle::version: 1.4.1
 staging::path: /var/cache/staging
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
 tomcat::tomcat7_version: 7.0.63
