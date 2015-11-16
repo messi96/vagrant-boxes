@@ -22,8 +22,8 @@ if which puppet > /dev/null 2>&1; then
 else
   echo "[*] Installing Puppet"
   cd /tmp
-  wget -q --no-check-certificate https://apt.puppetlabs.com/puppetlabs-release-wheezy.deb
-  dpkg -i puppetlabs-release-wheezy.deb
+  wget -q --no-check-certificate https://apt.puppetlabs.com/puppetlabs-release-jessie.deb
+  dpkg -i puppetlabs-release-jessie.deb
   apt-get -y -qq update
   apt-get -y -qq install puppet
 fi
