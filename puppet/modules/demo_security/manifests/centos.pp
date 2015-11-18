@@ -80,21 +80,21 @@ class demo_security::centos inherits demo_security {
     source => "puppet:///modules/demo_security/demo/jvc.rules",
   }
 
-  file { "/home/${demo_user}/demo/tomcat7":
+  file { "/home/${demo_user}/demo/tomcat":
     ensure => "link",
     owner  => "${demo_user}",
     group  => "${demo_group}",
     target => "/opt/apache-tomcat/tomcat7"
   }
 
-  file { "/home/${demo_user}/demo/startup.sh":
+  file { "/home/${demo_user}/demo/tomcat_startup.sh":
     ensure => "link",
     owner  => "${demo_user}",
     group  => "${demo_group}",
     target => "/opt/apache-tomcat/tomcat7/bin/startup.sh"
   }
 
-  file { "/home/${demo_user}/demo/shutdown.sh":
+  file { "/home/${demo_user}/demo/tomcat_shutdown.sh":
     ensure => "link",
     owner  => "${demo_user}",
     group  => "${demo_group}",
