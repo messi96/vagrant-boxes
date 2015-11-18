@@ -4,12 +4,13 @@ VERSION 1.0
 
 # File Rules
 file:exec:*:deny:warn
-file:native:*:deny:warn
+file:native:*:allow:warn
 
 file:read:*:deny:info
 file:read:/dev/random:allow:off
 file:read:/dev/urandom:allow:off
 file:read:/opt/apache-tomcat:allow:off
+file:read:/opt/jboss:allow:off
 file:read:/tmp:allow:info
 file:read:/usr/lib/jvm:allow:off
 
@@ -20,6 +21,7 @@ file:write:/opt/apache-tomcat/tomcat7/logs/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/temp/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/work/*:allow:info
 file:write:/opt/apache-tomcat/tomcat7/webapps/*:allow:info
+file:write:/opt/jboss/jboss-6.1.0.Final/server/default:allow:off
 
 # Example Network Rules
 network:accept:*:*:allow:info

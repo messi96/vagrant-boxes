@@ -101,6 +101,29 @@ class demo_security::centos inherits demo_security {
     target => "/opt/apache-tomcat/tomcat7/bin/shutdown.sh"
   }
 
+
+  file { "/home/${demo_user}/demo/jboss":
+    ensure => "link",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    target => "/opt/jboss/jboss-6.1.0.Final"
+  }
+
+  file { "/home/${demo_user}/demo/jboss_startup.sh":
+    ensure => "link",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    target => "/opt/jboss/jboss-6.1.0.Final/bin/run.sh"
+  }
+
+  file { "/home/${demo_user}/demo/jboss_shutdown.sh":
+    ensure => "link",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    target => "/opt/jboss/jboss-6.1.0.Final/bin/shutdown.sh"
+  }
+
+
   file { "/home/${demo_user}/demo/logProps.xml":
     ensure  => "file",
     owner   => "${demo_user}",
@@ -120,6 +143,7 @@ class demo_security::centos inherits demo_security {
   anchor { 'demo_security::begin': }     ->
   class  { '::demo_security::httpd': }  ->
   class  { '::demo_security::oracle_xe': }  ->
+  class  { '::demo_security::jboss6': }  ->
   class  { '::demo_security::tomcat7': }  ->
   class  { '::demo_security::struts2': } ->
   class  { '::demo_security::spiracle': } ->
