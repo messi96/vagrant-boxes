@@ -63,6 +63,27 @@ class demo_security::kali inherits demo_security {
     source => "puppet:///modules/demo_security/kali/cve-2013-2251.rc",
   }
 
+  staging::file { 'ysoserial-0.0.2-all.jar':
+    source => 'https://github.com/frohoff/ysoserial/releases/download/v0.0.2/ysoserial-0.0.2-all.jar',
+    target => '/root/ysoserial-0.0.2-all.jar'
+  }
+
+  file { "/root/commons_rce_exploit.sh":
+    ensure => "file",
+    mode   => 0755,
+    owner  => "root",
+    group  => "root",
+    content => template('demo_security/commons_rce_exploit.sh.erb')
+  }
+
+  file { "/root/reverse_shell.sh":
+    ensure => "file",
+    mode   => 0755,
+    owner  => "root",
+    group  => "root",
+    content => template('demo_security/reverse_shell.sh.erb')
+  }
+
   file { '/root/.bashrc':
     ensure => 'present',
     source => '/etc/skel/.bashrc',
