@@ -78,14 +78,9 @@ class demo_security::monitor inherits demo_security {
     refreshonly => "true"
   }
 
-  file { '/etc/puppet/environments/production/modules/waratek':
+  file { '/etc/puppet/environments/production/modules/waratek_rules':
     ensure  => 'link',
-    target  => "${::vagrant_module_path}/waratek",
-  }
-
-  file { '/etc/puppet/environments/production/modules/stdlib':
-    ensure  => 'link',
-    target  => "${::vagrant_module_path}/stdlib",
+    target  => "${::vagrant_module_path}/waratek_rules",
   }
 
 }
