@@ -23,8 +23,7 @@ logstash::manage_repo: true
 logstash::repo_version: '1.5'
 logstash::status: enabled
 puppet::agent: true
-puppet::agent_additional_settings:
-  runinterval: 30
+puppet::runinterval: 30
 puppet::puppetmaster: monitor.example.com
 puppet::server_directory_environments: false
 puppet::show_diff: true
