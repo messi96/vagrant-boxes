@@ -55,6 +55,18 @@ class demo_security::kali inherits demo_security {
     }
   }
 
+  # Configure sshd
+  augeas { 'sshd_config':
+    context => '/files/etc/ssh/sshd_config',
+    changes => [
+      'set PermitRootLogin without-password'
+    ],
+  } ~>
+
+  service { 'sshd':
+        name => "ssh"
+  }
+
   file { "/root/cve-2013-2251.rc":
     ensure => "file",
     mode   => 0644,
