@@ -8,7 +8,11 @@ echo "[*] Updating apt"
 apt-get -y update
 
 echo "[*] Upgrading"
-apt-get -y dist-upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confnew" dist-upgrade
+
+echo "[*] Ensuring kali defaults are installed"
+apt-get -y install locales-all
+apt-get -y install kali-archive-keyring kali-debtags kali-defaults kali-menu kali-root-login
 
 # Enable gdm autologin
 if [ -e /etc/gdm3/daemon.conf ]; then
