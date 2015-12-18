@@ -181,7 +181,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
       aws.security_groups = ENV['AWS_SECURITY_GROUP']
       aws.region = ENV['AWS_REGION']
-      aws.ami = "ami-2e278559"
+      aws.ami = "ami-9d2af2ee"
       aws.instance_type = "m3.medium"
       aws.block_device_mapping = [
         { 'DeviceName' => '/dev/sdb', 'VirtualName' => 'ephemeral0' }
