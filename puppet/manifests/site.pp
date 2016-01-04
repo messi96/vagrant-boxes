@@ -1,4 +1,5 @@
 
+Exec { timeout => 600 }
 File { backup => false }
 Package { allow_virtual => false }
 
