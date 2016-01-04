@@ -45,13 +45,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # AWS
     demo1.vm.provider "aws" do |aws,override|
-      override.vm.box = "waratek/aws-rhel6-PV"
-      override.vm.box_version = ">= 0"
+      override.vm.box = "vagrant-aws-dummy"
+      override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+      override.vm.box_version = nil
       aws.access_key_id = ENV['AWS_ACCESS_KEY']
       aws.secret_access_key = ENV['AWS_SECRET_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
       aws.security_groups = ENV['AWS_SECURITY_GROUP']
       aws.region = ENV['AWS_REGION']
+      aws.ami = "ami-78d29c0f"
       aws.instance_type = "m3.medium"
       aws.block_device_mapping = [
         { 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 },
@@ -109,13 +111,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # AWS
     demo2.vm.provider "aws" do |aws,override|
-      override.vm.box = "waratek/aws-rhel6-PV"
-      override.vm.box_version = ">= 0"
+      override.vm.box = "vagrant-aws-dummy"
+      override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+      override.vm.box_version = nil
       aws.access_key_id = ENV['AWS_ACCESS_KEY']
       aws.secret_access_key = ENV['AWS_SECRET_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
       aws.security_groups = ENV['AWS_SECURITY_GROUP']
       aws.region = ENV['AWS_REGION']
+      aws.ami = "ami-78d29c0f"
       aws.instance_type = "m3.medium"
       aws.block_device_mapping = [
         { 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 },
@@ -175,13 +179,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     kali.vm.provider "aws" do |aws,override|
       override.vm.box = "vagrant-aws-dummy"
       override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
-      override.vm.box_version = ""
+      override.vm.box_version = nil
       aws.access_key_id = ENV['AWS_ACCESS_KEY']
       aws.secret_access_key = ENV['AWS_SECRET_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
       aws.security_groups = ENV['AWS_SECURITY_GROUP']
       aws.region = ENV['AWS_REGION']
-      aws.ami = "ami-2e278559"
+      aws.ami = "ami-9d2af2ee"
       aws.instance_type = "m3.medium"
       aws.block_device_mapping = [
         { 'DeviceName' => '/dev/sdb', 'VirtualName' => 'ephemeral0' }
@@ -235,13 +239,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # AWS
     monitor.vm.provider "aws" do |aws,override|
-      override.vm.box = "waratek/aws-rhel6-PV"
-      override.vm.box_version = ">= 0"
+      override.vm.box = "vagrant-aws-dummy"
+      override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+      override.vm.box_version = nil
       aws.access_key_id = ENV['AWS_ACCESS_KEY']
       aws.secret_access_key = ENV['AWS_SECRET_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
       aws.security_groups = ENV['AWS_SECURITY_GROUP']
       aws.region = ENV['AWS_REGION']
+      aws.ami = "ami-78d29c0f"
       aws.instance_type = "m3.medium"
       aws.block_device_mapping = [
         { 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 },
