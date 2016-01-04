@@ -8,7 +8,7 @@ cp /etc/skel/.bashrc /etc/skel/.profile /root
 
 # Clean up
 echo "[*] Cleaning up apt"
-apt-get -y autoremove
+apt-get -y --purge autoremove
 apt-get -y clean
 
 # Remove apt.conf as we no longer want proxy configuration
@@ -32,6 +32,9 @@ rm -f /etc/sudoers.d/packer-vagrant
 
 # Cleanup puppet
 rm -rf /var/lib/puppet
+
+# Remove logs
+find /var/log -type f -exec rm {} \;
 
 # Cleanup /tmp
 echo "[*] Cleaning up /tmp"

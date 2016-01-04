@@ -1,0 +1,49 @@
+{
+  "variables": {
+    "ami_desc" : "Kali Linux 64 Bit Mini",
+    "build_date": "{{isotime \"20060102\"}}"
+  },
+  "description": "{{user `box_desc`}}",
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "eu-west-1",
+      "source_ami": "ami-2e278559",
+      "instance_type": "m3.medium",
+      "ssh_username": "admin",
+      "ami_name": "kali2-{{user `build_date`}}",
+      "ami_description": "{{user `ami_desc`}} {{user `build_date`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "../../puppet/hieradata",
+      "destination": "/tmp",
+      "pause_before": "10s"
+    },
+    {
+      "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "scripts": [
+        "scripts/base-aws.sh",
+        "scripts/base.sh",
+        "scripts/puppet.sh"
+      ]
+    },
+    {
+      "type": "puppet-masterless",
+        "manifest_file": "../../puppet/manifests/site.pp",
+        "module_paths": ["../../puppet/modules"],
+        "hiera_config_path": "../../puppet/hiera.yaml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "scripts": [
+        "scripts/cleanup-aws.sh",
+        "scripts/cleanup.sh"
+      ]
+    }
+  ]
+}
