@@ -24,7 +24,7 @@ logstash::repo_version: '1.5'
 logstash::status: enabled
 puppet::agent: true
 puppet::runinterval: 30
-puppet::puppetmaster: monitor.example.com
+puppet::puppetmaster: monitor.%{::domain}
 puppet::server_directory_environments: false
 puppet::show_diff: true
 spiracle::version: 1.4.1
