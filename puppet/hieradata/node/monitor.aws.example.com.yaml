@@ -1,11 +1,1 @@
----
-classes:
-  - demo_security::monitor
-  - elasticsearch
-  - splunk
-demo_security::kibana_version: 4.1.2
-elasticsearch::manage_repo: true
-elasticsearch::repo_version: '1.5'
-elasticsearch::status: enabled
-splunk::install: server
-splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/splunk/linux/splunk-6.2.3-264376-linux-2.6-x86_64.rpm
+monitor.example.com.yaml
