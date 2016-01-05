@@ -247,14 +247,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
       aws.security_groups = ENV['AWS_SECURITY_GROUP']
       aws.region = ENV['AWS_REGION']
-      aws.ami = "ami-78d29c0f"
+      aws.ami = "ami-2b7f4c5c"
       aws.instance_type = "m3.medium"
       aws.block_device_mapping = [
         { 'DeviceName' => '/dev/sda1', 'Ebs.VolumeSize' => 15 },
         { 'DeviceName' => '/dev/sdb', 'VirtualName' => 'ephemeral0' }
       ]
       override.ssh.private_key_path = ENV['AWS_PRIVATE_KEY_PATH']
-      override.ssh.username = "ec2-user"
+      override.ssh.username = "centos"
 
       aws.user_data = File.read("../../scripts/cloud-init.txt") + "hostname: monitor\nfqdn: monitor.aws.example.com\n"
       aws.tags = {
