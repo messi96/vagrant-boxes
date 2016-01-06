@@ -12,7 +12,7 @@
 #   Directory name where the module will be installed
 #   Value type is string
 #   Default value: None
-#   This variable is required
+#   This variable is deprecated
 #
 # [*ensure*]
 #   Whether the plugin will be installed or removed.
@@ -25,6 +25,13 @@
 #   Specify an URL where to download the plugin from.
 #   Value type is string
 #   Default value: None
+#   This variable is optional
+#
+# [*source*]
+#   Specify the source of the plugin.
+#   This will copy over the plugin to the node and use it for installation.
+#   Useful for offline installation
+#   Value type is string
 #   This variable is optional
 #
 # [*proxy_host*]
@@ -61,78 +68,80 @@
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
 define elasticsearch::plugin(
-    $module_dir,
     $instances,
+    $module_dir  = undef,
     $ensure      = 'present',
     $url         = undef,
+    $source      = undef,
     $proxy_host  = undef,
     $proxy_port  = undef,
 ) {
 
   include elasticsearch
 
-  Exec {
-    path      => [ '/bin', '/usr/bin', '/usr/local/bin' ],
-    cwd       => '/',
-    user      => $elasticsearch::elasticsearch_user,
-    tries     => 6,
-    try_sleep => 10,
-    timeout   => 600,
-  }
-
   $notify_service = $elasticsearch::restart_on_change ? {
     false   => undef,
     default => Elasticsearch::Service[$instances],
   }
 
-  if ($module_dir != '') {
-      validate_string($module_dir)
-  } else {
-      fail("module_dir undefined for plugin ${name}")
+  if ($module_dir != undef) {
+    warning("module_dir settings is deprecated for plugin ${name}. The directory is now auto detected.")
   }
 
+  # set proxy by override or parse and use proxy_url from
+  # elasticsearch::proxy_url or use no proxy at all
+  
   if ($proxy_host != undef and $proxy_port != undef) {
-    $proxy = " -DproxyPort=${proxy_port} -DproxyHost=${proxy_host}"
-  } else {
-    $proxy = '' # lint:ignore:empty_string_assignment
+    $proxy = "-DproxyPort=${proxy_port} -DproxyHost=${proxy_host}"
+  }
+  elsif ($elasticsearch::proxy_url != undef) {
+    $proxy_host_from_url = regsubst($elasticsearch::proxy_url, '(http|https)://([^:]+)(|:\d+).+', '\2')
+    $proxy_port_from_url = regsubst($elasticsearch::proxy_url, '(?:http|https)://[^:/]+(?::([0-9]+))?(?:/.*)?', '\1')
+    
+    # validate parsed values before using them
+    if (is_string($proxy_host_from_url) and is_integer($proxy_port_from_url)) {
+      $proxy = "-DproxyPort=${proxy_port_from_url} -DproxyHost=${proxy_host_from_url}"
+    }
+  }
+  else {
+    $proxy = undef
   }
 
-  if ($url != '') {
+  if ($source != undef) {
+
+    $filenameArray = split($source, '/')
+    $basefilename = $filenameArray[-1]
+
+    $file_source = "${elasticsearch::package_dir}/${basefilename}"
+
+    file { $file_source:
+      ensure => 'file',
+      source => $source,
+    }
+
+  } elsif ($url != undef) {
     validate_string($url)
-    $install_cmd = "${elasticsearch::plugintool}${proxy} -install ${name} -url ${url}"
-    $exec_rets = [0,1]
-  } else {
-    $install_cmd = "${elasticsearch::plugintool}${proxy} -install ${name}"
-    $exec_rets = [0,]
   }
 
   case $ensure {
     'installed', 'present': {
-      $name_file_path = "${elasticsearch::plugindir}/${module_dir}/.name"
-      exec {"purge_plugin_${module_dir}_old":
-        command => "${elasticsearch::plugintool} --remove ${module_dir}",
-        onlyif  => "test -e ${elasticsearch::plugindir}/${module_dir} && test \"$(cat ${name_file_path})\" != '${name}'",
-        before  => Exec["install_plugin_${name}"],
+
+      elasticsearch_plugin { $name:
+        ensure     => 'present',
+        source     => $file_source,
+        url        => $url,
+        proxy_args => $proxy,
+        notify     => $notify_service,
       }
-      exec {"install_plugin_${name}":
-        command => $install_cmd,
-        creates => "${elasticsearch::plugindir}/${module_dir}",
-        returns => $exec_rets,
-        notify  => $notify_service,
-        require => File[$elasticsearch::plugindir],
-      }
-      file {$name_file_path:
-        ensure  => file,
-        content => $name,
-        require => Exec["install_plugin_${name}"],
+
+    }
+    'absent': {
+      elasticsearch_plugin { $name:
+        ensure => absent,
       }
     }
     default: {
-      exec {"remove_plugin_${name}":
-        command => "${elasticsearch::plugintool} --remove ${module_dir}",
-        onlyif  => "test -d ${elasticsearch::plugindir}/${module_dir}",
-        notify  => $notify_service,
-      }
+      fail("${ensure} is not a valid ensure command.")
     }
   }
 }

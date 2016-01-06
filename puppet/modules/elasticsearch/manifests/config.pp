@@ -65,11 +65,6 @@ class elasticsearch::config {
       mode    => '0755',
     }
 
-    file { $elasticsearch::plugindir:
-      ensure  => 'directory',
-      recurse => true,
-    }
-
     file { $elasticsearch::datadir:
       ensure  => 'directory',
     }
@@ -85,20 +80,28 @@ class elasticsearch::config {
         group   => undef,
         recurse => true,
       }
+
+      if ($elasticsearch::service_providers == 'systemd') {
+        $user = $elasticsearch::elasticsearch_user
+        $group = $elasticsearch::elasticsearch_group
+        $pid_dir = $elasticsearch::params::pid_dir
+
+        file { '/usr/lib/tmpfiles.d/elasticsearch.conf':
+          ensure  => 'file',
+          content => template("${module_name}/usr/lib/tmpfiles.d/elasticsearch.conf.erb"),
+          owner   => 'root',
+          group   => 'root',
+        }
+      }
     }
 
-    exec { 'mkdir_templates_elasticsearch':
-      command => "mkdir -p ${elasticsearch::configdir}/templates_import",
-      creates => "${elasticsearch::configdir}/templates_import",
+
+    file { "${elasticsearch::params::homedir}/templates_import":
+      ensure => 'directory',
+      mode   => '0644',
     }
 
-    file { "${elasticsearch::configdir}/templates_import":
-      ensure  => 'directory',
-      mode    => '0644',
-      require => [ Exec['mkdir_templates_elasticsearch'] ],
-    }
-
-    file { "${elasticsearch::configdir}/scripts":
+    file { "${elasticsearch::params::homedir}/scripts":
       ensure => 'directory',
       mode   => '0644',
     }
@@ -111,8 +114,11 @@ class elasticsearch::config {
       ensure => 'absent',
     }
 
-    file { "${elasticsearch::params::defaults_location}/elasticsearch":
-      ensure => 'absent',
+    $new_init_defaults = { 'CONF_DIR' => $elasticsearch::configdir }
+    augeas { "${elasticsearch::params::defaults_location}/elasticsearch":
+      incl    => "${elasticsearch::params::defaults_location}/elasticsearch",
+      lens    => 'Shellvars.lns',
+      changes => template("${module_name}/etc/sysconfig/defaults.erb"),
     }
 
     file { '/etc/elasticsearch/elasticsearch.yml':
@@ -123,7 +129,13 @@ class elasticsearch::config {
     }
 
   } elsif ( $elasticsearch::ensure == 'absent' ) {
-    # don't remove anything for now
+
+    file { $elasticsearch::plugindir:
+      ensure => 'absent',
+      force  => true,
+      backup => false,
+    }
+
   }
 
 }

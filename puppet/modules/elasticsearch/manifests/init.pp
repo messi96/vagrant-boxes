@@ -91,6 +91,11 @@
 #   For http,https and ftp downloads you can set howlong the exec resource may take.
 #   Defaults to: 600 seconds
 #
+# [*proxy_url*]
+#   For http and https downloads you can set a proxy server to use
+#   Format: proto://[user:pass@]server[:port]/
+#   Defaults to: undef (proxy disabled)
+#
 # [*elasticsearch_user*]
 #   The user Elasticsearch should run as. This also sets the file rights.
 #
@@ -130,6 +135,14 @@
 #
 # [*repo_version*]
 #   Our repositories are versioned per major version (0.90, 1.0) select here which version you want
+#
+# [*repo_key_id*]
+#   String.  The apt GPG key id
+#   Default: D88E42B4
+#
+# [*repo_key_source*]
+#   String.  URL of the apt GPG key
+#   Default: http://packages.elastic.co/GPG-KEY-elasticsearch
 #
 # [*logging_config*]
 #   Hash representation of information you want in the logging.yml file
@@ -206,6 +219,7 @@ class elasticsearch(
   $package_pin           = true,
   $purge_package_dir     = $elasticsearch::params::purge_package_dir,
   $package_dl_timeout    = $elasticsearch::params::package_dl_timeout,
+  $proxy_url             = undef,
   $elasticsearch_user    = $elasticsearch::params::elasticsearch_user,
   $elasticsearch_group   = $elasticsearch::params::elasticsearch_group,
   $configdir             = $elasticsearch::params::configdir,
@@ -222,6 +236,8 @@ class elasticsearch(
   $java_package          = undef,
   $manage_repo           = false,
   $repo_version          = undef,
+  $repo_key_id           = 'D88E42B4',
+  $repo_key_source       = 'http://packages.elastic.co/GPG-KEY-elasticsearch',
   $logging_file          = undef,
   $logging_config        = undef,
   $logging_template      = undef,
@@ -289,6 +305,21 @@ class elasticsearch(
       fail('Please fill in a repository version at $repo_version')
     } else {
       validate_string($repo_version)
+    }
+  }
+
+  if ($version != false) {
+    case $::osfamily {
+      'RedHat', 'Linux', 'Suse': {
+        if ($version =~ /.+-\d/) {
+          $pkg_version = $version
+        } else {
+          $pkg_version = "${version}-1"
+        }
+      }
+      default: {
+        $pkg_version = $version
+      }
     }
   }
 
@@ -377,6 +408,7 @@ class elasticsearch(
     Anchor['elasticsearch::begin']
     -> Class['elasticsearch::package']
     -> Class['elasticsearch::config']
+    -> Elasticsearch::Plugin <| |>
     -> Elasticsearch::Instance <| |>
     -> Elasticsearch::Template <| |>
 

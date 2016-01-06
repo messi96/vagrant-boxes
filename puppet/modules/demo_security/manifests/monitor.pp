@@ -56,7 +56,8 @@ class demo_security::monitor inherits demo_security {
   }
 
   $config_hash = {
-    'JAVA_HOME' => '/usr/lib/jvm/java-1.7.0'
+    'JAVA_HOME' => '/usr/lib/jvm/java-1.7.0',
+    'ES_JAVA_OPTS' => '-Des.network.host=0.0.0.0'
   }
 
   elasticsearch::instance { 'es-01':
