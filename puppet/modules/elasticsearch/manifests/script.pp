@@ -22,15 +22,15 @@
 #   Puppet source of the script
 #   Value type is string
 #   Default value: undef
-#   This variable is optional
+#   This variable is mandatory
 #
 # === Authors
 #
 # * Richard Pijnenburg <mailto:richard.pijnenburg@elasticsearch.com>
 #
 define elasticsearch::script(
+  $source,
   $ensure  = 'present',
-  $source  = undef,
 ) {
 
   require elasticsearch
@@ -40,12 +40,12 @@ define elasticsearch::script(
     fail("\"${ensure}\" is not a valid ensure parameter value")
   }
 
-  validate_re($source, '^puppet://')
+  validate_re($source, '^(puppet|file)://')
 
   $filenameArray = split($source, '/')
   $basefilename = $filenameArray[-1]
 
-  file { "${elasticsearch::configdir}/scripts/${basefilename}":
+  file { "${elasticsearch::params::homedir}/scripts/${basefilename}":
     ensure => $ensure,
     source => $source,
     owner  => $elasticsearch::elasticsearch_user,

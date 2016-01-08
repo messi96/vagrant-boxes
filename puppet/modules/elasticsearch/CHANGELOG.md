@@ -1,3 +1,125 @@
+##0.10.1 ( Dec 17, 2015 )
+
+###Summary
+Bugfix release for proxy functionality in plugin installation
+
+####Features
+
+####Bugfixes
+* Proxy settings were not passed on correctly
+
+####Changes
+* Cleanup .pmtignore to exclude more files
+
+####Testing changes
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.10.0 ( Dec 14, 2015 )
+
+###Summary
+Module now works with ES 2.x completely
+
+####Features
+* Work with ES 2.x new plugin system and remain to work with 1.x
+* Implemented datacat module from Richard Clamp so other modules can hook into it for adding configuration options
+* Fixed init and systemd files to work with 1.x and 2.x
+* Made the module work with newer pl-apt module versions
+* Export es_include so it is passed on to ES
+* Ability to supply long gpg key for apt repo
+
+####Bugfixes
+* Documentation and typographical fixes
+* Do not force puppet:/// schema resource
+* Use package resource defaults rather than setting provider and source
+
+####Changes
+
+####Testing changes
+* Improve unit testing and shorten the runtime
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.9 ( Sep 01, 2015 )
+
+###Summary
+Bugfix release and extra features
+
+####Features
+* Work with ES 2.x
+* Add Java 8 detection in debian init script
+* Improve offline plugin installation
+
+####Bugfixes
+* Fix a bug with new ruby versions but older puppet versions causing type error
+* Fix config tempate to use correct ruby scoping
+* Fix regex retrieving proxy port while downloading plugin
+* Fix systemd template for better variable handling
+* Template define was using wrong pathing for removal
+
+
+####Changes
+
+####Testing changes
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.8 ( Jul 07, 2015 )
+
+###Summary
+
+
+####Features
+* Work with ES 2.x
+
+####Bugfixes
+* Fix plugin to maintain backwards compatibility
+
+####Changes
+
+####Testing changes
+* ensure testing works with Puppet 4.x ( Rspec and Acceptance )
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
+##0.9.7 ( Jun 24, 2015 )
+
+###Summary
+This releases adds several important features and fixes an important plugin installation issue with ES 1.6 and higher.
+
+####Features
+* Automate plugin dir extraction
+* use init service provider for Amazon Linux
+* Add Puppetlabs/apt and ceritsc/yum as required modules
+* Added Timeout to fetching facts in case ES does not respond
+* Add proxy settings for package download
+
+####Bugfixes
+* Fixed systemd template to fix issue with LimitMEMLOCK setting
+* Improve package version handling when specifying a version
+* Add tmpfiles.d file to manage sub dir in /var/run path
+* Fix plugin installations for ES 1.6 and higher
+
+####Changes
+* Removed Modulefile, only maintaining metadata.json file
+
+####Testing changes
+* Added unit testing for package pinning feature
+* Added integration testing with Elasticsearch to find issues earlier
+* Fix OpenSuse 13 testing
+
+####Known bugs
+* Possible package conflicts when using ruby/python defines with main package name
+
+
 ##0.9.6 ( May 28, 2015 )
 
 ###Summary

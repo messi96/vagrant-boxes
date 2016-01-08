@@ -33,8 +33,26 @@ class elasticsearch::package {
 
   #### Package management
 
+
   # set params: in operation
   if $elasticsearch::ensure == 'present' {
+
+    # Create directory to place the package file
+    exec { 'create_package_dir_elasticsearch':
+      cwd     => '/',
+      path    => ['/usr/bin', '/bin'],
+      command => "mkdir -p ${elasticsearch::package_dir}",
+      creates => $elasticsearch::package_dir,
+    }
+
+    file { $elasticsearch::package_dir:
+      ensure  => 'directory',
+      purge   => $elasticsearch::purge_package_dir,
+      force   => $elasticsearch::purge_package_dir,
+      backup  => false,
+      require => Exec['create_package_dir_elasticsearch'],
+    }
+
 
     # Check if we want to install a specific version or not
     if $elasticsearch::version == false {
@@ -47,7 +65,7 @@ class elasticsearch::package {
     } else {
 
       # install specific version
-      $package_ensure = $elasticsearch::version
+      $package_ensure = $elasticsearch::pkg_version
 
     }
 
@@ -60,22 +78,6 @@ class elasticsearch::package {
       }
 
       $package_dir = $elasticsearch::package_dir
-
-      # Create directory to place the package file
-      exec { 'create_package_dir_elasticsearch':
-        cwd     => '/',
-        path    => ['/usr/bin', '/bin'],
-        command => "mkdir -p ${elasticsearch::package_dir}",
-        creates => $elasticsearch::package_dir,
-      }
-
-      file { $package_dir:
-        ensure  => 'directory',
-        purge   => $elasticsearch::purge_package_dir,
-        force   => $elasticsearch::purge_package_dir,
-        backup  => false,
-        require => Exec['create_package_dir_elasticsearch'],
-      }
 
       $filenameArray = split($elasticsearch::package_url, '/')
       $basefilename = $filenameArray[-1]
@@ -103,12 +105,21 @@ class elasticsearch::package {
         }
         'ftp', 'https', 'http': {
 
+          if $elasticsearch::proxy_url != undef {
+            $exec_environment = [
+              'use_proxy=yes',
+              "http_proxy=${elasticsearch::proxy_url}",
+              "https_proxy=${elasticsearch::proxy_url}",
+            ]
+          }
+
           exec { 'download_package_elasticsearch':
-            command => "${elasticsearch::params::download_tool} ${pkg_source} ${elasticsearch::package_url} 2> /dev/null",
-            creates => $pkg_source,
-            timeout => $elasticsearch::package_dl_timeout,
-            require => File[$package_dir],
-            before  => $before,
+            command     => "${elasticsearch::params::download_tool} ${pkg_source} ${elasticsearch::package_url} 2> /dev/null",
+            creates     => $pkg_source,
+            environment => $exec_environment,
+            timeout     => $elasticsearch::package_dl_timeout,
+            require     => File[$package_dir],
+            before      => $before,
           }
 
         }
@@ -132,37 +143,24 @@ class elasticsearch::package {
       if ($elasticsearch::package_provider == 'package') {
 
         case $ext {
-          'deb':   { $pkg_provider = 'dpkg' }
-          'rpm':   { $pkg_provider = 'rpm'  }
+          'deb':   { Package { provider => 'dpkg', source => $pkg_source } }
+          'rpm':   { Package { provider => 'rpm', source => $pkg_source } }
           default: { fail("Unknown file extention \"${ext}\".") }
         }
 
       }
 
-    } else {
-      $pkg_source = undef
-      $pkg_provider = undef
     }
 
   # Package removal
   } else {
 
-    $pkg_source = undef
     if ($::operatingsystem == 'OpenSuSE') {
-      $pkg_provider = 'rpm'
-    } else {
-      $pkg_provider = undef
+      Package {
+        provider  => 'rpm',
+      }
     }
-    $package_ensure = 'absent'
-
-    $package_dir = $elasticsearch::package_dir
-
-    file { $package_dir:
-      ensure => 'absent',
-      purge  => true,
-      force  => true,
-      backup => false,
-    }
+    $package_ensure = 'purged'
 
   }
 
@@ -170,8 +168,6 @@ class elasticsearch::package {
 
     package { $elasticsearch::package_name:
       ensure   => $package_ensure,
-      source   => $pkg_source,
-      provider => $pkg_provider,
     }
 
   } else {
