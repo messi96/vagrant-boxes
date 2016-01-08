@@ -37,24 +37,20 @@
 #
 class demo_security::centos inherits demo_security {
 
-  host { "demo1.${domain}":
+  host { 'demo1':
     ip           => "$demo1_ip",
-    host_aliases => "demo1"
   }
 
-  host { "demo2.${domain}":
+  host { 'demo2':
     ip           => "$demo2_ip",
-    host_aliases => "demo2"
   }
 
-  host { "kali.${domain}":
+  host { 'kali':
     ip           => "$kali_ip",
-    host_aliases => "kali"
   }
 
-  host { "monitor.${domain}":
+  host { 'monitor':
     ip           => "$monitor_ip",
-    host_aliases => "monitor"
   }
 
   file { "/home/${demo_user}/demo":
