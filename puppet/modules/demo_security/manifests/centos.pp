@@ -37,11 +37,6 @@
 #
 class demo_security::centos inherits demo_security {
 
-  host { "localhost":
-    ip           => "127.0.0.1",
-    host_aliases => "localhost.localdomain localhost4 localhost4.localdomain4"
-  }
-
   host { "demo1.${domain}":
     ip           => "$demo1_ip",
     host_aliases => "demo1"
