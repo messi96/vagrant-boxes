@@ -39,10 +39,9 @@ class demo_security::oracle_xe inherits demo_security {
 
     # Hack to prevent Oracle XE binding to IPv6 interface
 
-    host { 'localhost-ipv6':
-        name   => 'localhost',
-        ensure => 'absent',
-        ip     => '::1',
+    host { 'localhost':
+        ip           => "127.0.0.1",
+        host_aliases => [ "localhost.localdomain", "localhost4", "localhost4.localdomain4" ],
         notify => Service[oracle-xe]
     }
 
