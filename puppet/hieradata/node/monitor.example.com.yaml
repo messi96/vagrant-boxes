@@ -1,6 +1,7 @@
 ---
 classes:
   - demo_security::monitor
+  - demo_security::kibana
   - elasticsearch
   - splunk
   - foreman

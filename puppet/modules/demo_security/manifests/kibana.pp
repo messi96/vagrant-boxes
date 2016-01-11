@@ -35,38 +35,21 @@
 #
 # Copyright 2014 Your name here, unless otherwise noted.
 #
-class demo_security::monitor inherits demo_security {
+class demo_security::kibana inherits demo_security {
 
-  vcsrepo { '/opt/splunk/etc/apps/waratek':
-    ensure   => present,
-    provider => git,
-    source   => 'https://github.com/prateepb/splunk-test-app.git',
-    user     => 'splunk',
-    require  => Package['splunk'],
-    notify   => Service['splunk']
+  file { '/opt/kibana':
+    ensure => 'directory'
   } ->
 
-  file { '/opt/splunk/etc/apps/waratek/local/inputs.conf':
-  	ensure => present,
-  	source => 'puppet:///modules/demo_security/splunk/inputs.conf',
-  	owner  => 'splunk',
-  	group  => 'splunk',
-  	mode   => '0644',
-    notify   => Service['splunk']
-  }
+  staging::deploy { "kibana-${kibana_version}-linux-x64.tar.gz":
+    source  => "https://download.elastic.co/kibana/kibana/kibana-${kibana_version}-linux-x64.tar.gz",
+    target  => "/opt/kibana",
+    creates => "/opt/kibana/kibana-${kibana_version}-linux-x64"
+  } ~>
 
-  $config_hash = {
-    'JAVA_HOME' => '/usr/lib/jvm/java-1.7.0',
-    'ES_JAVA_OPTS' => '-Des.network.host=0.0.0.0'
-  }
-
-  elasticsearch::instance { 'es-01':
-    init_defaults => $config_hash
-  }
-
-  file { '/etc/puppet/environments/production/modules/waratek_rules':
-    ensure  => 'link',
-    target  => "${::vagrant_module_path}/waratek_rules",
+  exec { 'kibana-chown':
+    command     => "/bin/chown -R vagrant:vagrant /opt/kibana",
+    refreshonly => "true"
   }
 
 }
