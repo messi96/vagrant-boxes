@@ -37,6 +37,11 @@
 #
 class demo_security::kibana inherits demo_security {
 
+  file { '/opt/kibana/kibana-4.1.2-linux-x64':
+    ensure => 'absent',
+    force  => true
+  }
+
   file { '/opt/kibana':
     ensure => 'directory'
   } ->
