@@ -3,7 +3,7 @@ classes:
   - demo_security::monitor
   - elasticsearch
   - splunk
-demo_security::kibana_version: 4.3.1
+demo_security::kibana_version: 4.4.0
 elasticsearch::autoupgrade: true
 elasticsearch::manage_repo: true
 elasticsearch::repo_version: '2.x'
