@@ -64,6 +64,11 @@ class demo_security::monitor inherits demo_security {
     init_defaults => $config_hash
   }
 
+  exec { 'remove-old-kibana':
+    command => '/bin/rm -rf /opt/kibana/kibana-*-linux-x64',
+    onlyif  => '/bin/ls /opt/kibana/kibana-*-linux-x64'
+  }
+
 
 
 
