@@ -64,19 +64,7 @@ class demo_security::monitor inherits demo_security {
     init_defaults => $config_hash
   }
 
-  file { '/opt/kibana':
-    ensure => 'directory'
-  } ->
 
-  staging::deploy { 'kibana.tar.gz':
-    source  => "https://download.elastic.co/kibana/kibana/kibana-${kibana_version}-linux-x64.tar.gz",
-    target  => "/opt/kibana",
-    creates => "/opt/kibana/kibana-${kibana_version}-linux-x64"
-  } ~>
 
-  exec { 'kibana-chown':
-    command     => "/bin/chown -R root:root /opt/kibana",
-    refreshonly => "true"
-  }
 
 }
