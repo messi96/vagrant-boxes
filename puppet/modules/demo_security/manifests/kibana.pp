@@ -37,24 +37,38 @@
 #
 class demo_security::kibana inherits demo_security {
 
-  file { '/opt/kibana/kibana-4.1.2-linux-x64':
-    ensure => 'absent',
-    force  => true
+  exec { 'remove-old-kibana':
+    command => '/bin/rm -rf /opt/kibana/kibana-*-linux-x64',
+    onlyif  => '/bin/ls /opt/kibana/kibana-*-linux-x64'
   }
 
-  file { '/opt/kibana':
-    ensure => 'directory'
+  exec { 'elasticsearch-gpg-key':
+    command => '/bin/rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch',
+    unless  => '/bin/rpm -q gpg-pubkey | /bin/grep -q gpg-pubkey-d88e42b4-52371eca'
   } ->
 
-  staging::deploy { "kibana-${kibana_version}-linux-x64.tar.gz":
-    source  => "https://download.elastic.co/kibana/kibana/kibana-${kibana_version}-linux-x64.tar.gz",
-    target  => "/opt/kibana",
-    creates => "/opt/kibana/kibana-${kibana_version}-linux-x64"
+  file { '/etc/yum.repos.d/kibana.repo':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/demo_security/kibana/kibana.repo'
+  } ->
+
+  package { 'kibana':
+    ensure => 'present'
+  } ->
+
+  file { "/opt/kibana/config/kibana.yml":
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => 'puppet:///modules/demo_security/kibana/kibana.yml',
   } ~>
 
-  exec { 'kibana-chown':
-    command     => "/bin/chown -R vagrant:vagrant /opt/kibana",
-    refreshonly => "true"
+  service { 'kibana':
+    ensure => true,
+    enable => true
   }
 
 }
