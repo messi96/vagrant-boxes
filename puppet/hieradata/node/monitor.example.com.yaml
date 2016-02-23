@@ -1,5 +1,6 @@
 ---
 classes:
+  - demo_security::foreman_custom
   - demo_security::monitor
   - demo_security::kibana
   - elasticsearch
