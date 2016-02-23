@@ -56,26 +56,38 @@ class demo_security::monitor inherits demo_security {
   }
 
   $config_hash = {
-    'JAVA_HOME' => '/usr/lib/jvm/java-1.7.0'
+    'JAVA_HOME' => '/usr/lib/jvm/java-1.7.0',
+    'ES_JAVA_OPTS' => '-Des.network.host=0.0.0.0'
   }
 
   elasticsearch::instance { 'es-01':
     init_defaults => $config_hash
   }
 
-  file { '/opt/kibana':
-    ensure => 'directory'
+  exec { 'remove-old-kibana':
+    command => '/bin/rm -rf /opt/kibana/kibana-*-linux-x64',
+    onlyif  => '/bin/ls /opt/kibana/kibana-*-linux-x64'
+  }
+
+  exec { 'elasticsearch-gpg-key':
+    command => '/bin/rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch',
+    unless  => '/bin/rpm -q gpg-pubkey | /bin/grep -q gpg-pubkey-d88e42b4-52371eca'
   } ->
 
-  staging::deploy { 'kibana.tar.gz':
-    source  => "https://download.elastic.co/kibana/kibana/kibana-${kibana_version}-linux-x64.tar.gz",
-    target  => "/opt/kibana",
-    creates => "/opt/kibana/kibana-${kibana_version}-linux-x64"
-  } ~>
+  file { '/etc/yum.repos.d/kibana.repo':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/demo_security/kibana/kibana.repo'
+  } ->
 
-  exec { 'kibana-chown':
-    command     => "/bin/chown -R root:root /opt/kibana",
-    refreshonly => "true"
+  package { 'kibana':
+    ensure => 'present'
+  } ->
+
+  service { 'kibana':
+    ensure => true,
+    enable => true
   }
 
 }

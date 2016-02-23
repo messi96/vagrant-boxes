@@ -18,8 +18,9 @@ demo_security::demo_group: vagrant
 logstash::init_defaults:
   JAVACMD: '/usr/lib/jvm/java-1.7.0/bin/java'
   PATH: '/usr/lib/jvm/java-1.7.0/bin:$PATH'
+logstash::autoupgrade: true
 logstash::manage_repo: true
-logstash::repo_version: '1.5'
+logstash::repo_version: '2.2'
 logstash::status: enabled
 spiracle::version: 1.4.1
 staging::path: /var/cache/staging
