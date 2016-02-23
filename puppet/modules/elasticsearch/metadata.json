@@ -1,6 +1,6 @@
 {
   "name": "elasticsearch-elasticsearch",
-  "version": "0.10.1",
+  "version": "0.10.3",
   "author": "elasticsearch",
   "summary": "Module for managing and configuring Elasticsearch nodes",
   "license": "Apache-2.0",

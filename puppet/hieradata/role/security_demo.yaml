@@ -21,7 +21,7 @@ logstash::init_defaults:
   PATH: '/usr/lib/jvm/java-1.7.0/bin:$PATH'
 logstash::autoupgrade: true
 logstash::manage_repo: true
-logstash::repo_version: '2.1'
+logstash::repo_version: '2.2'
 logstash::status: enabled
 puppet::agent: true
 puppet::runinterval: 30
