@@ -1,0 +1,16 @@
+VERSION 1.0
+
+# SQL injection mitigation
+sqli:database:oracle:<%= @sqli_action %>:<%= @sqli_loglevel %>
+
+############################################
+# Default Rules
+
+<%= @default_rules %>
+
+############################################
+# App Specific Rules
+
+<%= @app_rules %>
+
+# END

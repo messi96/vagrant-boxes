@@ -64,6 +64,11 @@ class demo_security::monitor inherits demo_security {
     init_defaults => $config_hash
   }
 
+  file { '/etc/puppet/environments/production/modules/waratek_rules':
+    ensure  => 'link',
+    target  => "${::vagrant_module_path}/waratek_rules",
+  }
+
   exec { 'remove-old-kibana':
     command => '/bin/rm -rf /opt/kibana/kibana-*-linux-x64',
     onlyif  => '/bin/ls /opt/kibana/kibana-*-linux-x64'

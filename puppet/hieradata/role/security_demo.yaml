@@ -4,6 +4,7 @@ classes:
   - logstash
   - oracle_xe
   - profiles::base
+  - puppet
   - waratek
 packages:
   - httpd
@@ -22,6 +23,11 @@ logstash::autoupgrade: true
 logstash::manage_repo: true
 logstash::repo_version: '2.2'
 logstash::status: enabled
+puppet::agent: true
+puppet::runinterval: 30
+puppet::puppetmaster: monitor.example.com
+puppet::server_directory_environments: false
+puppet::show_diff: true
 spiracle::version: 1.4.1
 staging::path: /var/cache/staging
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
