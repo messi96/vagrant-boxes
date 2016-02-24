@@ -31,7 +31,7 @@ puppet::show_diff: true
 spiracle::version: 1.4.1
 staging::path: /var/cache/staging
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
-tomcat::tomcat7_version: 7.0.63
+tomcat::tomcat7_version: 7.0.68
 waratek::version: 4.0.1-122
 waratek::users:
   - vagrant
