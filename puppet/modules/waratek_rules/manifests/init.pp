@@ -8,6 +8,9 @@ class waratek_rules(
   $rulefile_owner = 'root',
   $sqli_action    = 'deny',
   $sqli_loglevel  = 'warn',
+  $xss_action     = 'deny',
+  $xss_loglevel   = 'warn'
+
 ) {
 
   if $rulefile_name {
