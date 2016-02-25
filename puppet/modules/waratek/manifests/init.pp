@@ -69,7 +69,6 @@ class waratek (
   }
 
   anchor { 'waratek::begin': }      ->
-  class { '::waratek::libcgroup': } ->
   class { '::waratek::install': }   ->
   class { '::waratek::config': }    ->
   #class { '::waratek::service': } ->
