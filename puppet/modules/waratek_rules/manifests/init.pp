@@ -7,7 +7,7 @@ class waratek_rules(
   $rulefile_name  = undef,
   $rulefile_owner = 'root',
   $sqli_action    = 'deny',
-  $sqli_loglevel  = 'warn'
+  $sqli_loglevel  = 'warn',
 ) {
 
   if $rulefile_name {
