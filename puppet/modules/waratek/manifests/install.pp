@@ -44,13 +44,14 @@ class waratek::install inherits waratek {
 
     staging::deploy { "waratek_release_${version}_package.tar.gz":
       source => "$tgz_source",
-      target => '/tmp/'
-    } ->
+      target => '/opt'
+    } ~>
 
-    exec { 'waratek_package_install':
-      command => "/tmp/waratek_release_${version}_package/tools/autoinstall.sh -s -a",
-      creates => "/usr/lib/jvm/java-1.7.0-waratek-${version}.x86_64"
+    exec { "chown-waratek":
+      command     => "/bin/chown -R root:root /opt/waratek*",
+      refreshonly => true
     }
+
   }
 
   if ($install_format == "rpm") {

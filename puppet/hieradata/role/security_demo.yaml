@@ -4,6 +4,7 @@ classes:
   - logstash
   - oracle_xe
   - profiles::base
+  - puppet
   - waratek
 packages:
   - httpd
@@ -18,13 +19,19 @@ demo_security::demo_group: vagrant
 logstash::init_defaults:
   JAVACMD: '/usr/lib/jvm/java-1.7.0/bin/java'
   PATH: '/usr/lib/jvm/java-1.7.0/bin:$PATH'
+logstash::autoupgrade: true
 logstash::manage_repo: true
-logstash::repo_version: '1.5'
+logstash::repo_version: '2.2'
 logstash::status: enabled
+puppet::agent: true
+puppet::runinterval: 30
+puppet::puppetmaster: monitor.example.com
+puppet::server_directory_environments: false
+puppet::show_diff: true
 spiracle::version: 1.4.1
 staging::path: /var/cache/staging
 tomcat::tomcat7_home: /opt/apache-tomcat/tomcat7
-tomcat::tomcat7_version: 7.0.63
-waratek::version: 4.0.1-122
+tomcat::tomcat7_version: 7.0.68
+waratek::version: 5.3.0-b03-4
 waratek::users:
   - vagrant

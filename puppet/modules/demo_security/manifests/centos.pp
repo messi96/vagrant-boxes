@@ -53,6 +53,13 @@ class demo_security::centos inherits demo_security {
     ip           => "$monitor_ip",
   }
 
+  file { "/home/${demo_user}":
+    ensure => "directory",
+    owner  => "${demo_user}",
+    group  => "${demo_group}",
+    mode   => 0755
+  }
+
   file { "/home/${demo_user}/demo":
     ensure => "directory",
     owner  => "${demo_user}",

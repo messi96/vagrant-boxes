@@ -12,6 +12,7 @@ file:read:/dev/urandom:allow:off
 file:read:/opt/apache-tomcat:allow:off
 file:read:/opt/jboss:allow:off
 file:read:/tmp:allow:info
+file:read:/opt/waratek*:allow:off
 file:read:/usr/lib/jvm:allow:off
 
 file:write:*:deny:warn

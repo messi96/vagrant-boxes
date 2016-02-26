@@ -47,5 +47,6 @@ class demo_security::params {
   $tomcat7_home     = hiera('tomcat::tomcat7_home', undef)
   $tomcat7_version  = hiera('tomcat::tomcat7_version', undef)
   $spiracle_version = hiera('spiracle::version', undef)
+  $waratek_version  = hiera('waratek::version', undef)
 
 }

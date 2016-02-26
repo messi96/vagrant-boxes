@@ -1,0 +1,14 @@
+
+export JAVA_HOME="/opt/waratek_release_<%= @waratek_version %>_package/jre/jvc/jdk-1.7.0_95"
+export JMX_OPTS="-Dcom.waratek.management.jmxremote \
+-Dcom.waratek.management.jmxremote.port=1234 \
+-Dcom.waratek.management.jmxremote.authenticate=false \
+-Dcom.waratek.management.jmxremote.ssl=false \
+-Dcom.waratek.jmxhttp.jolokia"
+
+export WARATEK_OPTS="-Dcom.waratek.jvm.name=jboss \
+-Dcom.waratek.rules.local=$HOME/demo/jvc.rules \
+-Dcom.waratek.log.properties=$HOME/demo/logProps.xml"
+
+export JAVA_OPTS="-Xmx512M -Djboss.bind.address=0.0.0.0 $WARATEK_OPTS $JMX_OPTS"
+
