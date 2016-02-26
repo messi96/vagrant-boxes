@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JAVA_HOME="/usr/lib/jvm/java-waratek/jre"
+export JAVA_HOME="/opt/waratek_release_<%= @waratek_version %>_package/jre/jvc/jdk-1.7.0_95"
 export JMX_OPTS="-Dcom.waratek.management.jmxremote \
 -Dcom.waratek.management.jmxremote.port=1234 \
 -Dcom.waratek.management.jmxremote.authenticate=false \
@@ -8,7 +8,7 @@ export JMX_OPTS="-Dcom.waratek.management.jmxremote \
 -Dcom.waratek.jmxhttp.jolokia"
 
 export WARATEK_OPTS="-Dcom.waratek.jvm.name=tomcat7 \
--Dcom.waratek.rules.file=$HOME/demo/jvc.rules \
+-Dcom.waratek.rules.local=$HOME/demo/jvc.rules \
 -Dcom.waratek.log.properties=$HOME/demo/logProps.xml"
 
 export CATALINA_OPTS="-Xmx512M $WARATEK_OPTS $JMX_OPTS"

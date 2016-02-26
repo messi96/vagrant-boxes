@@ -53,7 +53,7 @@ class waratek (
   }
   
   if ($install_format == 'tgz') {
-    $tgz_source = "https://download.waratek.com/tgz/rhel/waratek_release_${version}_package.tar.gz"
+    $tgz_source = "https://download.waratek.com/tgz/waratek_release_${version}_package.tar.gz"
   }
 
   if ( ! $package_source ) {
