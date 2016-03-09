@@ -23,4 +23,4 @@ foreman_proxy::manage_sudoersd: false
 foreman_proxy::tftp: false
 puppet::server: true
 splunk::install: server
-splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/splunk/linux/splunk-6.2.3-264376-linux-2.6-x86_64.rpm
+splunk::install_source: http://download.splunk.com/products/splunk/releases/6.3.3/linux/splunk-6.3.3-f44afce176d0-linux-2.6-x86_64.rpm

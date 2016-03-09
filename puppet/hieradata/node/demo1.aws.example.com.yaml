@@ -4,7 +4,7 @@ classes:
 splunk::forward_server:
   - monitor:9997
 splunk::install: forwarder
-splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/universalforwarder/linux/splunkforwarder-6.2.3-264376-linux-2.6-x86_64.rpm
+splunk::install_source: http://download.splunk.com/products/universalforwarder/releases/6.3.3/linux/splunkforwarder-6.3.3-f44afce176d0-linux-2.6-x86_64.rpm
 demo_security::demo_user: ec2-user
 demo_security::demo_group: ec2-user
 waratek::users:
