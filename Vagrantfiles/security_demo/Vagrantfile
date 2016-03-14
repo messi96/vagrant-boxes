@@ -273,7 +273,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       #puppet.options = "--verbose --debug"
       puppet.facter = {
         "packer_builder_type" => "",
-        "role"                => ""
+        "role"                => "security_demo_monitor"
       }
     end
   end

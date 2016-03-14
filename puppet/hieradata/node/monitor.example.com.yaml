@@ -1,26 +1,5 @@
 ---
 classes:
-  - demo_security::foreman_custom
-  - demo_security::monitor
-  - demo_security::kibana
-  - elasticsearch
   - splunk
-  - foreman
-  - foreman_proxy
-  - puppet
-demo_security::kibana_version: 4.4.0
-elasticsearch::autoupgrade: true
-elasticsearch::manage_repo: true
-elasticsearch::repo_version: '2.x'
-elasticsearch::status: enabled
-foreman::admin_password: password
-foreman::configure_epel_repo: false
-foreman::passenger_ruby: /usr/bin/ruby193-ruby
-foreman::passenger_ruby_package: ruby193-rubygem-passenger-native
-foreman::plugin_prefix: ruby193-rubygem-foreman
-foreman::ssl: true
-foreman_proxy::manage_sudoersd: false
-foreman_proxy::tftp: false
-puppet::server: true
 splunk::install: server
-splunk::install_source: http://download.splunk.com/products/splunk/releases/6.2.3/splunk/linux/splunk-6.2.3-264376-linux-2.6-x86_64.rpm
+splunk::install_source: http://download.splunk.com/products/splunk/releases/6.3.3/linux/splunk-6.3.3-f44afce176d0-linux-2.6-x86_64.rpm
